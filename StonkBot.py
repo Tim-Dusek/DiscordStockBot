@@ -65,5 +65,5 @@ async def clear(ctx, amount=5):
 
 
 #add bot token to this function
-client.run('NzMxNTQ2NTk4OTc4NjE3Mzk2.XwnoKg.kgcxjr-tyilsjeKhGT3FMghYFPI')
+client.run('*')
 
