@@ -1,2 +1,5 @@
-# DiscordStockBot
-A bot I am learning to create for fun which will keep up to date with stocks.
+# Discord Stock Bot
+A bot that can be used on discord to automate different functions and features.
+It also has custom commands I have created to aid in stock market news / investing.
+
+I created this bot to get more familiar with Python as well as code something my friends and I can have around for fun in our discord channel.
