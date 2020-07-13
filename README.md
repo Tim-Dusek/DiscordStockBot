@@ -13,3 +13,5 @@ pip install beautifulsoup4
 pip install discord.py
 
 pip install yfinance
+
+pip install lxml
