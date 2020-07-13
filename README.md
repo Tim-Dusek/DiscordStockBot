@@ -6,6 +6,9 @@ I created this bot to get more familiar with Python as well as code something my
 
 Required Libraries:
 pip install google
+
 pip install beautifulsoup4
+
 pip install discord.py
+
 pip install yfinance
