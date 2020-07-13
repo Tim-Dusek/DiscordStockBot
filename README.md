@@ -15,3 +15,9 @@ pip install discord.py
 pip install yfinance
 
 pip install lxml
+
+pip install matplotlib
+
+pip install yahoo_fin
+
+pip install requests_html
