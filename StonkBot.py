@@ -14,6 +14,7 @@ import time
 import os
 import yfinance as yf
 import datetime as datetime
+from datetime import datetime
 from random import randint
 from discord.ext import commands, tasks
 from itertools import cycle
@@ -25,7 +26,9 @@ client.remove_command('help')
 
 #set a list of activities for the bot to 'be playing' on discord
 activity_list = cycle(['The Stock Market','The Bull Market',
-				'The Bear Market','The Kankgaroo Market'])
+				'The Bear Market','The Kankgaroo Market','The Wolf Market'
+				'The Cryptocurrency Market', 'Theta Gang', 'It Bearish',
+				'It Bullish','An Online Casino'])
 
 ###
 #Events
@@ -35,6 +38,8 @@ activity_list = cycle(['The Stock Market','The Bull Market',
 @client.event
 async def on_ready():
 	change_activity.start()
+	market_open.start()
+	market_close.start()
 	print('Bot is ready.')
 #end event
 
@@ -74,6 +79,7 @@ async def help(ctx):
 		'/news <Optional: Company> - Shows the top 3 relevant market articles.\n'+\
 		'/price <Ticker Symbol> - Gives you price information about a ticker symbol.\n'+\
 		'/whois <Ticker Symbol> - Gives you general information about a ticker symbol.\n'+\
+		'/expert <Ticker Symbol> - Gives you expert opinions on what a stock is doing.\n'+\
 		'/8ball - Shake the Magic 8 Ball and be told what stock to buy.\n')
 
 	if ctx.message.author.guild_permissions.administrator:
@@ -110,10 +116,11 @@ async def news(ctx, *, company = ''):
 
 @client.command() #gives price for any ticker symbol
 async def price(ctx, company):
+	await ctx.send(f'Getting price information for '+company+'...')
 	ticker = yf.Ticker(company)
 	ticker_info = ticker.info
-	await ctx.send(f'Latest ask price for '+company+': '+str(ticker_info['ask'])+'\n'+\
-		'Latest bid price for '+company+': '+str(ticker_info['bid'])+'\n')
+	await ctx.send(f'Latest ask price: '+str(ticker_info['ask'])+'\n'+\
+		'Latest bid price: '+str(ticker_info['bid'])+'\n')
 #end command
 
 @client.command() #gives information about any ticker symbol
@@ -130,6 +137,17 @@ async def whois(ctx, company):
 	await ctx.send(f'Summary: '+ticker_info['longBusinessSummary'])
 #end command
 
+@client.command() #gives you expert thoughts on what a stock is doing
+async def expert(ctx, company):
+	await ctx.send(f'Let me get expert opinions on '+company+' for you...')
+	ticker = yf.Ticker(company)
+	expert = ticker.recommendations
+	output = expert[len(expert)-5:len(expert)]
+	output = str(output)
+	output = output[75:]
+	await ctx.send(output)
+#end command
+
 #magic 8 ball to tell you what to buy
 @client.command(aliases=['8ball','magic8ball'])
 async def _8ball(ctx, *, message = ''):
@@ -142,7 +160,8 @@ async def _8ball(ctx, *, message = ''):
 				'Delta Air Lines, DAL',
 				'Advanced Micro Devices, AMD',
 				'Apple, AAPL',
-				'Alphabet Class A, GOOGL']
+				'Alphabet Class A, GOOGL',
+				'Bed, Bath, and Beyond, BBBY']
 	if message == '':
 		await ctx.send (f'The magic 8 ball wants you to buy 1 share of {responses[randint(0, len(responses))]}!')
 	#end if
@@ -203,12 +222,32 @@ async def unban(ctx, *, member):
 #Tasks
 ###
 
-@tasks.loop(minutes=30)
+@tasks.loop(minutes=5) #
 async def change_activity():
 	await client.change_presence(activity=discord.Game(next(activity_list)),status=discord.Status.idle)
 #end task
 
-###
+@tasks.loop(minutes=1) #sends a message when the market closes at 4:00 pm
+async def market_open():
+	channel = client.get_channel(731225596100739224)
+	now=datetime.now()
+	now = str(now)
+	now = now[11:16]
+	if (now == '08:30'):
+		await channel.send(":bell: The market is now open! :bell:")
+#end task
+
+@tasks.loop(minutes=1) #sends a message when the market closes at 4:00 pm
+async def market_close():
+	channel = client.get_channel(731225596100739224)
+	now=datetime.now()
+	now = str(now)
+	now = now[11:16]
+	if (now == '16:00'):
+		await channel.send(":bell: The market is now closed! :bell:")
+#end task
+
+###		
 ### Experimental beyond this point
 ###
 
