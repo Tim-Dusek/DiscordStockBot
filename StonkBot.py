@@ -3,13 +3,15 @@
 
 #Bugs: None
 
+#Todo:/topmovers /biggestloser
+
 ###
 #import statements
 ###
 
 import discord
-import os
 import time
+import os
 import yfinance as yf
 import datetime as datetime
 from random import randint
@@ -102,7 +104,6 @@ async def news(ctx, *, company = ''):
 
 	for results in search(query, tld='com', lang='en', num=3, start=0, stop=3, pause=2.0):
 		await ctx.send(results)
-		await ctx.send(f'\n')
 		time.sleep(1)
 	#end for
 #end command
@@ -119,8 +120,13 @@ async def price(ctx, company):
 async def whois(ctx, company):
 	ticker = yf.Ticker(company)
 	ticker_info = ticker.info
+	market_cap_dollars= "${:,}".format(ticker_info['marketCap'])
+	full_time_employees= "{:,}".format(ticker_info['fullTimeEmployees'])
 	await ctx.send(f'Name: '+ticker_info['longName'])
+	await ctx.send(f'Sector: '+ ticker_info['sector'])
 	await ctx.send(f'Phone Number: '+ticker_info['phone'])
+	await ctx.send(f'Full Time Employees: '+ full_time_employees)
+	await ctx.send(f'Market Cap: '+ market_cap_dollars)
 	await ctx.send(f'Summary: '+ticker_info['longBusinessSummary'])
 #end command
 
@@ -140,6 +146,7 @@ async def _8ball(ctx, *, message = ''):
 	if message == '':
 		await ctx.send (f'The magic 8 ball wants you to buy 1 share of {responses[randint(0, len(responses))]}!')
 	#end if
+
 	else:
 		await ctx.send (f'{message}! The magic 8 ball wants you to buy 1 share of {responses[randint(0, len(responses))]}!')
 	#end else
