@@ -1,5 +1,5 @@
 #Timothy Dusek
-#7/11/20
+#7/13/20
 
 #Bugs: None
 
@@ -9,6 +9,9 @@
 
 import discord
 import os
+import time
+import yfinance as yf
+import datetime as datetime
 from random import randint
 from discord.ext import commands, tasks
 from itertools import cycle
@@ -16,6 +19,7 @@ from googlesearch import search
 
 #set the prefix for all commands
 client = commands.Bot(command_prefix = '/')
+client.remove_command('help')
 
 #set a list of activities for the bot to 'be playing' on discord
 activity_list = cycle(['The Stock Market','The Bull Market',
@@ -44,21 +48,80 @@ async def on_member_remove(member):
 	print(f'{member} has left the server')
 #end event
 
-#throws error messages
+#handles errors when they come up
 @client.event
 async def on_command_error(ctx, error):
 	if isinstance(error, commands.MissingRequiredArgument):
 		await ctx.send(f'You seem to be missing a required argument.')
-		#end if
+	#end if
+
+	elif isinstance(error, commands.MissingPermissions):
+		await ctx.send(f'You do not have permission to do that.')
+		await ctx.send(f'Please consult server owner.')
+	#end elif
 
 ###
 #Commands
 ###
 
+@client.command()
+async def help(ctx):
+	await ctx.author.send('Base User Commands:\n'+\
+		'/help - Get info on bot commands you can access.\n'+\
+		'/ping - Shows the latency of the bot.\n'+\
+		'/news <Optional: Company> - Shows the top 3 relevant market articles.\n'+\
+		'/price <Ticker Symbol> - Gives you price information about a ticker symbol.\n'+\
+		'/whois <Ticker Symbol> - Gives you general information about a ticker symbol.\n'+\
+		'/8ball - Shake the Magic 8 Ball and be told what stock to buy.\n')
+
+	if ctx.message.author.guild_permissions.administrator:
+		await ctx.author.send('My records show you are an admin!\n'+\
+		'Here are the admin commands:\n'+\
+		'/clear <Number> - Clears 1-10 messages from the chat permanently.\n'+\
+		'/kick <User> <Optional: Reason> - Kicks a user from the discord.\n'+\
+		'/ban <User> <Optional: Reason> - Bans a user from the discord.\n'+\
+		'/unban <User> - Unbans a User. To use this you must use their name and 4 digit code.\n\n')
+	#end if
+#end command
+
 #test the bots ping
 @client.command()
 async def ping(ctx):
 	await ctx.send(f'Ping is {round(client.latency * 1000)}ms')
+#end command
+
+#takes a company name and returns 3 news articles related to their stock
+@client.command()
+async def news(ctx, *, company = ''):
+	if company != '':
+		company = company + ' '
+	#end if
+
+	query = 'stock market news'+ company
+	await ctx.send(f'Let me check the internet for the latest {company}financial news...')
+
+	for results in search(query, tld='com', lang='en', num=3, start=0, stop=3, pause=2.0):
+		await ctx.send(results)
+		await ctx.send(f'\n')
+		time.sleep(1)
+	#end for
+#end command
+
+@client.command() #gives price for any ticker symbol
+async def price(ctx, company):
+	ticker = yf.Ticker(company)
+	ticker_info = ticker.info
+	await ctx.send(f'Latest ask price for '+company+': '+str(ticker_info['ask'])+'\n'+\
+		'Latest bid price for '+company+': '+str(ticker_info['bid'])+'\n')
+#end command
+
+@client.command() #gives information about any ticker symbol
+async def whois(ctx, company):
+	ticker = yf.Ticker(company)
+	ticker_info = ticker.info
+	await ctx.send(f'Name: '+ticker_info['longName'])
+	await ctx.send(f'Phone Number: '+ticker_info['phone'])
+	await ctx.send(f'Summary: '+ticker_info['longBusinessSummary'])
 #end command
 
 #magic 8 ball to tell you what to buy
@@ -82,11 +145,12 @@ async def _8ball(ctx, *, message = ''):
 	#end else
 #end command
 
-#clears 1-10 messages from the chat.
+#clears 1-10 messages from the chat if user has manag messages permissions
 @client.command()
+@commands.has_permissions(manage_messages=True)
 async def clear(ctx, amount : int):
 	if amount<=10 and amount>=1:
-		await ctx.channel.purge(limit=amount)
+		await ctx.channel.purge(limit=amount+1)
 	#end if
 
 	else:
@@ -96,6 +160,7 @@ async def clear(ctx, amount : int):
 
 #kick a user
 @client.command()
+@commands.has_permissions(kick_members=True)
 async def kick(ctx, member : discord.Member, *, reason=None):
 	await member.kick(reason=reason)
 	await ctx.send(f'Kicked {member.mention}.')
@@ -103,6 +168,7 @@ async def kick(ctx, member : discord.Member, *, reason=None):
 
 #ban a user
 @client.command()
+@commands.has_permissions(ban_members=True)
 async def ban(ctx, member : discord.Member, *, reason=None):
 	await member.ban(reason=reason)
 	await ctx.send(f'Banned {member.mention}.')
@@ -110,6 +176,7 @@ async def ban(ctx, member : discord.Member, *, reason=None):
 
 #unban a user
 @client.command()
+@commands.has_permissions(ban_members=True)
 async def unban(ctx, *, member):
 	banned_users = await ctx.guild.bans()
 	member_name, member_discriminator = member.split('#')
@@ -122,17 +189,6 @@ async def unban(ctx, *, member):
 			await ctx.send(f'Unbanned {user.mention}.')
 			return
 		#end if
-	#end for
-#end command
-
-#takes a company name and returns 3 news articles related to their stock
-@client.command()
-async def news(ctx, *, company = None):
-	query = 'stock market news'+ company
-	await ctx.send(f'Let me check the internet for the latest {company} financial news...')
-
-	for results in search(query, tld='com', lang='en', num=3, start=0, stop=3, pause=2.0):
-		await ctx.send(results)
 	#end for
 #end command
 
