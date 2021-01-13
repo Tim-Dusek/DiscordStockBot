@@ -4,16 +4,6 @@ It also has custom commands I have created to aid in stock market news / investi
 
 I created this bot to get more familiar with Python as well as code something my friends and I can have around for fun in our discord channel.
 
-Required Libraries:
+Installation:
 
-pip install google
-
-pip install beautifulsoup4
-
-pip install discord.py
-
-pip install yfinance
-
-pip install lxml
-
-pip install matplotlib
+`pip3 install -r requirements.txt`

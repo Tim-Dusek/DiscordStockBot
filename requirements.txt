@@ -1,0 +1,6 @@
+google
+beautifulsoup4
+discord.py
+yfinance
+lxml
+matplotlib
