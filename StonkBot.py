@@ -55,8 +55,7 @@ parser.add_argument(
     "--api_key", 
     help="The Discord API key Stonk Bot should use", 
     action="store",
-    type=str,
-    required=True
+    type=str
 )
 
 args = parser.parse_args()
