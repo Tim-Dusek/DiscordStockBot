@@ -65,12 +65,11 @@ if "API_Key" in env_var:
 	api_key = env_var["API_Key"]
 else:
 	api_key = ""
-	print(env_var)
 # End if/else block
 
 if args.api_key:
 	api_key = args.api_key
-else:
+elif not api_key:
 	print("Please provide a valid Discord API key via the \"-k\" flag or the \"API_Key\" environment variable!")
 	sys.exit(1)
 # End if
