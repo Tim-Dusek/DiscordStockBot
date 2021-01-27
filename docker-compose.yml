@@ -3,6 +3,6 @@ services:
   StonkBot:
     build:
       context: .
-      dockerfile: stonkBot.dockerfile
+      dockerfile: stonkBot.Dockerfile
     labels:
       lagoon.type: cli
