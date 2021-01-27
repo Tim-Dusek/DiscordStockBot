@@ -65,6 +65,7 @@ if "API_Key" in env_var:
 	api_key = env_var["API_Key"]
 else:
 	api_key = ""
+	print(env_var)
 # End if/else block
 
 if args.api_key:
