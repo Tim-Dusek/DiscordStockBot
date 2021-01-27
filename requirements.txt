@@ -4,3 +4,4 @@ discord.py
 yfinance
 lxml
 matplotlib
+arrow

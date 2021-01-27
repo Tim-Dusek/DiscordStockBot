@@ -36,6 +36,7 @@ For any additional feature requests or feedback please contact Tim Dusek
 import discord
 import time
 import os
+import arrow
 import yfinance as yf
 import datetime as datetime
 import matplotlib.pyplot as plt 
@@ -44,6 +45,26 @@ from random import randint
 from discord.ext import commands, tasks
 from itertools import cycle
 from googlesearch import search
+import argparse
+import sys
+
+parser = argparse.ArgumentParser()
+
+parser.add_argument(
+    "-k", 
+    "--api_key", 
+    help="The Discord API key Stonk Bot should use", 
+    action="store",
+    type=str,
+    required=True
+)
+
+args = parser.parse_args()
+
+if not args.api_key:
+	print("Please provide a valid Discord API key via the \"-k\" flag!")
+	sys.exit(1)
+# End if
 
 #set the prefix for all commands
 client = commands.Bot(command_prefix = '/')
@@ -429,4 +450,4 @@ for filename in os.listdir('./Cogs'):
 '''
 
 #add bot token to this function
-client.run('tokenGoesHere')
+client.run(args.api_key)

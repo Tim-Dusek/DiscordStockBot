@@ -7,3 +7,7 @@ I created this bot to get more familiar with Python as well as code something my
 Installation:
 
 `pip3 install -r requirements.txt`
+
+Usage:
+
+`python3 StonkBot.py -k <DiscordAPIKey>`
