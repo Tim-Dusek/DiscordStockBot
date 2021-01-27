@@ -71,6 +71,7 @@ if args.api_key:
 	api_key = args.api_key
 elif not api_key:
 	print("Please provide a valid Discord API key via the \"-k\" flag or the \"API_Key\" environment variable!")
+	print(env_var)
 	sys.exit(1)
 # End if
 
