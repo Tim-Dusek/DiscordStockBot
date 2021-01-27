@@ -1,6 +1,6 @@
 services:
 
-  StonkBot:
+  stonkbot:
     build:
       context: .
       dockerfile: stonkBot.Dockerfile
