@@ -257,37 +257,37 @@ async def expert(ctx, company):
 # Displays a graph of a stocks entire history
 @client.command()
 async def maxgraph(ctx,company):
-	create_graph(ctx, company=company, period="max", interval="1d")
+	await create_graph(ctx, company=company, period="max", interval="1d")
 # End command
 
 @client.command()
 async def yeargraph(ctx,company):
-	create_graph(ctx, company=company, period="1y", interval="1d")
+	await create_graph(ctx, company=company, period="1y", interval="1d")
 # End command
 
 @client.command()
 async def monthgraph(ctx,company):
-	create_graph(ctx, company=company, period="1mo", interval="1d")
+	await create_graph(ctx, company=company, period="1mo", interval="1d")
 # End command
 
 @client.command()#
 async def weekgraph(ctx,company):
-	create_graph(ctx, company=company, period="5d", interval="1d")
+	await create_graph(ctx, company=company, period="5d", interval="1d")
 # End command
 
 @client.command()#
 async def twentyfourhourgraph(ctx,company):
-	create_graph(ctx, company=company, start=arrow.now().shift(days=-1).datetime, end=datetime.now(), interval="1m", prepost=True)
+	await create_graph(ctx, company=company, start=arrow.now().shift(days=-1).datetime, end=datetime.now(), interval="1m", prepost=True)
 # End command
 
 @client.command()#
 async def daygraph(ctx,company):
-	create_graph(ctx, company=company, period="1d", interval="1m", prepost=True)
+	await create_graph(ctx, company=company, period="1d", interval="1m", prepost=True)
 # End command
 
 @client.command()#
 async def hourgraph(ctx,company):
-	create_graph(ctx, company=company, start=arrow.now().shift(hours=-1).datetime, end=datetime.now(), interval="1m", prepost=True)
+	await create_graph(ctx, company=company, start=arrow.now().shift(hours=-1).datetime, end=datetime.now(), interval="1m", prepost=True)
 # End command
 
 # Magic 8 ball to tell you what to buy
