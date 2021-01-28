@@ -201,7 +201,7 @@ async def whois(ctx, company):
 
 @client.command() #gives you expert thoughts on what a stock is doing
 async def expert(ctx, company):
-	await ctx.send(f'Let me get expert opinions on '+company+' for you...')
+	await ctx.send(f'Let me get expert opinions on ' + company.upper() + ' for you...')
 	ticker = yf.Ticker(company)
 	expert = ticker.recommendations
 	output = expert[len(expert)-5:len(expert)]
@@ -217,7 +217,7 @@ async def maxgraph(ctx,company):
 
 	# Plot graph
 	plotted_graph= ticker.history(period="max", interval="1d")
-	plotted_graph['Close'].plot(title="Stock Price For "+company)
+	plotted_graph['Close'].plot(title="Stock Price For " + company.upper())
 	plt.xlabel ('Date')
 	plt.ylabel ('Price')
 	
@@ -241,7 +241,7 @@ async def yeargraph(ctx,company):
 
 	# Plot graph
 	plotted_graph= ticker.history(period="1y", interval="1d")
-	plotted_graph['Close'].plot(title="Stock Price For "+company)
+	plotted_graph['Close'].plot(title="Stock Price For " + company.upper())
 	plt.xlabel ('Date')
 	plt.ylabel ('Price')
 	
@@ -265,7 +265,7 @@ async def monthgraph(ctx,company):
 
 	# Plot graph
 	plotted_graph = ticker.history(period="1mo", interval="1d")
-	plotted_graph['Close'].plot(title="Stock Price For "+company)
+	plotted_graph['Close'].plot(title="Stock Price For " + company.upper())
 	plt.xlabel ('Date')
 	plt.ylabel ('Price')
 	
@@ -289,7 +289,7 @@ async def weekgraph(ctx,company):
 	
 	# Plot graph
 	plotted_graph = ticker.history(period="5d", interval="1d")
-	plotted_graph['Close'].plot(title="Stock Price For "+company)
+	plotted_graph['Close'].plot(title="Stock Price For " + company.upper())
 	plt.xlabel ('Date & Military Time')
 	plt.ylabel ('Price')
 
@@ -313,7 +313,7 @@ async def daygraph(ctx,company):
 	
 	# Plot graph
 	plotted_graph = ticker.history(period="1d", interval="1m", prepost=True)
-	plotted_graph['Close'].plot(title="Stock Price For " + company)
+	plotted_graph['Close'].plot(title="Stock Price For " + company.upper())
 	plt.xlabel ('Date & Military Time')
 	plt.ylabel ('Price')
 
