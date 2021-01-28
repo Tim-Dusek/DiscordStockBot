@@ -32,7 +32,7 @@ For any additional feature requests or feedback please contact Tim Dusek
 ###
 
 import time, os, sys, argparse, io
-import discord, yfinance as yf, datetime as datetime, matplotlib.pyplot as plt
+import discord, arrow, yfinance as yf, datetime as datetime, matplotlib.pyplot as plt
 from datetime import datetime
 from random import randint
 from discord.ext import commands, tasks
