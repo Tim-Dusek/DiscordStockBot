@@ -33,20 +33,13 @@ For any additional feature requests or feedback please contact Tim Dusek
 #import statements
 ###
 
-import discord
-import time
-import os
-import arrow
-import yfinance as yf
-import datetime as datetime
-import matplotlib.pyplot as plt 
+import time, os, sys, argparse, io
+import discord, yfinance as yf, datetime as datetime, matplotlib.pyplot as plt
 from datetime import datetime
 from random import randint
 from discord.ext import commands, tasks
 from itertools import cycle
 from googlesearch import search
-import argparse
-import sys
 
 parser = argparse.ArgumentParser()
 
@@ -254,8 +247,7 @@ async def monthgraph(ctx,company):
 async def weekgraph(ctx,company):
 	await ctx.send(f'Let me get a graph of '+company+' for you...')
 	ticker = yf.Ticker(company)
-	plotted_graph = ticker.history(period="5d", interval="1h")
-	print(plotted_graph)
+	plotted_graph = ticker.history(period="5d", interval="1d")
 	plotted_graph['Close'].plot(title="Stock Price For "+company)
 	plt.xlabel ('Date & Military Time')
 	plt.ylabel ('Price')
