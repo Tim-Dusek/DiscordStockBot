@@ -218,7 +218,7 @@ async def expert(ctx, company):
 async def maxgraph(ctx,company):
 	await ctx.send(f'Let me get a graph of '+company+' for you...')
 	ticker = yf.Ticker(company)
-	plotted_graph= ticker.history(period="max",interval="1d")
+	plotted_graph= ticker.history(period="max", interval="1d")
 	plotted_graph['Close'].plot(title="Stock Price For "+company)
 	plt.xlabel ('Date')
 	plt.ylabel ('Price')
@@ -230,7 +230,7 @@ async def maxgraph(ctx,company):
 async def yeargraph(ctx,company):
 	await ctx.send(f'Let me get a graph of '+company+' for you...')
 	ticker = yf.Ticker(company)
-	plotted_graph= ticker.history(period="1y",interval="1d")
+	plotted_graph= ticker.history(period="1y", interval="1d")
 	plotted_graph['Close'].plot(title="Stock Price For "+company)
 	plt.xlabel ('Date')
 	plt.ylabel ('Price')
@@ -242,7 +242,7 @@ async def yeargraph(ctx,company):
 async def monthgraph(ctx,company):
 	await ctx.send(f'Let me get a graph of '+company+' for you...')
 	ticker = yf.Ticker(company)
-	plotted_graph= ticker.history(period="1mo",interval="1d")
+	plotted_graph= ticker.history(period="1mo", interval="1d")
 	plotted_graph['Close'].plot(title="Stock Price For "+company)
 	plt.xlabel ('Date')
 	plt.ylabel ('Price')
@@ -251,10 +251,22 @@ async def monthgraph(ctx,company):
 	plt.close()
 
 @client.command()#
+async def weekgraph(ctx,company):
+	await ctx.send(f'Let me get a graph of '+company+' for you...')
+	ticker = yf.Ticker(company)
+	plotted_graph= ticker.history(period="1w", interval="1h")
+	plotted_graph['Close'].plot(title="Stock Price For "+company)
+	plt.xlabel ('Date & Military Time')
+	plt.ylabel ('Price')
+	plt.savefig('week_graph.png')
+	await ctx.send(file=discord.File('week_graph.png'))
+	plt.close()
+
+@client.command()#
 async def daygraph(ctx,company):
 	await ctx.send(f'Let me get a graph of '+company+' for you...')
 	ticker = yf.Ticker(company)
-	plotted_graph= ticker.history(period="1d",interval="1m")
+	plotted_graph= ticker.history(period="1d", interval="1m", prepost=True)
 	plotted_graph['Close'].plot(title="Stock Price For "+company)
 	plt.xlabel ('Date & Military Time')
 	plt.ylabel ('Price')
