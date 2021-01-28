@@ -341,6 +341,30 @@ async def daygraph(ctx,company):
 	image_buffer.close()
 # End command
 
+@client.command()#
+async def hourgraph(ctx,company):
+	# Get stock data
+	ticker = yf.Ticker(company)
+	
+	# Plot graph
+	plotted_graph = ticker.history(start=arrow.now().shift(hours=-1).datetime, end=datetime.now(), interval="1m", prepost=True)
+	plotted_graph['Close'].plot(title="Stock Price For " + company.upper())
+	plt.xlabel ('Date & Military Time')
+	plt.ylabel ('Price')
+
+	# Save image to buffer
+	image_buffer = io.BytesIO()
+	plt.savefig(image_buffer, format="PNG")
+	image_buffer.seek(0)
+	
+	# Push contents of image buffer to Discord
+	await ctx.send(file=discord.File(image_buffer, 'day_graph.png'))
+
+	# Close plot and image buffer
+	plt.close()
+	image_buffer.close()
+# End command
+
 # Magic 8 ball to tell you what to buy
 @client.command(aliases=['8ball','magic8ball'])
 async def _8ball(ctx, *, message = ''):
