@@ -70,10 +70,20 @@ client = commands.Bot(command_prefix = '/')
 client.remove_command('help')
 
 # Set a list of activities for the bot to 'be playing' on discord
-activity_list = cycle(['The Stock Market','The Bull Market',
-				'The Bear Market','The Kankgaroo Market','The Wolf Market',
-				'The Cryptocurrency Market', 'Theta Gang', 'It Bearish',
-				'It Bullish','An Online Casino'])
+activity_list = cycle(
+	[
+		'The Stock Market',
+		'The Bull Market',
+		'The Bear Market',
+		'The Kankgaroo Market',
+		'The Wolf Market',
+		'The Cryptocurrency Market',
+		'Theta Gang',
+		'It Bearish',
+		'It Bullish',
+		'An Online Casino'
+	]
+)
 
 ###
 #Events
@@ -86,8 +96,7 @@ async def on_ready():
 	market_open.start()
 	market_close.start()
 	channel = client.get_channel(731225596100739224)
-	#await channel.send(":robot: Stonk Bot is ready to maximize your gains :robot:")
-	print('Bot is ready.')
+	await channel.send(":robot: Stonk Bot is ready to maximize your gains! :robot:")
 # End event
 
 # Runs when someone joins the server
