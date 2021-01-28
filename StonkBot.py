@@ -208,7 +208,8 @@ async def whois(ctx, company):
 	await ctx.send(data)
 # End command
 
-@client.command() #gives you expert thoughts on what a stock is doing
+# Returns expert thoughts on what a stock is doing
+@client.command()
 async def expert(ctx, company):
 	await ctx.send(f'Let me get expert opinions on ' + company.upper() + ' for you...')
 	ticker = yf.Ticker(company)
@@ -219,7 +220,8 @@ async def expert(ctx, company):
 	await ctx.send(output)
 # End command
 
-@client.command()#displays a graph of a stocks entire history
+# Displays a graph of a stocks entire history
+@client.command()
 async def maxgraph(ctx,company):
 	# Get stock data
 	ticker = yf.Ticker(company)
