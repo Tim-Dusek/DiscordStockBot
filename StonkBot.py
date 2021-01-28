@@ -254,7 +254,7 @@ async def monthgraph(ctx,company):
 async def weekgraph(ctx,company):
 	await ctx.send(f'Let me get a graph of '+company+' for you...')
 	ticker = yf.Ticker(company)
-	plotted_graph= ticker.history(period="1w", interval="1h")
+	plotted_graph= ticker.history(period="5d", interval="1h")
 	plotted_graph['Close'].plot(title="Stock Price For "+company)
 	plt.xlabel ('Date & Military Time')
 	plt.ylabel ('Price')
