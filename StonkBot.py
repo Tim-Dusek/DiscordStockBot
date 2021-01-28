@@ -89,7 +89,7 @@ activity_list = cycle(
 # Internal Definitions
 ###
 
-def create_graph(ctx, company: str, interval: str, start=None, end=None, period=None, prepost=False) -> None:
+async def create_graph(ctx, company: str, interval: str, start=None, end=None, period=None, prepost=False) -> None:
 	# Get stock data
 	ticker = yf.Ticker(company)
 	
