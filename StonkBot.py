@@ -245,15 +245,27 @@ async def monthgraph(ctx,company):
 
 @client.command()#
 async def weekgraph(ctx,company):
-	await ctx.send(f'Let me get a graph of '+company+' for you...')
+	#await ctx.send(f'Let me get a graph of '+company+' for you...')
+	# Get stock data
 	ticker = yf.Ticker(company)
+	
+	# Plot graph
 	plotted_graph = ticker.history(period="5d", interval="1d")
 	plotted_graph['Close'].plot(title="Stock Price For "+company)
 	plt.xlabel ('Date & Military Time')
 	plt.ylabel ('Price')
-	plt.savefig('week_graph.png')
-	await ctx.send(file=discord.File('week_graph.png'))
+
+	# Save image to buffer
+	image_buffer = io.BytesIO()
+	plt.savefig(image_buffer)
+	image_buffer.seek(0)
+	
+	# Push contents of image buffer to Discord
+	await ctx.send(file=discord.File(image_buffer))
+
+	# Close plot and image buffer
 	plt.close()
+	image_buffer.close()
 
 @client.command()#
 async def daygraph(ctx,company):
