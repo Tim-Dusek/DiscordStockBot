@@ -277,7 +277,7 @@ async def weekgraph(ctx,company):
 
 @client.command()#
 async def twentyfourhourgraph(ctx,company):
-	await create_graph(ctx, company=company, start=arrow.now().shift(days=-1).to('US/Eastern').datetime, end=arrow.utcnow().to('US/Eastern').datetime, interval="1m", prepost=True)
+	await create_graph(ctx, company=company, start=arrow.utcnow().shift(days=-1).to('US/Eastern').datetime, end=arrow.utcnow().to('US/Eastern').datetime, interval="5m", prepost=True)
 # End command
 
 @client.command()#
@@ -287,7 +287,7 @@ async def daygraph(ctx,company):
 
 @client.command()#
 async def hourgraph(ctx,company):
-	await create_graph(ctx, company=company, start=arrow.now().shift(hours=-1).to('US/Eastern').datetime, end=arrow.utcnow().to('US/Eastern').datetime, interval="1m", prepost=True)
+	await create_graph(ctx, company=company, start=arrow.utcnow().shift(hours=-1).to('US/Eastern').datetime, end=arrow.utcnow().to('US/Eastern').datetime, interval="1m", prepost=True)
 # End command
 
 # Magic 8 ball to tell you what to buy
