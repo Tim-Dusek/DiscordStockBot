@@ -257,11 +257,11 @@ async def weekgraph(ctx,company):
 
 	# Save image to buffer
 	image_buffer = io.BytesIO()
-	plt.savefig(image_buffer)
+	plt.savefig(image_buffer, format="PNG")
 	image_buffer.seek(0)
 	
 	# Push contents of image buffer to Discord
-	await ctx.send(file=discord.File(image_buffer))
+	await ctx.send("week_graph.png", file=discord.File(image_buffer))
 
 	# Close plot and image buffer
 	plt.close()
