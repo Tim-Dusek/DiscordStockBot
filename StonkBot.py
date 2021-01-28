@@ -1,7 +1,5 @@
-#Timothy Dusek
-#1/03/21
 
-#Bugs: None
+# Maintained by Tim-Dusek and cdchris12
 
 '''
 Patch Notes:
@@ -30,7 +28,7 @@ For any additional feature requests or feedback please contact Tim Dusek
 '''
 
 ###
-#import statements
+# Import statements
 ###
 
 import time, os, sys, argparse, io
@@ -67,11 +65,11 @@ elif not api_key:
 	sys.exit(1)
 # End if
 
-#set the prefix for all commands
+# Set the prefix for all commands
 client = commands.Bot(command_prefix = '/')
 client.remove_command('help')
 
-#set a list of activities for the bot to 'be playing' on discord
+# Set a list of activities for the bot to 'be playing' on discord
 activity_list = cycle(['The Stock Market','The Bull Market',
 				'The Bear Market','The Kankgaroo Market','The Wolf Market',
 				'The Cryptocurrency Market', 'Theta Gang', 'It Bearish',
@@ -81,7 +79,7 @@ activity_list = cycle(['The Stock Market','The Bull Market',
 #Events
 ###
 
-#runs when bot is ready
+# Runs when bot is ready
 @client.event
 async def on_ready():
 	change_activity.start()
@@ -90,73 +88,73 @@ async def on_ready():
 	channel = client.get_channel(731225596100739224)
 	#await channel.send(":robot: Stonk Bot is ready to maximize your gains :robot:")
 	print('Bot is ready.')
-#end event
+# End event
 
-#runs when someone joins the server
+# Runs when someone joins the server
 @client.event
 async def on_member_join(member):
 	print(f'{member} has joined the server')
-#end event
+# End event
 
-#runs when someone leaves the server
+# Runs when someone leaves the server
 @client.event
 async def on_member_remove(member):
 	print(f'{member} has left the server')
-#end event
+# End event
 
-#handles errors when they come up
+# Handles errors when they come up
 @client.event
 async def on_command_error(ctx, error):
 	if isinstance(error, commands.MissingRequiredArgument):
 		await ctx.send(f'You seem to be missing a required argument.')
-	#end if
-
 	elif isinstance(error, commands.MissingPermissions):
 		await ctx.send(f'You do not have permission to do that.')
 		await ctx.send(f'Please consult server owner.')
-	#end elif
+	# End if/elif block
+# End def
 
 ###
-#Commands
+# Commands
 ###
 
 @client.command()
 async def help(ctx):
-	await ctx.author.send('Base User Commands:\n'+\
-		'/help - Get info on bot commands you can access.\n'+\
-		'/ping - Shows the latency of the bot.\n'+\
-		'/news <Optional: Company> - Shows the top 3 relevant market articles.\n'+\
-		'/price <Ticker Symbol> - Gives you daily price information about a ticker symbol.\n'+\
-		'/whois <Ticker Symbol> - Gives you general information about a ticker symbol.\n'+\
-		'/expert <Ticker Symbol> - Gives you expert opinions on what a stock is doing.\n'+\
-		'/maxgraph <Ticker Symbol> - Gives you a graph of a stocks entire price history.\n'+\
-		'/yeargraph <Ticker Symbol> - Gives you a 1 year graph of a stocks price history.\n'+\
-		'/monthgraph <Ticker Symbol> - Gives you a 1 month graph of a stocks price history.\n'+\
-		'/daygraph <Ticker Symbol> - Gives you a 1 day graph of a stocks price history.\n'+\
-		'/8ball - Shake the Magic 8 Ball and be told what stock to buy.\n')
+	await ctx.author.send('Base User Commands:\n'+ \
+		'/help - Get info on bot commands you can access.\n'+ \
+		'/ping - Shows the latency of the bot.\n'+ \
+		'/news <Optional: Company> - Shows the top 3 relevant market articles.\n'+ \
+		'/price <Ticker Symbol> - Gives you daily price information about a ticker symbol.\n'+ \
+		'/whois <Ticker Symbol> - Gives you general information about a ticker symbol.\n'+ \
+		'/expert <Ticker Symbol> - Gives you expert opinions on what a stock is doing.\n'+ \
+		'/maxgraph <Ticker Symbol> - Gives you a graph of a stocks entire price history.\n'+ \
+		'/yeargraph <Ticker Symbol> - Gives you a 1 year graph of a stocks price history.\n'+ \
+		'/monthgraph <Ticker Symbol> - Gives you a 1 month graph of a stocks price history.\n'+ \
+		'/weekgraph <Ticker Symbol> - Gives you a 5 day graph of a stocks price history.\n'+ \
+		'/daygraph <Ticker Symbol> - Gives you a 1 day graph of a stocks price history.\n'+ \
+		'/8ball - Shake the Magic 8 Ball and be told what stock to buy.')
 
 	if ctx.message.author.guild_permissions.administrator:
-		await ctx.author.send('My records show you are an admin!\n'+\
-		'Here are the admin only commands:\n'+\
-		'/clear <Number> - Clears 1-10 messages from the chat permanently.\n'+\
-		'/kick <User> <Optional: Reason> - Kicks a user from the discord.\n'+\
-		'/ban <User> <Optional: Reason> - Bans a user from the discord.\n'+\
-		'/unban <User> - Unbans a User. To use this you must use their name and 4 digit code.\n\n')
-	#end if
-#end command
+		await ctx.author.send('My records show you are an admin!\n'+ \
+		'Here are the admin only commands:\n'+ \
+		'/clear <Number> - Clears 1-10 messages from the chat permanently.\n'+ \
+		'/kick <User> <Optional: Reason> - Kicks a user from the discord.\n'+ \
+		'/ban <User> <Optional: Reason> - Bans a user from the discord.\n'+ \
+		'/unban <User> - Unbans a User. To use this you must use their name and 4 digit code.')
+	# End if
+# End command
 
-#test the bots ping
+# Test the bot's ping
 @client.command()
 async def ping(ctx):
 	await ctx.send(f'Ping is {round(client.latency * 1000)}ms')
-#end command
+# End command
 
-#takes a company name and returns 3 news articles related to their stock
+# Takes a company name and returns 3 news articles related to their stock
 @client.command()
 async def news(ctx, *, company = ''):
 	if company != '':
 		company = company + ' '
-	#end if
+	# End if
 
 
 	query = 'stock market news'+ company
@@ -165,21 +163,24 @@ async def news(ctx, *, company = ''):
 	for results in search(query, tld='com', lang='en', num=3, start=0, stop=3, pause=1.0):
 		await ctx.send(results)
 		time.sleep(1)
-	#end for
-#end command
+	# End for
+# End command
 
 @client.command() #gives price for any ticker symbol
 async def price(ctx, company):
 	await ctx.send(f'Getting price information for '+company+'...')
 	ticker = yf.Ticker(company)
 	ticker_info = ticker.info
-	await ctx.send(f'Opening Price: $'+str(ticker_info['open'])+'\n'+\
-		'Latest ask price: $'+str(ticker_info['ask'])+'\n'+\
-		'Latest bid price: $'+str(ticker_info['bid'])+'\n'+\
-		'Volume: '+str(ticker_info['volume'])+'\n'+\
-		'Average volume: '+str(ticker_info['averageVolume'])+'\n'+\
-		'Beta: '+str(ticker_info['beta'])[0:5]+'\n')
-#end command
+
+	data = 'Opening Price: $' + str(ticker_info['open']) + \
+		'\nLatest ask price: $' + str(ticker_info['ask']) + \
+		'\nLatest bid price: $' + str(ticker_info['bid']) + \
+		'\nVolume: ' + str(ticker_info['volume']) + \
+		'\nAverage volume: ' + str(ticker_info['averageVolume']) + \
+		'\nBeta: ' + str(ticker_info['beta'])[0:5]
+
+	await ctx.send(data)
+# End command
 
 @client.command() #gives information about any ticker symbol
 async def whois(ctx, company):
@@ -188,13 +189,15 @@ async def whois(ctx, company):
 	ticker_info = ticker.info
 	market_cap_dollars= "${:,}".format(ticker_info['marketCap'])
 	full_time_employees= "{:,}".format(ticker_info['fullTimeEmployees'])
-	await ctx.send(f'Name: '+ticker_info['longName'])
-	await ctx.send(f'Sector: '+ ticker_info['sector'])
-	await ctx.send(f'Phone Number: '+ticker_info['phone'])
-	await ctx.send(f'Full Time Employees: '+ full_time_employees)
-	await ctx.send(f'Market Cap: '+ market_cap_dollars)
-	await ctx.send(f'Summary: '+ticker_info['longBusinessSummary'])
-#end command
+	data = 'Name: ' + ticker_info['longName'] + \
+		'\nSector: ' + ticker_info['sector'] + \
+		'\nPhone Number: ' + ticker_info['phone'] + \
+		'\nFull Time Employees: ' + full_time_employees + \
+		'\nMarket Cap: ' + market_cap_dollars + \
+		'\nSummary: ' + ticker_info['longBusinessSummary']
+	
+	await ctx.send(data)
+# End command
 
 @client.command() #gives you expert thoughts on what a stock is doing
 async def expert(ctx, company):
@@ -205,47 +208,82 @@ async def expert(ctx, company):
 	output = str(output)
 	output = output[75:]
 	await ctx.send(output)
-#end command
+# End command
 
 @client.command()#displays a graph of a stocks entire history
 async def maxgraph(ctx,company):
-	await ctx.send(f'Let me get a graph of '+company+' for you...')
+	# Get stock data
 	ticker = yf.Ticker(company)
+
+	# Plot graph
 	plotted_graph= ticker.history(period="max", interval="1d")
 	plotted_graph['Close'].plot(title="Stock Price For "+company)
 	plt.xlabel ('Date')
 	plt.ylabel ('Price')
-	plt.savefig('max_graph.png')
-	await ctx.send(file=discord.File('max_graph.png'))
+	
+	# Save image to buffer
+	image_buffer = io.BytesIO()
+	plt.savefig(image_buffer, format="PNG")
+	image_buffer.seek(0)
+
+	# Push contents of image buffer to Discord
+	await ctx.send(file=discord.File(image_buffer, 'max_graph.png'))
+	
+	# Close plot and image buffer
 	plt.close()
+	image_buffer.close()
+# End command
 
 @client.command()
 async def yeargraph(ctx,company):
-	await ctx.send(f'Let me get a graph of '+company+' for you...')
+	# Get stock data
 	ticker = yf.Ticker(company)
+
+	# Plot graph
 	plotted_graph= ticker.history(period="1y", interval="1d")
 	plotted_graph['Close'].plot(title="Stock Price For "+company)
 	plt.xlabel ('Date')
 	plt.ylabel ('Price')
-	plt.savefig('yr_graph.png')
-	await ctx.send(file=discord.File('yr_graph.png'))
+	
+	# Save image to buffer
+	image_buffer = io.BytesIO()
+	plt.savefig(image_buffer, format="PNG")
+	image_buffer.seek(0)
+
+	# Push contents of image buffer to Discord
+	await ctx.send(file=discord.File(image_buffer, 'yr_graph.png'))
+	
+	# Close plot and image buffer
 	plt.close()
+	image_buffer.close()
+# End command
 
 @client.command()
 async def monthgraph(ctx,company):
-	await ctx.send(f'Let me get a graph of '+company+' for you...')
+	# Get stock data
 	ticker = yf.Ticker(company)
-	plotted_graph= ticker.history(period="1mo", interval="1d")
+
+	# Plot graph
+	plotted_graph = ticker.history(period="1mo", interval="1d")
 	plotted_graph['Close'].plot(title="Stock Price For "+company)
 	plt.xlabel ('Date')
 	plt.ylabel ('Price')
-	plt.savefig('mo_graph.png')
-	await ctx.send(file=discord.File('mo_graph.png'))
+	
+	# Save image to buffer
+	image_buffer = io.BytesIO()
+	plt.savefig(image_buffer, format="PNG")
+	image_buffer.seek(0)
+
+	# Push contents of image buffer to Discord
+	await ctx.send(file=discord.File(image_buffer, 'mo_graph.png'))
+	
+	# Close plot and image buffer
 	plt.close()
+	image_buffer.close()
+# End command
 
 @client.command()#
 async def weekgraph(ctx,company):
-	#await ctx.send(f'Let me get a graph of '+company+' for you...')
 	# Get stock data
 	ticker = yf.Ticker(company)
 	
@@ -266,20 +304,33 @@ async def weekgraph(ctx,company):
 	# Close plot and image buffer
 	plt.close()
 	image_buffer.close()
+# End command
 
 @client.command()#
 async def daygraph(ctx,company):
-	await ctx.send(f'Let me get a graph of '+company+' for you...')
+	# Get stock data
 	ticker = yf.Ticker(company)
-	plotted_graph= ticker.history(period="1d", interval="1m", prepost=True)
-	plotted_graph['Close'].plot(title="Stock Price For "+company)
+	
+	# Plot graph
+	plotted_graph = ticker.history(period="1d", interval="1m", prepost=True)
+	plotted_graph['Close'].plot(title="Stock Price For " + company)
 	plt.xlabel ('Date & Military Time')
 	plt.ylabel ('Price')
-	plt.savefig('day_graph.png')
-	await ctx.send(file=discord.File('day_graph.png'))
-	plt.close()
 
-#magic 8 ball to tell you what to buy
+	# Save image to buffer
+	image_buffer = io.BytesIO()
+	plt.savefig(image_buffer, format="PNG")
+	image_buffer.seek(0)
+	
+	# Push contents of image buffer to Discord
+	await ctx.send(file=discord.File(image_buffer, 'day_graph.png'))
+
+	# Close plot and image buffer
+	plt.close()
+	image_buffer.close()
+# End command
+
+# Magic 8 ball to tell you what to buy
 @client.command(aliases=['8ball','magic8ball'])
 async def _8ball(ctx, *, message = ''):
 	ammounts = ['1 share','a fractional share']
@@ -366,43 +417,39 @@ async def _8ball(ctx, *, message = ''):
 	
 	if message == '':
 		await ctx.send (f'The magic 8 ball wants you to buy {ammounts[randint(0,len(ammounts)-1)]} of {responses[randint(0, len(responses)-1)]}!')
-	#end if
-
 	else:
 		await ctx.send (f'{message}! The magic 8 ball wants you to buy {ammounts[randint(0,len(ammounts)-1)]} of {responses[randint(0, len(responses)-1)]}!')
-	#end else
-#end command
+	# End if/else block
+# End command
 
-#clears 1-10 messages from the chat if user has manag messages permissions
+# Clears 1-10 messages from the chat if user has manage messages permissions
 @client.command()
 @commands.has_permissions(manage_messages=True)
 async def clear(ctx, amount : int):
 	if amount<=10 and amount>=1:
 		await ctx.channel.purge(limit=amount+1)
-	#end if
-
 	else:
 		await ctx.send (f'You must enter a number between 1-10.')
-	#end else
-#end command
+	# End if/else block
+# End command
 
-#kick a user
+# Kick a user
 @client.command()
 @commands.has_permissions(kick_members=True)
 async def kick(ctx, member : discord.Member, *, reason=None):
 	await member.kick(reason=reason)
 	await ctx.send(f'Kicked {member.mention}.')
-#end command
+# End command
 
-#ban a user
+# Ban a user
 @client.command()
 @commands.has_permissions(ban_members=True)
 async def ban(ctx, member : discord.Member, *, reason=None):
 	await member.ban(reason=reason)
 	await ctx.send(f'Banned {member.mention}.')
-#end command
+# End command
 
-#unban a user
+# Unban a user
 @client.command()
 @commands.has_permissions(ban_members=True)
 async def unban(ctx, *, member):
@@ -416,37 +463,38 @@ async def unban(ctx, *, member):
 			await ctx.guild.unban(user)
 			await ctx.send(f'Unbanned {user.mention}.')
 			return
-		#end if
-	#end for
-#end command
+		# End if
+	# End for
+# End command
 
 ###
-#Tasks
+# Tasks
 ###
 
 @tasks.loop(minutes=5) #
 async def change_activity():
 	await client.change_presence(activity=discord.Game(next(activity_list)),status=discord.Status.idle)
-#end task
+# End task
 
-@tasks.loop(minutes=1) #sends a message when the market opens at 8:30 am EST
+# Sends a message when the market opens at 8:30 am EST
+@tasks.loop(minutes=1)
 async def market_open():
 	channel = client.get_channel(731225596100739224)
 	eastern = arrow.utcnow.to('US/Eastern')
 	if eastern.hour == 9 and eastern.minute == 30:
 		await channel.send(":bell: The market is now open! :bell:")
-	# End if
-		
-#end task
+	# End if	
+# End task
 
-@tasks.loop(minutes=1) #sends a message when the market closes at 4:00 pm EST
+# Sends a message when the market closes at 4:00 pm EST
+@tasks.loop(minutes=1)
 async def market_close():
 	channel = client.get_channel(731225596100739224)
 	eastern = arrow.utcnow.to('US/Eastern')
 	if eastern.hour == 16 and eastern.minute == 0:
 		await channel.send(":bell: The market is now open! :bell:")
 	# End if
-#end task
+# End task
 
 ###		
 ### Experimental beyond this point
@@ -473,5 +521,5 @@ for filename in os.listdir('./Cogs'):
 #end for 
 '''
 
-#add bot token to this function
+# Run the bot
 client.run(api_key)
