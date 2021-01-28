@@ -86,7 +86,41 @@ activity_list = cycle(
 )
 
 ###
-#Events
+# Internal Definitions
+###
+
+def create_graph(ctx, company: str, start=None: datetime, end=None: datetime, period=None: str, interval: str, prepost=False) -> None:
+	# Get stock data
+	ticker = yf.Ticker(company)
+	
+	if period:
+		plotted_graph = ticker.history(period=period, interval=interval, prepost=prepost)
+	elif start and end:
+		plotted_graph = ticker.history(start=start, end=end, interval=interval, prepost=prepost)
+	else:
+		return()
+	# End if/elif/else block
+
+	# Plot graph
+	plotted_graph['Close'].plot(title="Stock Price For " + company.upper())
+	plt.xlabel ('Date & Military Time')
+	plt.ylabel ('Price')
+
+	# Save image to buffer
+	image_buffer = io.BytesIO()
+	plt.savefig(image_buffer, format="PNG")
+	image_buffer.seek(0)
+	
+	# Push contents of image buffer to Discord
+	await ctx.send(file=discord.File(image_buffer, 'graph.png'))
+
+	# Close plot and image buffer
+	plt.close()
+	image_buffer.close()
+# End def
+
+###
+# Events
 ###
 
 # Runs when bot is ready
@@ -223,146 +257,37 @@ async def expert(ctx, company):
 # Displays a graph of a stocks entire history
 @client.command()
 async def maxgraph(ctx,company):
-	# Get stock data
-	ticker = yf.Ticker(company)
-
-	# Plot graph
-	plotted_graph= ticker.history(period="max", interval="1d")
-	plotted_graph['Close'].plot(title="Stock Price For " + company.upper())
-	plt.xlabel ('Date')
-	plt.ylabel ('Price')
-	
-	# Save image to buffer
-	image_buffer = io.BytesIO()
-	plt.savefig(image_buffer, format="PNG")
-	image_buffer.seek(0)
-
-	# Push contents of image buffer to Discord
-	await ctx.send(file=discord.File(image_buffer, 'max_graph.png'))
-	
-	# Close plot and image buffer
-	plt.close()
-	image_buffer.close()
+	create_graph(ctx, company=company, period="max", interval="1d")
 # End command
 
 @client.command()
 async def yeargraph(ctx,company):
-	# Get stock data
-	ticker = yf.Ticker(company)
-
-	# Plot graph
-	plotted_graph= ticker.history(period="1y", interval="1d")
-	plotted_graph['Close'].plot(title="Stock Price For " + company.upper())
-	plt.xlabel ('Date')
-	plt.ylabel ('Price')
-	
-	# Save image to buffer
-	image_buffer = io.BytesIO()
-	plt.savefig(image_buffer, format="PNG")
-	image_buffer.seek(0)
-
-	# Push contents of image buffer to Discord
-	await ctx.send(file=discord.File(image_buffer, 'yr_graph.png'))
-	
-	# Close plot and image buffer
-	plt.close()
-	image_buffer.close()
+	create_graph(ctx, company=company, period="1y", interval="1d")
 # End command
 
 @client.command()
 async def monthgraph(ctx,company):
-	# Get stock data
-	ticker = yf.Ticker(company)
-
-	# Plot graph
-	plotted_graph = ticker.history(period="1mo", interval="1d")
-	plotted_graph['Close'].plot(title="Stock Price For " + company.upper())
-	plt.xlabel ('Date')
-	plt.ylabel ('Price')
-	
-	# Save image to buffer
-	image_buffer = io.BytesIO()
-	plt.savefig(image_buffer, format="PNG")
-	image_buffer.seek(0)
-
-	# Push contents of image buffer to Discord
-	await ctx.send(file=discord.File(image_buffer, 'mo_graph.png'))
-	
-	# Close plot and image buffer
-	plt.close()
-	image_buffer.close()
+	create_graph(ctx, company=company, period="1mo", interval="1d")
 # End command
 
 @client.command()#
 async def weekgraph(ctx,company):
-	# Get stock data
-	ticker = yf.Ticker(company)
-	
-	# Plot graph
-	plotted_graph = ticker.history(period="5d", interval="1d")
-	plotted_graph['Close'].plot(title="Stock Price For " + company.upper())
-	plt.xlabel ('Date & Military Time')
-	plt.ylabel ('Price')
+	create_graph(ctx, company=company, period="5d", interval="1d")
+# End command
 
-	# Save image to buffer
-	image_buffer = io.BytesIO()
-	plt.savefig(image_buffer, format="PNG")
-	image_buffer.seek(0)
-	
-	# Push contents of image buffer to Discord
-	await ctx.send(file=discord.File(image_buffer, 'week_graph.png'))
-
-	# Close plot and image buffer
-	plt.close()
-	image_buffer.close()
+@client.command()#
+async def twentyfourhourgraph(ctx,company):
+	create_graph(ctx, company=company, start=arrow.now().shift(days=-1).datetime, end=datetime.now(), interval="1m", prepost=True)
 # End command
 
 @client.command()#
 async def daygraph(ctx,company):
-	# Get stock data
-	ticker = yf.Ticker(company)
-	
-	# Plot graph
-	plotted_graph = ticker.history(period="1d", interval="1m", prepost=True)
-	plotted_graph['Close'].plot(title="Stock Price For " + company.upper())
-	plt.xlabel ('Date & Military Time')
-	plt.ylabel ('Price')
-
-	# Save image to buffer
-	image_buffer = io.BytesIO()
-	plt.savefig(image_buffer, format="PNG")
-	image_buffer.seek(0)
-	
-	# Push contents of image buffer to Discord
-	await ctx.send(file=discord.File(image_buffer, 'day_graph.png'))
-
-	# Close plot and image buffer
-	plt.close()
-	image_buffer.close()
+	create_graph(ctx, company=company, period="1d", interval="1m", prepost=True)
 # End command
 
 @client.command()#
 async def hourgraph(ctx,company):
-	# Get stock data
-	ticker = yf.Ticker(company)
-	
-	# Plot graph
-	plotted_graph = ticker.history(start=arrow.now().shift(hours=-1).datetime, end=datetime.now(), interval="1m", prepost=True)
-	plotted_graph['Close'].plot(title="Stock Price For " + company.upper())
-	plt.xlabel ('Date & Military Time')
-	plt.ylabel ('Price')
-
-	# Save image to buffer
-	image_buffer = io.BytesIO()
-	plt.savefig(image_buffer, format="PNG")
-	image_buffer.seek(0)
-	
-	# Push contents of image buffer to Discord
-	await ctx.send(file=discord.File(image_buffer, 'day_graph.png'))
-
-	# Close plot and image buffer
-	plt.close()
-	image_buffer.close()
+	create_graph(ctx, company=company, start=arrow.now().shift(hours=-1).datetime, end=datetime.now(), interval="1m", prepost=True)
 # End command
 
 # Magic 8 ball to tell you what to buy
