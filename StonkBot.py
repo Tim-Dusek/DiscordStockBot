@@ -415,21 +415,20 @@ async def change_activity():
 @tasks.loop(minutes=1) #sends a message when the market opens at 8:30 am EST
 async def market_open():
 	channel = client.get_channel(731225596100739224)
-	now=datetime.now()
-	now = str(now)
-	now = now[11:16]
-	if (now == '09:30'):
+	eastern = arrow.utcnow.to('US/Eastern')
+	if eastern.hour == 9 and eastern.minute == 30:
 		await channel.send(":bell: The market is now open! :bell:")
+	# End if
+		
 #end task
 
 @tasks.loop(minutes=1) #sends a message when the market closes at 4:00 pm EST
 async def market_close():
 	channel = client.get_channel(731225596100739224)
-	now=datetime.now()
-	now = str(now)
-	now = now[11:16]
-	if (now == '16:00'):
-		await channel.send(":bell: The market is now closed! :bell:")
+	eastern = arrow.utcnow.to('US/Eastern')
+	if eastern.hour == 16 and eastern.minute == 0:
+		await channel.send(":bell: The market is now open! :bell:")
+	# End if
 #end task
 
 ###		
