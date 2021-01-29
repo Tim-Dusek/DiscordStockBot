@@ -250,7 +250,17 @@ async def weekgraph(ctx,company):
 # End command
 
 @client.command()#
+async def wg(ctx,company):
+	await create_graph(ctx, company=company, period="5d", interval="1d")
+# End command
+
+@client.command()#
 async def twentyfourhourgraph(ctx,company):
+	await create_graph(ctx, company=company, start=arrow.now().shift(days=-1).datetime, end=arrow.now().datetime, interval="5m", prepost=True)
+# End command
+
+@client.command()#
+async def tfhg(ctx,company):
 	await create_graph(ctx, company=company, start=arrow.now().shift(days=-1).datetime, end=arrow.now().datetime, interval="5m", prepost=True)
 # End command
 
@@ -259,8 +269,18 @@ async def daygraph(ctx,company):
 	await create_graph(ctx, company=company, period="1d", interval="1m", prepost=True)
 # End command
 
+client.command()#
+async def dg(ctx,company):
+	await create_graph(ctx, company=company, period="1d", interval="1m", prepost=True)
+# End command
+
 @client.command()#
 async def hourgraph(ctx,company):
+	await create_graph(ctx, company=company, start=arrow.now().shift(hours=-1).datetime, end=arrow.now().datetime, interval="1m", prepost=True)
+# End command
+
+@client.command()#
+async def hg(ctx,company):
 	await create_graph(ctx, company=company, start=arrow.now().shift(hours=-1).datetime, end=arrow.now().datetime, interval="1m", prepost=True)
 # End command
 
