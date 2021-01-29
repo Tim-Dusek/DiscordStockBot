@@ -392,12 +392,10 @@ async def math(ctx, string1: str, string2: str, string3: str):
 		return
 	# End if
 
-	await ctx.send ("Parsed input as: " + res.groups())
+	await ctx.send ("Parsed input as: " + str(res.groups()))
 
 	# Parse out the individual parts of the regex matches
-	first_num = res.groups()[0]
-	operand = res.groups()[1]
-	second_num = res.groups()[2]
+	first_num, operand, second_num = res.groups()
 
 	# Attempt to convert the numericals into ints
 	try:
