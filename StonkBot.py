@@ -393,9 +393,9 @@ async def math(ctx, string: str):
 	# End if
 
 	# Parse out the individual parts of the regex matches
-	first_num = res.groups[0]
-	operand = res.groups[1]
-	second_num = res.groups[2]
+	first_num = res.groups()[0]
+	operand = res.groups()[1]
+	second_num = res.groups()[2]
 
 	# Attempt to convert the numericals into ints
 	try:
