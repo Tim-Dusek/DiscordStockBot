@@ -388,7 +388,7 @@ async def math(ctx, string1: str, string2: str, string3: str):
 	regex = re.compile(r'(\d+)\s*(\D)\s*(\d+)')
 	res = regex.match(string1)
 	if not res and not string2 and not string3:
-		await ctx.send ("Invalid input: " + string1 + " " + string2 + " " + string3)
+		await ctx.send ("Invalid input: " + string1)
 		return
 	# End if
 
@@ -402,26 +402,26 @@ async def math(ctx, string1: str, string2: str, string3: str):
 		fnum = int(first_num)
 		snum = int(second_num)
 	except Exception:
-		await ctx.send ("Invalid input: " + string)
+		await ctx.send ("Invalid input: " + string1)
 		return
 	# End try/except block
 
 	# Perform operations
 	if operand == "+":
 		result = fnum + snum
-		await ctx.send (string + " = " + result)
+		await ctx.send (string1 + " = " + result)
 	elif operand == "-":
 		result = fnum - snum
-		await ctx.send (string + " = " + result)
+		await ctx.send (string1 + " = " + result)
 	elif operand == "/":
 		result = fnum / snum
-		await ctx.send (string + " = " + result)
+		await ctx.send (string1 + " = " + result)
 	elif operand == "*":
 		result = fnum * snum
-		await ctx.send (string + " = " + result)
+		await ctx.send (string1 + " = " + result)
 	elif operand == "%":
 		result = fnum % snum
-		await ctx.send (string + " = " + result)
+		await ctx.send (string1 + " = " + result)
 	else:
 		await ctx.send ("Invalid operand: " + operand)
 	# End if/elif/else block
