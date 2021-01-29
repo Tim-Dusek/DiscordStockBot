@@ -387,7 +387,10 @@ async def math(ctx, string: str):
 	# Build a regex to parse incoming text
 	regex = re.compile(r'(\d+)\s*(\D)\s*(\d+)')
 	res = regex.match(string)
-	if not res: await ctx.send ("Invalid input: " + string)
+	if not res:
+		await ctx.send ("Invalid input: " + string)
+		return
+	# End if
 
 	# Parse out the individual parts of the regex matches
 	first_num = res.groups[0]
@@ -400,6 +403,7 @@ async def math(ctx, string: str):
 		snum = int(second_num)
 	except Exception:
 		await ctx.send ("Invalid input: " + string)
+		return
 	# End try/except block
 
 	# Perform operations
