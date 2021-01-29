@@ -383,48 +383,26 @@ async def _8ball(ctx, *, message = ''):
 # End command
 
 @client.command()
-async def math(ctx, string1: str, string2: str, string3: str):
-	# Build a regex to parse incoming text
-	regex = re.compile(r'(\d+)\s*(\D)\s*(\d+)')
-	res = regex.match(string1)
-	if not res and not string2 and not string3:
-		await ctx.send ("Invalid input: " + string1)
-		return
-	# End if
-
-	await ctx.send ("Parsed input as: " + str(res.groups()))
-
-	# Parse out the individual parts of the regex matches
-	first_num, operand, second_num = res.groups()
-
-	# Attempt to convert the numericals into ints
-	try:
-		fnum = int(first_num)
-		snum = int(second_num)
-	except Exception:
-		await ctx.send ("Invalid input: " + string1)
-		return
-	# End try/except block
+async def math(ctx, fnum: int, operand: str, snum: int):
+	await ctx.send (f"Parsed input as: {fnum} {operand} {snum}")
 
 	# Perform operations
 	if operand == "+":
 		result = fnum + snum
-		await ctx.send (string1 + " = " + result)
 	elif operand == "-":
 		result = fnum - snum
-		await ctx.send (string1 + " = " + result)
 	elif operand == "/":
 		result = fnum / snum
-		await ctx.send (string1 + " = " + result)
 	elif operand == "*":
 		result = fnum * snum
-		await ctx.send (string1 + " = " + result)
 	elif operand == "%":
 		result = fnum % snum
-		await ctx.send (string1 + " = " + result)
 	else:
 		await ctx.send ("Invalid operand: " + operand)
+		return
 	# End if/elif/else block
+
+	await ctx.send (f"{fnum} {operand} {snum} = {result}")
 # End command
 
 # Clears 1-10 messages from the chat if user has manage messages permissions
