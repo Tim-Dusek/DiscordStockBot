@@ -384,8 +384,6 @@ async def _8ball(ctx, *, message = ''):
 
 @client.command()
 async def math(ctx, fnum: int, operand: str, snum: int):
-	await ctx.send (f"Parsed input as: {fnum} {operand} {snum}")
-
 	# Perform operations
 	if operand == "+":
 		result = fnum + snum
