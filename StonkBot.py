@@ -1,31 +1,5 @@
-
+# Copyright 2020 - Custom License - https://github.com/Tim-Dusek/DiscordStockBot/blob/master/LICENSE
 # Maintained by Tim-Dusek and cdchris12
-
-'''
-Patch Notes:
-
-Stonk Bot Version: 
-- V-1.9.1
-
-Bug Fixes / Minor Changes:
-- Added a small message when using any /graph command so users know to wait
-
-New Features:
-- Added /monthgraph to show stock prices for 1 month of a company
-- Added /daygraph to show daily stock prices
-
-To Do:
-- Hello Wall-e gif when Bot turns on
-- Create /biggestlosers command.
-- Create /topmovers command.
-- Add commas for volume and avergea volume for /price
-- Add a message for /graph comamnds so user knows to wait
-- changed /price to show decimals following dollar ammount
-- Add more relevant information to the /price and /whois commands.
-- Add /dev command so users can see who is actively maintaining the program
-
-For any additional feature requests or feedback please contact Tim Dusek
-'''
 
 ###
 # Import statements
