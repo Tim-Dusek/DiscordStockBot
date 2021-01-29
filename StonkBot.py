@@ -383,7 +383,7 @@ async def _8ball(ctx, *, message = ''):
 # End command
 
 @client.command()
-async def math(ctx, fnum: int, operand: str, snum: int):
+async def math(ctx, fnum: float, operand: str, snum: float):
 	# Perform operations
 	if operand == "+":
 		result = fnum + snum
@@ -391,7 +391,7 @@ async def math(ctx, fnum: int, operand: str, snum: int):
 		result = fnum - snum
 	elif operand == "/":
 		result = fnum / snum
-	elif operand == "*":
+	elif operand == "*" or operand == "x":
 		result = fnum * snum
 	elif operand == "%":
 		result = fnum % snum
