@@ -383,14 +383,16 @@ async def _8ball(ctx, *, message = ''):
 # End command
 
 @client.command()
-async def math(ctx, string: str):
+async def math(ctx, string1: str, string2: str, string3: str):
 	# Build a regex to parse incoming text
 	regex = re.compile(r'(\d+)\s*(\D)\s*(\d+)')
-	res = regex.match(string)
-	if not res:
-		await ctx.send ("Invalid input: " + string)
+	res = regex.match(string1)
+	if not res and not string2 and not string3:
+		await ctx.send ("Invalid input: " + string1 + " " + string2 + " " + string3)
 		return
 	# End if
+
+	await ctx.send ("Parsed input as: " + res.groups())
 
 	# Parse out the individual parts of the regex matches
 	first_num = res.groups()[0]
