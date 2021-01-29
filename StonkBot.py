@@ -31,7 +31,7 @@ For any additional feature requests or feedback please contact Tim Dusek
 # Import statements
 ###
 
-import time, os, sys, argparse, io
+import time, os, sys, argparse, io, re
 import discord, arrow, yfinance as yf, datetime as datetime, matplotlib.pyplot as plt
 from datetime import datetime
 from random import randint
@@ -380,6 +380,47 @@ async def _8ball(ctx, *, message = ''):
 	else:
 		await ctx.send (f'{message}! The magic 8 ball wants you to buy {ammounts[randint(0,len(ammounts)-1)]} of {responses[randint(0, len(responses)-1)]}!')
 	# End if/else block
+# End command
+
+@client.command()
+async def math(ctx, string: str):
+	# Build a regex to parse incoming text
+	regex = re.compile(r'(\d+)\s*(\D)\s*(\d+)')
+	res = regex.match(string)
+	if not res: await ctx.send ("Invalid input: " + string)
+
+	# Parse out the individual parts of the regex matches
+	first_num = res.groups[0]
+	operand = res.groups[1]
+	second_num = res.groups[2]
+
+	# Attempt to convert the numericals into ints
+	try:
+		fnum = int(first_num)
+		snum = int(second_num)
+	except Exception:
+		await ctx.send ("Invalid input: " + string)
+	# End try/except block
+
+	# Perform operations
+	if operand == "+":
+		result = fnum + snum
+		await ctx.send (string + " = " + result)
+	elif operand == "-":
+		result = fnum - snum
+		await ctx.send (string + " = " + result)
+	elif operand == "/":
+		result = fnum / snum
+		await ctx.send (string + " = " + result)
+	elif operand == "*":
+		result = fnum * snum
+		await ctx.send (string + " = " + result)
+	elif operand == "%":
+		result = fnum % snum
+		await ctx.send (string + " = " + result)
+	else:
+		await ctx.send ("Invalid operand: " + operand)
+	# End if/elif/else block
 # End command
 
 # Clears 1-10 messages from the chat if user has manage messages permissions
