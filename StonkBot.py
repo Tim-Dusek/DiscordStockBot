@@ -207,15 +207,29 @@ async def help(ctx):
 		'/help - Get info on bot commands you can access.\n'+ \
 		'/ping - Shows the latency of the bot.\n'+ \
 		'/news <Optional: Company> - Shows the top 3 relevant market articles.\n'+ \
-		'/price <Ticker Symbol> - Gives you daily price information about a ticker symbol.\n'+ \
-		'/whois <Ticker Symbol> - Gives you general information about a ticker symbol.\n'+ \
-		'/expert <Ticker Symbol> - Gives you expert opinions on what a stock is doing.\n'+ \
-		'/maxgraph <Ticker Symbol> - Gives you a graph of a stocks entire price history.\n'+ \
-		'/yeargraph <Ticker Symbol> - Gives you a 1 year graph of a stocks price history.\n'+ \
-		'/monthgraph <Ticker Symbol> - Gives you a 1 month graph of a stocks price history.\n'+ \
-		'/weekgraph <Ticker Symbol> - Gives you a 5 day graph of a stocks price history.\n'+ \
-		'/daygraph <Ticker Symbol> - Gives you a 1 day graph of a stocks price history.\n'+ \
-		'/8ball - Shake the Magic 8 Ball and be told what stock to buy.')
+		'/crypto_news <Optional: Crypto> - Shows the top 3 relevant market articles.\n'+ \
+		'/price <Ticker Symbol> - Returns daily price information about a ticker symbol.\n'+ \
+		'/whois <Ticker Symbol> - Returns general information about a ticker symbol.\n'+ \
+		'/expert <Ticker Symbol> - Returns expert opinions on what a stock is doing.\n'+ \
+		'/maxgraph <Ticker Symbol> - Returns a graph of a stock\'s entire price history.\n'+ \
+		'/yeargraph <Ticker Symbol> - Returns a 1 year graph of a stock\'s price history.\n'+ \
+		'/monthgraph <Ticker Symbol> - Returns a 1 month graph of a stock\'s price history.\n'+ \
+		'/weekgraph <Ticker Symbol> - Returns a 5 day graph of a stock\'s price history.\n'+ \
+		'/daygraph <Ticker Symbol> - Returns a 1 trading day graph of a stock\'s price history.\n'+ \
+		'/twentyfourhourgraph <Ticker Symbol> - Returns a graph showing the past 24 hours of a stock\'s price history.\n' + \
+		'/8ball - Shake the Magic 8 Ball and be told what stock to buy.\n' + \
+		'\n\n' + \
+		'Shorthand Commands:\n' + \
+		'/yg <Ticker Symbol> - Returns a 1 year graph of a stock\'s price history.\n'+ \
+		'/mg <Ticker Symbol> - Returns a 1 month graph of a stock\'s price history.\n'+ \
+		'/wg <Ticker Symbol> - Returns a 5 day graph of a stock\'s price history.\n'+ \
+		'/dg <Ticker Symbol> - Returns a 1 trading day graph of a stock\'s price history.\n'+ \
+		'/tfhg <Ticker Symbol> - Returns a graph showing the past 24 hours of a stock\'s price history.\n' + \
+		'/cyg <Crypto Symbol> - Returns a 1 year graph of a cryptocurrency\'s price history.\n'+ \
+		'/cmg <Crypto Symbol> - Returns a 1 month graph of a cryptocurrency\'s price history.\n'+ \
+		'/cwg <Crypto Symbol> - Returns a 5 day graph of a cryptocurrency\'s price history.\n'+ \
+		'/cdg <Crypto Symbol> - Returns a 1 trading day graph of a cryptocurrency\'s price history.\n'+ \
+	)
 
 	if ctx.message.author.guild_permissions.administrator:
 		await ctx.author.send('My records show you are an admin!\n'+ \
@@ -235,28 +249,39 @@ async def ping(ctx):
 
 # Takes a company name and returns 3 news articles related to their stock
 @client.command()
-async def news(ctx, *, company = ''):
+async def news(ctx, *, company="") -> None:
 	try:
-		if company != '':
-			company = company + ' '
-		# End if
-
-
-		query = 'stock market news'+ company
-		await ctx.send(f'Let me check the internet for the latest {company}financial news...')
+		query = f"stock market news {company}" if company else "stock market news"
+		await ctx.send(f'Checking the internet for the latest {company} financial news...' if company else 'Checking the internet for the latest financial news...')
 
 		for results in search(query, tld='com', lang='en', num=3, start=0, stop=3, pause=1.0):
 			await ctx.send(results)
 			time.sleep(1)
 		# End for
 	except Exception as e:
-		logging.error(f'Ran into an error trying to get the news! The error was: {e}')
+		logging.error(f'Ran into an error trying to get stock news! The error was: {e}')
+	# End try/except block
+# End command
+
+# Takes a company name and returns 3 news articles related to their stock
+@client.command()
+async def crypto_news(ctx, *, crypto="") -> None:
+	try:
+		query = f"crypto market news {crypto}" if crypto else "crypto market news"
+		await ctx.send(f'Checking the internet for the latest {crypto} financial news...'if crypto else 'Checking the internet for the latest crypto news...')
+
+		for results in search(query, tld='com', lang='en', num=3, start=0, stop=3, pause=1.0):
+			await ctx.send(results)
+			time.sleep(1)
+		# End for
+	except Exception as e:
+		logging.error(f'Ran into an error trying to get crypto news! The error was: {e}')
 	# End try/except block
 # End command
 
 # Gets the price for the provided stock ticket symbol
 @client.command()
-async def price(ctx, company):
+async def price(ctx, company: str) -> None:
 	try:
 		await ctx.send(f'Getting price information for '+company+'...')
 		ticker = yf.Ticker(company)
@@ -277,7 +302,7 @@ async def price(ctx, company):
 
 # Gives information about a ticker symbol
 @client.command()
-async def whois(ctx, company):
+async def whois(ctx, company: str) -> None:
 	try:
 		await ctx.send(f'Getting general information for '+company+'...')
 		ticker = yf.Ticker(company)
@@ -299,7 +324,7 @@ async def whois(ctx, company):
 
 # Returns expert thoughts on what a stock is doing
 @client.command()
-async def expert(ctx, company):
+async def expert(ctx, company: str) -> None:
 	try:
 		await ctx.send(f'Let me get expert opinions on ' + company.upper() + ' for you...')
 		ticker = yf.Ticker(company)
@@ -315,78 +340,83 @@ async def expert(ctx, company):
 
 # Displays a graph of a stocks entire history
 @client.command()
-async def maxgraph(ctx,company):
+async def maxgraph(ctx, company: str) -> None:
 	await create_graph(ctx, company=company, period="max", interval="1d")
 # End command
 
 @client.command()
-async def yeargraph(ctx,company):
+async def yeargraph(ctx, company: str) -> None:
 	await create_graph(ctx, company=company, period="1y", interval="1d")
 # End command
 
 @client.command()
-async def monthgraph(ctx,company):
+async def monthgraph(ctx, company: str) -> None:
 	await create_graph(ctx, company=company, period="1mo", interval="1d")
 # End command
 
-@client.command()#
-async def weekgraph(ctx,company):
+@client.command()
+async def weekgraph(ctx, company: str) -> None:
 	await create_graph(ctx, company=company, period="5d", interval="1d")
 # End command
 
-@client.command()#
-async def wg(ctx,company):
+@client.command()
+async def wg(ctx, company: str) -> None:
 	await create_graph(ctx, company=company, period="5d", interval="1d")
 # End command
 
-@client.command()#
-async def twentyfourhourgraph(ctx,company):
+@client.command()
+async def twentyfourhourgraph(ctx, company: str) -> None:
 	await create_graph(ctx, company=company, start=arrow.now().shift(days=-1).datetime, end=arrow.now().datetime, interval="5m", prepost=True)
 # End command
 
-@client.command()#
-async def tfhg(ctx,company):
+@client.command()
+async def tfhg(ctx, company: str) -> None:
 	await create_graph(ctx, company=company, start=arrow.now().shift(days=-1).datetime, end=arrow.now().datetime, interval="5m", prepost=True)
 # End command
 
-@client.command()#
-async def daygraph(ctx,company):
+@client.command()
+async def daygraph(ctx, company: str) -> None:
 	await create_graph(ctx, company=company, period="1d", interval="1m", prepost=True)
 # End command
 
-client.command()#
-async def dg(ctx,company):
+client.command()
+async def dg(ctx, company: str) -> None:
 	await create_graph(ctx, company=company, period="1d", interval="1m", prepost=True)
 # End command
 
-@client.command()#
-async def hourgraph(ctx,company):
+@client.command()
+async def hourgraph(ctx, company: str) -> None:
 	await create_graph(ctx, company=company, start=arrow.now().shift(hours=-1).datetime, end=arrow.now().datetime, interval="1m", prepost=True)
 # End command
 
-@client.command()#
-async def hg(ctx,company):
+@client.command()
+async def hg(ctx, company: str) -> None:
 	await create_graph(ctx, company=company, start=arrow.now().shift(hours=-1).datetime, end=arrow.now().datetime, interval="1m", prepost=True)
 # End command
 
-@client.command()#
-async def chg(ctx, crypto: str):
+@client.command()
+async def chg(ctx, crypto: str) -> None:
 	await create_crypto_graph(ctx, crypto=crypto, period="minute", units=60)
 # End command
 
-@client.command()#
-async def cdg(ctx, crypto: str):
+@client.command()
+async def cdg(ctx, crypto: str) -> None:
 	await create_crypto_graph(ctx, crypto=crypto, period="minute", units=1440)
 # End command
 
-@client.command()#
-async def cwg(ctx, crypto: str):
+@client.command()
+async def cwg(ctx, crypto: str) -> None:
 	await create_crypto_graph(ctx, crypto=crypto, period="hour", units=168)
 # End command
 
-@client.command()#
-async def cmg(ctx, crypto: str):
+@client.command()
+async def cmg(ctx, crypto: str) -> None:
 	await create_crypto_graph(ctx, crypto=crypto, period="day", units=30)
+# End command
+
+@client.command()
+async def cyg(ctx, crypto: str) -> None:
+	await create_crypto_graph(ctx, crypto=crypto, period="day", units=365)
 # End command
 
 # Magic 8 ball to tell you what to buy
