@@ -94,10 +94,10 @@ async def create_crypto_graph(ctx, crypto: str, period: str, units: int) -> None
 
 		# Plot data
 		fig, ax = plt.subplots()
-		plt.plot(res_time, res_close)
+		ax.plot(res_time, res_close)
 		plt.xlabel('Date and Time')
 		plt.ylabel('Price')
-		ax.grid = True
+		ax.grid(True)
 		ax.xaxis_date()
 		#ax.format_xdata = mdates.DateFormatter('%b %d %H:%M') # Doesn't work??
 		fig.autofmt_xdate()
