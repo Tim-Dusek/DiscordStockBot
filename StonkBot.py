@@ -6,7 +6,7 @@
 ###
 
 import time, os, sys, argparse, io, re, logging
-import discord, arrow, cryptocompare, yfinance as yf, datetime as datetime, matplotlib.pyplot as plt
+import discord, arrow, cryptocompare, yfinance as yf, datetime as datetime, matplotlib.pyplot as plt, matplotlib.dates as mdates, numpy as np
 from datetime import datetime
 from random import randint
 from discord.ext import commands, tasks
@@ -88,13 +88,19 @@ async def create_crypto_graph(ctx, crypto: str, period: str, units: int) -> None
 		# End if/elif/else block
 
 		# Parse data
-		res_time = [ arrow.get(f['time']).format("YYYY-MM-DD HH:mm") for f in res]
+		res_time = [ arrow.get(f['time']).datetime for f in res]
 		res_close = [ f['close'] for f in res]
+		width = np.diff(mdates.date2num(res_time)).min()
 
 		# Plot data
-		plt.plot(res_time, res_close)
+		fig, ax = plt.subplots()
+		ax.plot(res_time, res_close)
 		plt.xlabel('Date and Time')
 		plt.ylabel('Price')
+		ax.xaxis_date()
+		#ax.format_xdata = mdates.DateFormatter('%b %d %H:%M') # Doesn't work??
+		ax.grid = True
+		fig.autofmt_xdate()
 
 		# Save image to buffer
 		image_buffer = io.BytesIO()
