@@ -94,7 +94,7 @@ async def create_crypto_graph(ctx, crypto: str, period: str, units: int) -> None
 
 		# Plot data
 		fig, ax = plt.subplots()
-		ax.plot(res_time, res_close)
+		plt.plot(res_time, res_close)
 		plt.xlabel('Date and Time')
 		plt.ylabel('Price')
 		ax.xaxis_date()
