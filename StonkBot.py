@@ -126,7 +126,7 @@ async def on_command_error(ctx, error):
 		await ctx.send(f'You seem to be missing a required argument.')
 	elif isinstance(error, commands.MissingPermissions):
 		await ctx.send(f'You do not have permission to do that.')
-		await ctx.send(f'Please consult server owner.')
+		await ctx.send(f'Please consult the server owner if you think this is an error.')
 	# End if/elif block
 # End def
 
