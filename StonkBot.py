@@ -110,13 +110,15 @@ async def on_ready():
 # Runs when someone joins the server
 @client.event
 async def on_member_join(member):
-	print(f'{member} has joined the server')
+	channel = client.get_channel(731225596100739224)
+	await channel.send(f'{member} has joined the server')
 # End event
 
 # Runs when someone leaves the server
 @client.event
 async def on_member_remove(member):
-	print(f'{member} has left the server')
+	channel = client.get_channel(731225596100739224)
+	await channel.send(f'{member} has left the server')
 # End event
 
 # Handles errors when they come up
