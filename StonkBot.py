@@ -192,8 +192,8 @@ async def price(ctx, company):
 	data = 'Opening Price: $' + str(ticker_info['open']) + \
 		'\nLatest ask price: $' + str(ticker_info['ask']) + \
 		'\nLatest bid price: $' + str(ticker_info['bid']) + \
-		'\nVolume: ' + str(ticker_info['volume']) + \
-		'\nAverage volume: ' + str(ticker_info['averageVolume']) + \
+		'\nVolume: ' + str("{:,}".format(ticker_info['volume'])) + \
+		'\nAverage volume: ' + str("{:,}".format(ticker_info['averageVolume'])) + \
 		'\nBeta: ' + str(ticker_info['beta'])[0:5]
 
 	await ctx.send(data)
