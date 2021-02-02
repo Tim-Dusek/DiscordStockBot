@@ -90,16 +90,16 @@ async def create_crypto_graph(ctx, crypto: str, period: str, units: int) -> None
 		# Parse data
 		res_time = [ arrow.get(f['time']).datetime for f in res]
 		res_close = [ f['close'] for f in res]
-		width = np.diff(mdates.date2num(res_time)).min()
 
 		# Plot data
 		fig, ax = plt.subplots()
 		ax.plot(res_time, res_close)
+		plt.title(f'{crypto.upper()} Price Graph')
 		plt.xlabel('Date and Time')
 		plt.ylabel('Price')
 		ax.grid(True)
-		ax.xaxis_date()
-		#ax.format_xdata = mdates.DateFormatter('%b %d %H:%M') # Doesn't work??
+		#ax.xaxis_date()
+		ax.format_xdata = mdates.DateFormatter('%b %d %H:%M')
 		fig.autofmt_xdate()
 
 		# Save image to buffer
