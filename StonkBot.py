@@ -611,7 +611,7 @@ async def market_open():
 		channel = client.get_channel(731225596100739224)
 		eastern = arrow.utcnow().to('US/Eastern')
 		if eastern.hour == 9 and eastern.minute == 30:
-			await channel.send(":bell: The market is now open! :bell:")
+			await channel.send(":bell: The stock market is now open! :bell:")
 		# End if
 	except Exception as e:
 		logging.error(f'Ran into an error trying to send a market_open message! The error was: {e}')
@@ -625,7 +625,7 @@ async def market_close():
 		channel = client.get_channel(731225596100739224)
 		eastern = arrow.utcnow().to('US/Eastern')
 		if eastern.hour == 16 and eastern.minute == 0:
-			await channel.send(":bell: The market is now open! :bell:")
+			await channel.send(":bell: The stock market is now closed! :bell:")
 		# End if
 	except Exception as e:
 		logging.error(f'Ran into an error trying to send a market_close message! The error was: {e}')
