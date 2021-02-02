@@ -5,3 +5,4 @@ yfinance
 lxml
 matplotlib
 arrow
+cryptocompare
