@@ -140,6 +140,7 @@ async def create_crypto_candlestick_graph(ctx, crypto: str, period: str, units: 
 		res_low = [ f['low'] for f in res]
 		res_close = [ f['close'] for f in res]
 
+		# Draw figure
 		fig = go.Figure(data=[go.Candlestick(x=res_time, open=res_open, high=res_high, low=res_low, close=res_close)])
 		fig.update_xaxes(rangeslider_visible=False)
 		fig.update_layout(
@@ -152,9 +153,17 @@ async def create_crypto_candlestick_graph(ctx, crypto: str, period: str, units: 
 			tickangle=-45, 
 			tickfont=dict(
 				family='Rockwell', 
-				color='crimson', 
+				color='black', 
 				size=14
-			)
+			),
+			showline=True,
+			linewidth=2,
+			linecolor='black'
+		)
+		fig.update_yaxes(
+			showline=True,
+			linewidth=2,
+			linecolor='black'
 		)
 
 		# Save image to buffer
