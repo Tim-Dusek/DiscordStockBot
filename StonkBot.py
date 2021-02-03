@@ -142,6 +142,10 @@ async def create_crypto_candlestick_graph(ctx, crypto: str, period: str, units: 
 
 		fig = go.Figure(data=[go.Candlestick(x=res_time, open=res_open, high=res_high, low=res_low, close=res_close)])
 		fig.update_xaxes(rangeslider_visible=False)
+		fig.update_layout(
+			title = f'{crypto.upper()} Price Graph',
+			xaxis_tickformat = '%b %d %H:%M'
+		)
 
 		# Save image to buffer
 		image_buffer = io.BytesIO()
