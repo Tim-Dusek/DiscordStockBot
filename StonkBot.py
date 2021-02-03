@@ -491,8 +491,8 @@ async def cyg(ctx, crypto: str) -> None:
 # End command
 
 @client.command()
-async def cc5mg(ctx, crypto: str) -> None:
-	await create_crypto_candlestick_graph(ctx, crypto=crypto, period="minute", units=5)
+async def ccmg(ctx, crypto: str) -> None:
+	await create_crypto_candlestick_graph(ctx, crypto=crypto, period="minute", units=15)
 # End command
 
 @client.command()
