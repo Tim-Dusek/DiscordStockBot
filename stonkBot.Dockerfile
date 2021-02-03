@@ -14,7 +14,7 @@ ENV TMPDIR=/tmp \
     BASH_ENV=/home/.bashrc \
     API_Key=""
 
-RUN apt-get install libxml2-dev libxslt-dev make automake gcc g++ libjpeg-dev libghc-zlib-dev libfreetype6-dev liblcms2-dev libjpeg-dev libtiff-dev tk-dev tcl-dev
+RUN apt-get install libxml2-dev libxslt-dev make automake gcc g++ libjpeg-dev zlib1g-dev libfreetype6-dev liblcms2-dev libjpeg-dev libtiff-dev tk-dev tcl-dev
 
 RUN pip install google beautifulsoup4 discord.py yfinance lxml matplotlib arrow cryptocompare kaleido plotly psutil
 
