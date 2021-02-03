@@ -134,7 +134,7 @@ async def create_crypto_candlestick_graph(ctx, crypto: str, period: str, units: 
 		#a = cryptocompare.get_historical_price_minute('ETH', 'USD', limit=60) # for testing only
 
 		# Parse data
-		res_time = [ arrow.get(f['time']).datetime for f in res]
+		res_time = [ arrow.get(f['time']).to("US/Eastern").datetime for f in res]
 		res_open = [ f['open'] for f in res]
 		res_high = [ f['high'] for f in res]
 		res_low = [ f['low'] for f in res]
