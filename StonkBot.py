@@ -144,7 +144,17 @@ async def create_crypto_candlestick_graph(ctx, crypto: str, period: str, units: 
 		fig.update_xaxes(rangeslider_visible=False)
 		fig.update_layout(
 			title = f'{crypto.upper()} Price Graph',
-			xaxis_tickformat = '%b %d %H:%M'
+			xaxis_tickformat = '%b %d %H:%M',
+			yaxis_tickprefix = '$', 
+			yaxis_tickformat = ',.'
+		)
+		fig.update_xaxes(
+			tickangle=-45, 
+			tickfont=dict(
+				family='Rockwell', 
+				color='crimson', 
+				size=14
+			)
 		)
 
 		# Save image to buffer
