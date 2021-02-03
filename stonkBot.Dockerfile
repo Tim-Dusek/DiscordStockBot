@@ -2,7 +2,6 @@ FROM python:3.8
 
 COPY --from=uselagoon/python-3.8 /lagoon /lagoon
 COPY --from=uselagoon/python-3.8 /bin/fix-permissions /bin/ep /bin/docker-sleep /bin/
-COPY --from=uselagoon/python-3.8 /sbin/tini /sbin/
 COPY --from=uselagoon/python-3.8 /home /home
 
 ENV TMPDIR=/tmp \
@@ -19,7 +18,5 @@ RUN apt-get install libxml2-dev libxslt-dev make automake gcc g++ libjpeg-dev zl
 RUN pip install google beautifulsoup4 discord.py yfinance lxml matplotlib arrow cryptocompare kaleido plotly psutil
 
 COPY . /
-
-ENTRYPOINT ["/sbin/tini", "--", "/lagoon/entrypoints.sh"]
 
 CMD ["python", "StonkBot.py"]
