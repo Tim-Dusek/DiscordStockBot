@@ -6,7 +6,7 @@
 ###
 
 import time, os, sys, argparse, io, re, logging
-import discord, arrow, cryptocompare, yfinance as yf, datetime as datetime, matplotlib.pyplot as plt, matplotlib.dates as mdates, numpy as np
+import discord, arrow, cryptocompare, yfinance as yf, datetime as datetime, matplotlib.pyplot as plt, matplotlib.dates as mdates, numpy as np, plotly.graph_objects as go
 from datetime import datetime
 from random import randint
 from discord.ext import commands, tasks
@@ -115,6 +115,48 @@ async def create_crypto_graph(ctx, crypto: str, period: str, units: int) -> None
 		image_buffer.close()
 	except Exception as e:
 		logging.error(f'Ran into an error trying to create a crypto graph! The error was: {e}')
+	# End try/except block	
+# End def
+
+async def create_crypto_candlestick_graph(ctx, crypto: str, period: str, units: int) -> None:
+	try:
+		# Get data
+		if period == "minute":
+			res = cryptocompare.get_historical_price_minute(crypto.upper(), 'USD', limit=units)
+		elif period == "hour":
+			res = cryptocompare.get_historical_price_hour(crypto.upper(), 'USD', limit=units)
+		elif period == "day":
+			res = cryptocompare.get_historical_price_day(crypto.upper(), 'USD', limit=units)
+		else:
+			logging.info(f"\"{period}\" is not a vaild period to get historical crypto prices!")
+		# End if/elif/else block
+
+		#a = cryptocompare.get_historical_price_minute('ETH', 'USD', limit=60) # for testing only
+
+		# Parse data
+		res_time = [ arrow.get(f['time']).datetime for f in res]
+		res_open = [ f['open'] for f in res]
+		res_high = [ f['high'] for f in res]
+		res_low = [ f['low'] for f in res]
+		res_close = [ f['close'] for f in res]
+
+		fig = go.Figure(data=[go.Candlestick(x=res_time, open=res_open, high=res_high, low=res_low, close=res_close)])
+		fig.update_xaxes(rangeslider_visible=False)
+
+		# Save image to buffer
+		image_buffer = io.BytesIO()
+		fig.write_image(image_buffer, format="PNG")
+		image_buffer.seek(0)
+		
+		# Push contents of image buffer to Discord
+		await ctx.send(file=discord.File(image_buffer, 'graph.png'))
+
+		# Close figure and image buffer
+		fig.data = []
+		del(fig)
+		image_buffer.close()
+	except Exception as e:
+		logging.error(f'Ran into an error trying to create a crypto candlestick graph! The error was: {e}')
 	# End try/except block	
 # End def
 
@@ -423,6 +465,31 @@ async def cmg(ctx, crypto: str) -> None:
 @client.command()
 async def cyg(ctx, crypto: str) -> None:
 	await create_crypto_graph(ctx, crypto=crypto, period="day", units=365)
+# End command
+
+@client.command()
+async def cchg(ctx, crypto: str) -> None:
+	await create_crypto_candlestick_graph(ctx, crypto=crypto, period="minute", units=60)
+# End command
+
+@client.command()
+async def ccdg(ctx, crypto: str) -> None:
+	await create_crypto_candlestick_graph(ctx, crypto=crypto, period="minute", units=1440)
+# End command
+
+@client.command()
+async def ccwg(ctx, crypto: str) -> None:
+	await create_crypto_candlestick_graph(ctx, crypto=crypto, period="hour", units=168)
+# End command
+
+@client.command()
+async def ccmg(ctx, crypto: str) -> None:
+	await create_crypto_candlestick_graph(ctx, crypto=crypto, period="day", units=30)
+# End command
+
+@client.command()
+async def ccyg(ctx, crypto: str) -> None:
+	await create_crypto_candlestick_graph(ctx, crypto=crypto, period="day", units=365)
 # End command
 
 # Magic 8 ball to tell you what to buy

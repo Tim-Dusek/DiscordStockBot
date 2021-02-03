@@ -6,3 +6,6 @@ lxml
 matplotlib
 arrow
 cryptocompare
+kaleido
+plotly
+psutil
