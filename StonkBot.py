@@ -12,6 +12,7 @@ from random import randint
 from discord.ext import commands, tasks
 from itertools import cycle
 from googlesearch import search
+from plotly.subplots import make_subplots
 
 # Parse args
 parser = argparse.ArgumentParser()
@@ -255,6 +256,87 @@ async def create_graph(ctx, company: str, interval: str, start=None, end=None, p
 	# End try/except block
 # End def
 
+async def create_dual_crypto_graph(ctx, fcrypto: str, scrypto: str, period: str, units: int) -> None:
+	try:
+		# Get data
+		if period == "minute":
+			first_res = cryptocompare.get_historical_price_minute(fcrypto.upper(), 'USD', limit=units, toTs=arrow.now().to("US/Eastern").datetime)
+			second_res = cryptocompare.get_historical_price_minute(scrypto.upper(), 'USD', limit=units, toTs=arrow.now().to("US/Eastern").datetime)
+		elif period == "hour":
+			first_res = cryptocompare.get_historical_price_hour(fcrypto.upper(), 'USD', limit=units, toTs=arrow.now().to("US/Eastern").datetime)
+			second_res = cryptocompare.get_historical_price_hour(scrypto.upper(), 'USD', limit=units, toTs=arrow.now().to("US/Eastern").datetime)
+		elif period == "day":
+			first_res = cryptocompare.get_historical_price_day(fcrypto.upper(), 'USD', limit=units, toTs=arrow.now().to("US/Eastern").datetime)
+			second_res = cryptocompare.get_historical_price_day(scrypto.upper(), 'USD', limit=units, toTs=arrow.now().to("US/Eastern").datetime)
+		else:
+			logging.info(f"\"{period}\" is not a vaild period to get historical crypto prices!")
+		# End if/elif/else block
+
+		# Parse data
+		first_res_time = [ arrow.get(f['time']).to("US/Eastern").datetime for f in first_res]
+		first_res_close = [ f['close'] for f in first_res]
+		second_res_time = [ arrow.get(f['time']).to("US/Eastern").datetime for f in second_res]
+		second_res_close = [ f['close'] for f in second_res]
+
+		# Draw figure
+		fig = make_subplots(specs=[[{"secondary_y": True}]])
+
+		# Add traces
+		fig.add_trace(
+			go.Scatter(x=first_res_time, y=first_res_close, name=f"Price of {fcrypto.upper()}"),
+			secondary_y=False,
+		)
+
+		fig.add_trace(
+			go.Scatter(x=second_res_time, y=second_res_close, name=f"Price of {scrypto.upper()}"),
+			secondary_y=True,
+		)
+
+		# Configure Axes
+		fig.update_yaxes(title_text=f"<b>{fcrypto.upper()}</b> price", secondary_y=False)
+		fig.update_yaxes(title_text=f"<b>{scrypto.upper()}</b> price", secondary_y=True)
+
+		fig.update_xaxes(rangeslider_visible=False)
+		fig.update_layout(
+			title = f'Price comparison of {fcrypto.upper()} and {scrypto.upper()}',
+			xaxis_tickformat = '%b %d %H:%M',
+			yaxis_tickprefix = '$', 
+			yaxis_tickformat = ',.'
+		)
+		fig.update_xaxes(
+			tickangle=-45, 
+			tickfont=dict(
+				family='Rockwell', 
+				color='black', 
+				size=14
+			),
+			showline=True,
+			linewidth=2,
+			linecolor='black'
+		)
+		fig.update_yaxes(
+			showline=True,
+			linewidth=2,
+			linecolor='black'
+		)
+
+		# Save image to buffer
+		image_buffer = io.BytesIO()
+		fig.write_image(image_buffer, format="PNG")
+		image_buffer.seek(0)
+		
+		# Push contents of image buffer to Discord
+		await ctx.send(file=discord.File(image_buffer, 'graph.png'))
+
+		# Close figure and image buffer
+		fig.data = []
+		del(fig)
+		image_buffer.close()
+	except Exception as e:
+		logging.error(f'Ran into an error trying to create a crypto candlestick graph! The error was: {e}')
+	# End try/except block	
+# End def
+
 ###
 # Events
 ###
@@ -333,15 +415,23 @@ async def help(ctx):
 		'/mg <Ticker Symbol> - Returns a 1 month graph of a stock\'s price history.\n'+ \
 		'/wg <Ticker Symbol> - Returns a 5 day graph of a stock\'s price history.\n'+ \
 		'/dg <Ticker Symbol> - Returns a 1 trading day graph of a stock\'s price history.\n'+ \
+		'/hg <Ticker Symbol> - Returns a 1 hour graph of a stock\'s price history.\n'+ \
 		'/tfhg <Ticker Symbol> - Returns a graph showing the past 24 hours of a stock\'s price history.\n' + \
 		'/cyg <Crypto Symbol> - Returns a 1 year graph of a cryptocurrency\'s price history.\n'+ \
 		'/cmg <Crypto Symbol> - Returns a 1 month graph of a cryptocurrency\'s price history.\n'+ \
 		'/cwg <Crypto Symbol> - Returns a 5 day graph of a cryptocurrency\'s price history.\n'+ \
 		'/cdg <Crypto Symbol> - Returns a 1 trading day graph of a cryptocurrency\'s price history.\n' + \
+		'/chg <Crypto Symbol> - Returns a 1 hour graph of a cryptocurrency\'s price history.\n' + \
 		'/ccyg <Crypto Symbol> - Returns a 1 year candlestick graph of a cryptocurrency\'s price history.\n'+ \
 		'/ccmg <Crypto Symbol> - Returns a 1 month candlestick graph of a cryptocurrency\'s price history.\n'+ \
 		'/ccwg <Crypto Symbol> - Returns a 5 day candlestick graph of a cryptocurrency\'s price history.\n'+ \
-		'/ccdg <Crypto Symbol> - Returns a 1 trading day candlestick graph of a cryptocurrency\'s price history.\n'
+		'/ccdg <Crypto Symbol> - Returns a 1 trading day candlestick graph of a cryptocurrency\'s price history.\n' + \
+		'/cchg <Crypto Symbol> - Returns a 1 hour candlestick graph of a cryptocurrency\'s price history.\n' + \
+		'/dcyg <Crypto Symbol> - Returns a 1 year graph of two cryptocurrencies\' price histories.\n'+ \
+		'/dcmg <Crypto Symbol> - Returns a 1 month graph two cryptocurrencies\' price histories.\n'+ \
+		'/dcwg <Crypto Symbol> - Returns a 5 day graph of two cryptocurrencies\' price histories.\n'+ \
+		'/dcdg <Crypto Symbol> - Returns a 1 trading day graph of two cryptocurrencies\' price histories.\n' + \
+		'/dchg <Crypto Symbol> - Returns a 1 hour graph of two cryptocurrencies\' price histories.\n'
 	)
 
 	if ctx.message.author.guild_permissions.administrator:
@@ -560,6 +650,31 @@ async def ccmg(ctx, crypto: str) -> None:
 @client.command()
 async def ccyg(ctx, crypto: str) -> None:
 	await create_crypto_candlestick_graph(ctx, crypto=crypto, period="day", units=365)
+# End command
+
+@client.command()
+async def dchg(ctx, fcrypto: str, scrypto: str) -> None:
+	await create_dual_crypto_graph(ctx, fcrypto=fcrypto, scrypto=scrypto, period="minute", units=60)
+# End command
+
+@client.command()
+async def dcdg(ctx, fcrypto: str, scrypto: str) -> None:
+	await create_dual_crypto_graph(ctx, fcrypto=fcrypto, scrypto=scrypto, period="minute", units=1440)
+# End command
+
+@client.command()
+async def dcwg(ctx, fcrypto: str, scrypto: str) -> None:
+	await create_dual_crypto_graph(ctx, fcrypto=fcrypto, scrypto=scrypto, period="hour", units=168)
+# End command
+
+@client.command()
+async def dcmg(ctx, fcrypto: str, scrypto: str) -> None:
+	await create_dual_crypto_graph(ctx, fcrypto=fcrypto, scrypto=scrypto, period="day", units=30)
+# End command
+
+@client.command()
+async def dcyg(ctx, fcrypto: str, scrypto: str) -> None:
+	await create_dual_crypto_graph(ctx, fcrypto=fcrypto, scrypto=scrypto, period="day", units=365)
 # End command
 
 # Magic 8 ball to tell you what to buy
