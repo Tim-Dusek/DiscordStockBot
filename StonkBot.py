@@ -183,7 +183,7 @@ async def create_crypto_candlestick_graph(ctx, crypto: str, period: str, units: 
 		fig.update_xaxes(rangeslider_visible=False)
 		fig.update_layout(
 			title = f'{crypto.upper()} Price Graph',
-			xaxis_tickformat = '%b %d</br>%H:%M',
+			xaxis_tickformat = '%b %d %H:%M',
 			yaxis_tickprefix = '$', 
 			yaxis_tickformat = ',.'
 		)
