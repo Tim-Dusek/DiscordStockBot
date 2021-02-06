@@ -869,7 +869,7 @@ async def market_open():
 	try:
 		channel = client.get_channel(main_channel_id)
 		eastern = arrow.utcnow().to('US/Eastern')
-		if eastern.hour == 9 and eastern.minute == 30 and eastern.weekday() <= 5:
+		if eastern.hour == 9 and eastern.minute == 30 and eastern.weekday() < 5:
 			await channel.send(":bell: The stock market is now open! :bell:")
 		# End if
 	except Exception as e:
@@ -883,7 +883,7 @@ async def market_close():
 	try:
 		channel = client.get_channel(main_channel_id)
 		eastern = arrow.utcnow().to('US/Eastern')
-		if eastern.hour == 16 and eastern.minute == 0 and eastern.weekday() <= 5:
+		if eastern.hour == 16 and eastern.minute == 0 and eastern.weekday() < 5:
 			await channel.send(":bell: The stock market is now closed! :bell:")
 		# End if
 	except Exception as e:
