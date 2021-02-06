@@ -293,12 +293,12 @@ async def create_dual_crypto_graph(ctx, fcrypto: str, scrypto: str, period: str,
 		)
 
 		# Configure Axes
-		fig.update_yaxes(title_text=f"<b>{fcrypto.upper()}</b> price", secondary_y=False)
-		fig.update_yaxes(title_text=f"<b>{scrypto.upper()}</b> price", secondary_y=True)
+		fig.update_yaxes(title_text=f"<b>{fcrypto.upper()} price</b>", secondary_y=False)
+		fig.update_yaxes(title_text=f"<b>{scrypto.upper()} price</b>", secondary_y=True)
 		fig.update_yaxes(tickprefix = '$', tickformat = ',.', secondary_y=False)
 		fig.update_yaxes(tickprefix = '$', tickformat = ',.', secondary_y=True)
 		fig.update_xaxes(rangeslider_visible=False)
-		fig.update_layout(title = f'Price comparison of {fcrypto.upper()} and {scrypto.upper()}')
+		fig.update_layout(title = f'<b>Price comparison of {fcrypto.upper()} and {scrypto.upper()}</b>')
 		
 		fig.update_xaxes(
 			tickangle=-45, 
@@ -317,7 +317,7 @@ async def create_dual_crypto_graph(ctx, fcrypto: str, scrypto: str, period: str,
 			linewidth=2,
 			linecolor='black'
 		)
-		
+
 		# Move legend to top right of chart
 		fig.update_layout(legend=dict(
 			orientation="h",
