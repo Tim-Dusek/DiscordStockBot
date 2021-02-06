@@ -25,6 +25,22 @@ parser.add_argument(
 )
 
 parser.add_argument(
+    "-m", 
+    "--main_channel_id", 
+    help = "The channel ID of the main channel Stonk Bot should use to post normal messages", 
+    action = "store",
+    type = int
+)
+
+parser.add_argument(
+    "-a", 
+    "--alternate_channel_id", 
+    help = "The channel ID of the alternate channel Stonk Bot should use to post development messages", 
+    action = "store",
+    type = int
+)
+
+parser.add_argument(
     "-d", 
     "--debug", 
     help = "Enable debug level logging", 
@@ -34,6 +50,7 @@ parser.add_argument(
 
 args = parser.parse_args()
 
+# Parse provided env vars
 env_var = os.environ
 if "API_Key" in env_var:
 	api_key = env_var["API_Key"]
@@ -47,6 +64,27 @@ elif not api_key:
 	print("Please provide a valid Discord API key via the \"-k\" flag or the \"API_Key\" environment variable!")
 	sys.exit(1)
 # End if
+
+if "Main_Channel_ID" in env_var:
+	main_channel_id = int(env_var["Main_Channel_ID"])
+else:
+	main_channel_id = ""
+# End if/else block
+
+if args.main_channel_id:
+	main_channel_id = args.main_channel_id
+elif not main_channel_id:
+	print("Please provide a valid Discord channel ID via the \"-m\" flag or the \"Main_Channel_ID\" environment variable!")
+	sys.exit(1)
+# End if
+
+if "Alternate_Channel_ID" in env_var:
+	alternate_channel_id = int(env_var["Alternate_Channel_ID"])
+elif args.alternate_channel_id:
+	alternate_channel_id = args.alternate_channel_id
+else:
+	alternate_channel_id = main_channel_id
+# End if/else block
 
 # Set the prefix for all commands
 client = commands.Bot(command_prefix = '/')
@@ -78,11 +116,11 @@ async def create_crypto_graph(ctx, crypto: str, period: str, units: int) -> None
 	try:
 		# Get data
 		if period == "minute":
-			res = cryptocompare.get_historical_price_minute(crypto.upper(), 'USD', limit=units)
+			res = cryptocompare.get_historical_price_minute(crypto.upper(), 'USD', limit=units, toTs=arrow.now().to("US/Eastern").datetime)
 		elif period == "hour":
-			res = cryptocompare.get_historical_price_hour(crypto.upper(), 'USD', limit=units)
+			res = cryptocompare.get_historical_price_hour(crypto.upper(), 'USD', limit=units, toTs=arrow.now().to("US/Eastern").datetime)
 		elif period == "day":
-			res = cryptocompare.get_historical_price_day(crypto.upper(), 'USD', limit=units)
+			res = cryptocompare.get_historical_price_day(crypto.upper(), 'USD', limit=units, toTs=arrow.now().to("US/Eastern").datetime)
 		else:
 			logging.info(f"\"{period}\" is not a vaild period to get historical crypto prices!")
 		# End if/elif/else block
@@ -122,11 +160,11 @@ async def create_crypto_candlestick_graph(ctx, crypto: str, period: str, units: 
 	try:
 		# Get data
 		if period == "minute":
-			res = cryptocompare.get_historical_price_minute(crypto.upper(), 'USD', limit=units)
+			res = cryptocompare.get_historical_price_minute(crypto.upper(), 'USD', limit=units, toTs=arrow.now().to("US/Eastern").datetime)
 		elif period == "hour":
-			res = cryptocompare.get_historical_price_hour(crypto.upper(), 'USD', limit=units)
+			res = cryptocompare.get_historical_price_hour(crypto.upper(), 'USD', limit=units, toTs=arrow.now().to("US/Eastern").datetime)
 		elif period == "day":
-			res = cryptocompare.get_historical_price_day(crypto.upper(), 'USD', limit=units)
+			res = cryptocompare.get_historical_price_day(crypto.upper(), 'USD', limit=units, toTs=arrow.now().to("US/Eastern").datetime)
 		else:
 			logging.info(f"\"{period}\" is not a vaild period to get historical crypto prices!")
 		# End if/elif/else block
@@ -228,7 +266,7 @@ async def on_ready():
 		change_activity.start()
 		market_open.start()
 		market_close.start()
-		channel = client.get_channel(731225596100739224)
+		channel = client.get_channel(alternate_channel_id)
 		await channel.send(":robot: Stonk Bot is ready to maximize your gains! :robot:")
 	except Exception as e:
 		logging.error(f'Ran into an error trying to start the bot! The error was: {e}')
@@ -239,7 +277,7 @@ async def on_ready():
 @client.event
 async def on_member_join(member):
 	try:
-		channel = client.get_channel(731225596100739224)
+		channel = client.get_channel(main_channel_id)
 		await channel.send(f'{member} has joined the server')
 	except Exception as e:
 		logging.error(f'Ran into an error trying to send a message! The error was: {e}')
@@ -250,7 +288,7 @@ async def on_member_join(member):
 @client.event
 async def on_member_remove(member):
 	try:
-		channel = client.get_channel(731225596100739224)
+		channel = client.get_channel(main_channel_id)
 		await channel.send(f'{member} has left the server')
 	except Exception as e:
 		logging.error(f'Ran into an error trying to send a message! The error was: {e}')
@@ -703,7 +741,7 @@ async def change_activity():
 @tasks.loop(minutes=1)
 async def market_open():
 	try:
-		channel = client.get_channel(731225596100739224)
+		channel = client.get_channel(main_channel_id)
 		eastern = arrow.utcnow().to('US/Eastern')
 		if eastern.hour == 9 and eastern.minute == 30:
 			await channel.send(":bell: The stock market is now open! :bell:")
@@ -717,7 +755,7 @@ async def market_open():
 @tasks.loop(minutes=1)
 async def market_close():
 	try:
-		channel = client.get_channel(731225596100739224)
+		channel = client.get_channel(main_channel_id)
 		eastern = arrow.utcnow().to('US/Eastern')
 		if eastern.hour == 16 and eastern.minute == 0:
 			await channel.send(":bell: The stock market is now closed! :bell:")
