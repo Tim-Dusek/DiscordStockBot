@@ -891,30 +891,5 @@ async def market_close():
 	# End try/except block
 # End task
 
-###		
-### Experimental beyond this point
-###
-
-###
-#Cogs
-###
-'''
-#load cog command
-@client.command()
-async def load(ctx, extension):
-	client.load_extension(f'Cogs.{extension}')
-
-#unload cog command
-@client.command()
-async def unload(ctx, extension):
-	client.unload_extension(f'Cogs.{extension}')
-
-for filename in os.listdir('./Cogs'):
-	if filename.endswith('.py'):
-		client.load_extension(f'Cogs.{filename[:-3]}')
-	#end if
-#end for 
-'''
-
 # Run the bot
 client.run(api_key)
