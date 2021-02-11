@@ -509,6 +509,7 @@ async def price(ctx, company: str) -> None:
 		await ctx.send(data)
 	except Exception as e:
 		logging.error(f'Ran into an error trying to get a price! The error was: {e}')
+		await ctx.send(f"Couldn't get the stock's price for {company.upper()}!")
 	# End try/except block
 # End command
 
@@ -519,8 +520,19 @@ async def whois(ctx, company: str) -> None:
 		await ctx.send(f'Getting general information for '+company+'...')
 		ticker = yf.Ticker(company)
 		ticker_info = ticker.info
-		market_cap_dollars= "${:,}".format(ticker_info['marketCap'])
-		full_time_employees= "{:,}".format(ticker_info['fullTimeEmployees'])
+
+		try: 
+			market_cap_dollars= "${:,}".format(ticker_info['marketCap'])
+		except Exception as e:
+			market_cap_dollars = ""
+		# End try/except block
+
+		try:
+			full_time_employees= "{:,}".format(ticker_info['fullTimeEmployees'])
+		except Exception as e:
+			full_time_employees = ""
+		# End try/except block
+		
 		data = 'Name: ' + ticker_info['longName'] + \
 			'\nSector: ' + ticker_info['sector'] + \
 			'\nPhone Number: ' + ticker_info['phone'] + \
