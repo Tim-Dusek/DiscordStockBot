@@ -153,7 +153,8 @@ async def create_crypto_graph(ctx, crypto: str, period: str, units: int) -> None
 		plt.close()
 		image_buffer.close()
 	except Exception as e:
-		logging.error(f'Ran into an error trying to create a crypto graph! The error was: ' + traceback.print_exc())
+		logging.error(f'Ran into an error trying to create a crypto graph!')
+		logger.exception(e)
 	# End try/except block	
 # End def
 
@@ -218,7 +219,8 @@ async def create_crypto_candlestick_graph(ctx, crypto: str, period: str, units: 
 		del(fig)
 		image_buffer.close()
 	except Exception as e:
-		logging.error(f'Ran into an error trying to create a crypto candlestick graph! The error was: ' + traceback.print_exc())
+		logging.error(f'Ran into an error trying to create a crypto candlestick graph!')
+		logger.exception(e)
 	# End try/except block	
 # End def
 
@@ -252,7 +254,8 @@ async def create_graph(ctx, company: str, interval: str, start=None, end=None, p
 		plt.close()
 		image_buffer.close()
 	except Exception as e:
-		logging.error(f'Ran into an error trying to create a graph! The error was: ' + traceback.print_exc())
+		logging.error(f'Ran into an error trying to create a graph!')
+		logger.exception(e)
 	# End try/except block
 # End def
 
@@ -340,7 +343,8 @@ async def create_dual_crypto_graph(ctx, fcrypto: str, scrypto: str, period: str,
 		del(fig)
 		image_buffer.close()
 	except Exception as e:
-		logging.error(f'Ran into an error trying to create a crypto candlestick graph! The error was: ' + traceback.print_exc())
+		logging.error(f'Ran into an error trying to create a crypto candlestick graph!')
+		logger.exception(e)
 	# End try/except block	
 # End def
 
@@ -358,7 +362,8 @@ async def on_ready():
 		channel = client.get_channel(alternate_channel_id)
 		await channel.send(":robot: Stonk Bot is ready to maximize your gains! :robot:")
 	except Exception as e:
-		logging.error('Ran into an error trying to start the bot! The error was: ' + traceback.print_exc())
+		logging.error('Ran into an error trying to start the bot!')
+		logger.exception(e)
 	# End try/except block
 # End event
 
@@ -369,7 +374,8 @@ async def on_member_join(member):
 		channel = client.get_channel(main_channel_id)
 		await channel.send(f'{member} has joined the server')
 	except Exception as e:
-		logging.error('Ran into an error trying to send a message! The error was: ' + traceback.print_exc())
+		logging.error('Ran into an error trying to send a message!')
+		logger.exception(e)
 	# End try/except block
 # End event
 
@@ -380,7 +386,8 @@ async def on_member_remove(member):
 		channel = client.get_channel(main_channel_id)
 		await channel.send(f'{member} has left the server')
 	except Exception as e:
-		logging.error('Ran into an error trying to send a message! The error was: ' + traceback.print_exc())
+		logging.error('Ran into an error trying to send a message!')
+		logger.exception(e)
 	# End try/except block
 # End event
 
@@ -469,7 +476,8 @@ async def news(ctx, *, company="") -> None:
 			time.sleep(1)
 		# End for
 	except Exception as e:
-		logging.error('Ran into an error trying to get stock news! The error was: ' + traceback.print_exc())
+		logging.error('Ran into an error trying to get stock news!')
+		logger.exception(e)
 		await ctx.send(f"Couldn't get news!")
 	# End try/except block
 # End command
@@ -486,7 +494,8 @@ async def cryptonews(ctx, *, crypto="") -> None:
 			time.sleep(1)
 		# End for
 	except Exception as e:
-		logging.error('Ran into an error trying to get crypto news! The error was: ' + traceback.print_exc())
+		logging.error('Ran into an error trying to get crypto news!')
+		logger.exception(e)
 		await ctx.send(f"Couldn't get crypto news!")
 	# End try/except block
 # End command
@@ -508,7 +517,8 @@ async def price(ctx, company: str) -> None:
 
 		await ctx.send(data)
 	except Exception as e:
-		logging.error(f'Ran into an error trying to get a price! The error was: ' + traceback.print_exc())
+		logging.error(f'Ran into an error trying to get a price!')
+		logger.exception(e)
 		await ctx.send(f"Couldn't get the stock's price for {company.upper()}!")
 	# End try/except block
 # End command
@@ -542,7 +552,8 @@ async def whois(ctx, company: str) -> None:
 		
 		await ctx.send(data)
 	except Exception as e:
-		logging.error(f'Ran into an error trying to get whois information! The error was: ' + traceback.print_exc())
+		logging.error(f'Ran into an error trying to get whois information!')
+		logger.exception(e)
 		await ctx.send(f"Some returned data was incorrect for {company.upper()}!")
 	# End try/except block
 # End command
@@ -559,7 +570,8 @@ async def expert(ctx, company: str) -> None:
 		output = output[75:]
 		await ctx.send(output)
 	except Exception as e:
-		logging.error(f'Ran into an error trying to get expert opinions! The error was: ' + traceback.print_exc())
+		logging.error(f'Ran into an error trying to get expert opinions!')
+		logger.exception(e)
 		await ctx.send(f"Some returned data was incorrect for {company.upper()}!")
 	# End try/except block
 # End command
@@ -792,7 +804,8 @@ async def _8ball(ctx, *, message = ''):
 			await ctx.send (f'{message}! The magic 8 ball wants you to buy {ammounts[randint(0,len(ammounts)-1)]} of {responses[randint(0, len(responses)-1)]}!')
 		# End if/else block
 	except Exception as e:
-		logging.error('Ran into an error trying to post a magic 8-ball message! The error was: ' + traceback.print_exc())
+		logging.error('Ran into an error trying to post a magic 8-ball message!')
+		logger.exception(e)
 		await ctx.send("Couldn't get a magic 8-ball suggestion!")
 	# End try/except block
 # End command
@@ -818,7 +831,8 @@ async def math(ctx, fnum: float, operand: str, snum: float):
 
 		await ctx.send (f"{fnum} {operand} {snum} = {result}")
 	except Exception as e:
-		logging.error('Ran into an error trying to do math! The error was: ' + traceback.print_exc())
+		logging.error('Ran into an error trying to do math!')
+		logger.exception(e)
 		await ctx.send("Couldn't do math!")
 	# End try/except block
 # End command
@@ -834,7 +848,8 @@ async def clear(ctx, amount : int):
 			await ctx.send (f'You must enter a number between 1-10.')
 		# End if/else block
 	except Exception as e:
-		logging.error('Ran into an error trying to clear messages! The error was: ' +traceback.print_exc())
+		logging.error('Ran into an error trying to clear messages!')
+		logger.exception(e)
 	# End try/except block
 # End command
 
@@ -891,7 +906,8 @@ async def market_open():
 			await channel.send(":bell: The stock market is now open! :bell:")
 		# End if
 	except Exception as e:
-		logging.error('Ran into an error trying to send a market_open message! The error was: ' + traceback.print_exc())
+		logging.error('Ran into an error trying to send a market_open message!')
+		logger.exception(e)
 	# End try/except block
 # End task
 
@@ -905,7 +921,8 @@ async def market_close():
 			await channel.send(":bell: The stock market is now closed! :bell:")
 		# End if
 	except Exception as e:
-		logging.error('Ran into an error trying to send a market_close message! The error was: ' + traceback.print_exc())
+		logging.error('Ran into an error trying to send a market_close message!')
+		logger.exception(e)
 	# End try/except block
 # End task
 
