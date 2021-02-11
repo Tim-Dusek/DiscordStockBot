@@ -107,7 +107,7 @@ activity_list = cycle(
 	]
 )
 
-logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG if args.debug else logging.ERROR)
+logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG if args.debug else logging.INFO)
 
 ###
 # Internal Definitions
@@ -358,7 +358,7 @@ async def on_ready():
 		channel = client.get_channel(alternate_channel_id)
 		await channel.send(":robot: Stonk Bot is ready to maximize your gains! :robot:")
 	except Exception as e:
-		logging.error(f'Ran into an error trying to start the bot! The error was: ' + e.with_traceback())
+		logging.error('Ran into an error trying to start the bot! The error was: ' + e.with_traceback())
 	# End try/except block
 # End event
 
@@ -369,7 +369,7 @@ async def on_member_join(member):
 		channel = client.get_channel(main_channel_id)
 		await channel.send(f'{member} has joined the server')
 	except Exception as e:
-		logging.error(f'Ran into an error trying to send a message! The error was: ' + e.with_traceback())
+		logging.error('Ran into an error trying to send a message! The error was: ' + e.with_traceback())
 	# End try/except block
 # End event
 
@@ -380,7 +380,7 @@ async def on_member_remove(member):
 		channel = client.get_channel(main_channel_id)
 		await channel.send(f'{member} has left the server')
 	except Exception as e:
-		logging.error(f'Ran into an error trying to send a message! The error was: ' + e.with_traceback())
+		logging.error('Ran into an error trying to send a message! The error was: ' + e.with_traceback())
 	# End try/except block
 # End event
 
@@ -469,7 +469,7 @@ async def news(ctx, *, company="") -> None:
 			time.sleep(1)
 		# End for
 	except Exception as e:
-		logging.error(f'Ran into an error trying to get stock news! The error was: ' + e.with_traceback())
+		logging.error('Ran into an error trying to get stock news! The error was: ' + e.with_traceback())
 		await ctx.send(f"Couldn't get news!")
 	# End try/except block
 # End command
@@ -486,7 +486,7 @@ async def cryptonews(ctx, *, crypto="") -> None:
 			time.sleep(1)
 		# End for
 	except Exception as e:
-		logging.error(f'Ran into an error trying to get crypto news! The error was: ' + e.with_traceback())
+		logging.error('Ran into an error trying to get crypto news! The error was: ' + e.with_traceback())
 		await ctx.send(f"Couldn't get crypto news!")
 	# End try/except block
 # End command
@@ -792,7 +792,7 @@ async def _8ball(ctx, *, message = ''):
 			await ctx.send (f'{message}! The magic 8 ball wants you to buy {ammounts[randint(0,len(ammounts)-1)]} of {responses[randint(0, len(responses)-1)]}!')
 		# End if/else block
 	except Exception as e:
-		logging.error(f'Ran into an error trying to post a magic 8-ball message! The error was: ' + e.with_traceback())
+		logging.error('Ran into an error trying to post a magic 8-ball message! The error was: ' + e.with_traceback())
 		await ctx.send("Couldn't get a magic 8-ball suggestion!")
 	# End try/except block
 # End command
@@ -818,7 +818,7 @@ async def math(ctx, fnum: float, operand: str, snum: float):
 
 		await ctx.send (f"{fnum} {operand} {snum} = {result}")
 	except Exception as e:
-		logging.error(f'Ran into an error trying to do math! The error was: ' + e.with_traceback())
+		logging.error('Ran into an error trying to do math! The error was: ' + e.with_traceback())
 		await ctx.send("Couldn't do math!")
 	# End try/except block
 # End command
@@ -834,7 +834,7 @@ async def clear(ctx, amount : int):
 			await ctx.send (f'You must enter a number between 1-10.')
 		# End if/else block
 	except Exception as e:
-		logging.error(f'Ran into an error trying to clear messages! The error was: ' + e.with_traceback())
+		logging.error('Ran into an error trying to clear messages! The error was: ' + e.with_traceback())
 	# End try/except block
 # End command
 
@@ -891,7 +891,7 @@ async def market_open():
 			await channel.send(":bell: The stock market is now open! :bell:")
 		# End if
 	except Exception as e:
-		logging.error(f'Ran into an error trying to send a market_open message! The error was: ' + e.with_traceback())
+		logging.error('Ran into an error trying to send a market_open message! The error was: ' + e.with_traceback())
 	# End try/except block
 # End task
 
@@ -905,7 +905,7 @@ async def market_close():
 			await channel.send(":bell: The stock market is now closed! :bell:")
 		# End if
 	except Exception as e:
-		logging.error(f'Ran into an error trying to send a market_close message! The error was: ' + e.with_traceback())
+		logging.error('Ran into an error trying to send a market_close message! The error was: ' + e.with_traceback())
 	# End try/except block
 # End task
 
