@@ -405,7 +405,7 @@ async def help(ctx):
 		'/help - Get info on bot commands you can access.\n'+ \
 		'/ping - Shows the latency of the bot.\n'+ \
 		'/news <Optional: Company> - Shows the top 3 relevant market articles.\n'+ \
-		'/crypto_news <Optional: Crypto> - Shows the top 3 relevant market articles.\n'+ \
+		'/cryptonews <Optional: Crypto> - Shows the top 3 relevant market articles.\n'+ \
 		'/price <Ticker Symbol> - Returns daily price information about a ticker symbol.\n'+ \
 		'/whois <Ticker Symbol> - Returns general information about a ticker symbol.\n'+ \
 		'/expert <Ticker Symbol> - Returns expert opinions on what a stock is doing.\n'+ \
@@ -470,12 +470,13 @@ async def news(ctx, *, company="") -> None:
 		# End for
 	except Exception as e:
 		logging.error(f'Ran into an error trying to get stock news! The error was: {e}')
+		await ctx.send(f"Couldn't get news!")
 	# End try/except block
 # End command
 
 # Takes a company name and returns 3 news articles related to their stock
 @client.command()
-async def crypto_news(ctx, *, crypto="") -> None:
+async def cryptonews(ctx, *, crypto="") -> None:
 	try:
 		query = f"crypto market news {crypto}" if crypto else "crypto market news"
 		await ctx.send(f'Checking the internet for the latest {crypto} financial news...'if crypto else 'Checking the internet for the latest crypto news...')
@@ -486,6 +487,7 @@ async def crypto_news(ctx, *, crypto="") -> None:
 		# End for
 	except Exception as e:
 		logging.error(f'Ran into an error trying to get crypto news! The error was: {e}')
+		await ctx.send(f"Couldn't get crypto news!")
 	# End try/except block
 # End command
 
@@ -529,6 +531,7 @@ async def whois(ctx, company: str) -> None:
 		await ctx.send(data)
 	except Exception as e:
 		logging.error(f'Ran into an error trying to get whois information! The error was: {e}')
+		await ctx.send(f"Some returned data was incorrect for {company.upper()}!")
 	# End try/except block
 # End command
 
@@ -545,6 +548,7 @@ async def expert(ctx, company: str) -> None:
 		await ctx.send(output)
 	except Exception as e:
 		logging.error(f'Ran into an error trying to get expert opinions! The error was: {e}')
+		await ctx.send(f"Some returned data was incorrect for {company.upper()}!")
 	# End try/except block
 # End command
 
@@ -777,6 +781,7 @@ async def _8ball(ctx, *, message = ''):
 		# End if/else block
 	except Exception as e:
 		logging.error(f'Ran into an error trying to post a magic 8-ball message! The error was: {e}')
+		await ctx.send("Couldn't get a magic 8-ball suggestion!")
 	# End try/except block
 # End command
 
@@ -802,6 +807,7 @@ async def math(ctx, fnum: float, operand: str, snum: float):
 		await ctx.send (f"{fnum} {operand} {snum} = {result}")
 	except Exception as e:
 		logging.error(f'Ran into an error trying to do math! The error was: {e}')
+		await ctx.send("Couldn't do math!")
 	# End try/except block
 # End command
 
