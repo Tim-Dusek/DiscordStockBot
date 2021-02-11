@@ -891,7 +891,7 @@ async def market_open():
 			await channel.send(":bell: The stock market is now open! :bell:")
 		# End if
 	except Exception as e:
-		logging.error(f'Ran into an error trying to send a market_open message! The error was: ' + e.with_traceback()')
+		logging.error(f'Ran into an error trying to send a market_open message! The error was: ' + e.with_traceback())
 	# End try/except block
 # End task
 
@@ -905,7 +905,7 @@ async def market_close():
 			await channel.send(":bell: The stock market is now closed! :bell:")
 		# End if
 	except Exception as e:
-		logging.error(f'Ran into an error trying to send a market_close message! The error was: ' + e.with_traceback()')
+		logging.error(f'Ran into an error trying to send a market_close message! The error was: ' + e.with_traceback())
 	# End try/except block
 # End task
 
