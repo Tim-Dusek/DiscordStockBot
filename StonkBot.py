@@ -107,7 +107,7 @@ activity_list = cycle(
 	]
 )
 
-logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG if args.debug else logging.INFO)
+logging.basicConfig(stream=sys.stdout, format='%(levelname)s:%(message)s', level=logging.DEBUG if args.debug else logging.INFO)
 
 ###
 # Internal Definitions
