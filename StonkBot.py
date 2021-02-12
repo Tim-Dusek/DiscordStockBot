@@ -543,12 +543,12 @@ async def whois(ctx, company: str) -> None:
 			full_time_employees = ""
 		# End try/except block
 		
-		data = 'Name: ' + ticker_info['longName'] + \
-			'\nSector: ' + ticker_info['sector'] + \
-			'\nPhone Number: ' + ticker_info['phone'] + \
+		data = 'Name: ' + ticker_info['longName'] if 'longName' in ticker_info else "" + \
+			'\nSector: ' + ticker_info['sector'] if 'sector' in ticker_info else "" + \
+			'\nPhone Number: ' + ticker_info['phone'] if 'phone' in ticker_info else "" + \
 			'\nFull Time Employees: ' + full_time_employees + \
 			'\nMarket Cap: ' + market_cap_dollars + \
-			'\nSummary: ' + ticker_info['longBusinessSummary']
+			'\nSummary: ' + ticker_info['longBusinessSummary'] if 'longBusinessSummary' in ticker_info else ""
 		
 		await ctx.send(data)
 	except Exception as e:
