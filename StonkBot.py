@@ -113,16 +113,17 @@ logging.basicConfig(stream=sys.stdout, format='%(levelname)s:%(message)s', level
 # Internal Definitions
 ###
 
-async def is_holiday() -> bool:
-	dates = [ f[0] for f in holidays.UnitedStates(years=arrow.now().year).items()]
+async def is_holiday() -> str:
+	holiday_array = [ f for f in holidays.UnitedStates(years=arrow.now().year).items()]
 	now = arrow.now()
-	for date in dates:
+	for _date, name in holiday_array:
+		date = arrow.get(date)
 		if date.month == now.month and date.day == now.day:
-			return True
+			return name
 		# End if
 	# End for
 
-	return False
+	return ""
 # End def
 
 async def create_crypto_graph(ctx, crypto: str, period: str, units: int) -> None:
@@ -914,8 +915,13 @@ async def market_open():
 	try:
 		channel = client.get_channel(main_channel_id)
 		eastern = arrow.utcnow().to('US/Eastern')
-		if eastern.hour == 9 and eastern.minute == 30 and eastern.weekday() < 5 and not await is_holiday():
-			await channel.send(":bell: The stock market is now open! :bell:")
+		holiday_name = await is_holiday()
+		if eastern.hour == 9 and eastern.minute == 30 and eastern.weekday() < 5:
+			if not holiday_name:
+				await channel.send(":bell: The stock market is now open! :bell:")
+			else:
+				await channel.send(f":frowning: The stock market is closed today for {holiday_name}! :frowning:")
+			# End if/else block
 		# End if
 	except Exception as e:
 		logging.error('Ran into an error trying to send a market_open message!')
