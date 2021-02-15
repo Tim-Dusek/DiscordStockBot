@@ -6,7 +6,7 @@
 ###
 
 import time, os, sys, argparse, io, re, logging, traceback
-import discord, arrow, cryptocompare, yfinance as yf, datetime as datetime, matplotlib.pyplot as plt, matplotlib.dates as mdates, numpy as np, plotly.graph_objects as go
+import discord, arrow, cryptocompare, holidays, yfinance as yf, datetime as datetime, matplotlib.pyplot as plt, matplotlib.dates as mdates, numpy as np, plotly.graph_objects as go
 from datetime import datetime
 from random import randint
 from discord.ext import commands, tasks
@@ -112,6 +112,18 @@ logging.basicConfig(stream=sys.stdout, format='%(levelname)s:%(message)s', level
 ###
 # Internal Definitions
 ###
+
+async def is_holiday() -> bool:
+	dates = [ f[0] for f in holidays.UnitedStates(years=arrow.now().year).items()]
+	now = arrow.now()
+	for date in dates:
+		if date.month == now.month and date.day == now.day:
+			return True
+		# End if
+	# End for
+
+	return False
+# End def
 
 async def create_crypto_graph(ctx, crypto: str, period: str, units: int) -> None:
 	try:
@@ -902,7 +914,7 @@ async def market_open():
 	try:
 		channel = client.get_channel(main_channel_id)
 		eastern = arrow.utcnow().to('US/Eastern')
-		if eastern.hour == 9 and eastern.minute == 30 and eastern.weekday() < 5:
+		if eastern.hour == 9 and eastern.minute == 30 and eastern.weekday() < 5 and not await is_holiday():
 			await channel.send(":bell: The stock market is now open! :bell:")
 		# End if
 	except Exception as e:
@@ -917,7 +929,7 @@ async def market_close():
 	try:
 		channel = client.get_channel(main_channel_id)
 		eastern = arrow.utcnow().to('US/Eastern')
-		if eastern.hour == 16 and eastern.minute == 0 and eastern.weekday() < 5:
+		if eastern.hour == 16 and eastern.minute == 0 and eastern.weekday() < 5 and not await is_holiday():
 			await channel.send(":bell: The stock market is now closed! :bell:")
 		# End if
 	except Exception as e:
