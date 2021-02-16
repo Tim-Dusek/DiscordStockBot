@@ -421,54 +421,60 @@ async def on_command_error(ctx, error):
 
 @client.command()
 async def help(ctx):
-	await ctx.author.send('Base User Commands:\n'+ \
-		'/help - Get info on bot commands you can access.\n'+ \
-		'/ping - Shows the latency of the bot.\n'+ \
-		'/news <Optional: Company> - Shows the top 3 relevant market articles.\n'+ \
-		'/cryptonews <Optional: Crypto> - Shows the top 3 relevant market articles.\n'+ \
-		'/price <Ticker Symbol> - Returns daily price information about a ticker symbol.\n'+ \
-		'/whois <Ticker Symbol> - Returns general information about a ticker symbol.\n'+ \
-		'/expert <Ticker Symbol> - Returns expert opinions on what a stock is doing.\n'+ \
-		'/maxgraph <Ticker Symbol> - Returns a graph of a stock\'s entire price history.\n'+ \
-		'/yeargraph <Ticker Symbol> - Returns a 1 year graph of a stock\'s price history.\n'+ \
-		'/monthgraph <Ticker Symbol> - Returns a 1 month graph of a stock\'s price history.\n'+ \
-		'/weekgraph <Ticker Symbol> - Returns a 5 day graph of a stock\'s price history.\n'+ \
-		'/daygraph <Ticker Symbol> - Returns a 1 trading day graph of a stock\'s price history.\n'+ \
-		'/twentyfourhourgraph <Ticker Symbol> - Returns a graph showing the past 24 hours of a stock\'s price history.\n' + \
-		'/8ball - Shake the Magic 8 Ball and be told what stock to buy.\n' + \
-		'\n\n' + \
-		'Shorthand Commands:\n' + \
-		'/yg <Ticker Symbol> - Returns a 1 year graph of a stock\'s price history.\n'+ \
-		'/mg <Ticker Symbol> - Returns a 1 month graph of a stock\'s price history.\n'+ \
-		'/wg <Ticker Symbol> - Returns a 5 day graph of a stock\'s price history.\n'+ \
-		'/dg <Ticker Symbol> - Returns a 1 trading day graph of a stock\'s price history.\n'+ \
-		'/hg <Ticker Symbol> - Returns a 1 hour graph of a stock\'s price history.\n'+ \
-		'/tfhg <Ticker Symbol> - Returns a graph showing the past 24 hours of a stock\'s price history.\n' + \
-		'/cyg <Crypto Symbol> - Returns a 1 year graph of a cryptocurrency\'s price history.\n'+ \
-		'/cmg <Crypto Symbol> - Returns a 1 month graph of a cryptocurrency\'s price history.\n'+ \
-		'/cwg <Crypto Symbol> - Returns a 5 day graph of a cryptocurrency\'s price history.\n'+ \
-		'/cdg <Crypto Symbol> - Returns a 1 trading day graph of a cryptocurrency\'s price history.\n' + \
-		'/chg <Crypto Symbol> - Returns a 1 hour graph of a cryptocurrency\'s price history.\n' + \
-		'/ccyg <Crypto Symbol> - Returns a 1 year candlestick graph of a cryptocurrency\'s price history.\n'+ \
-		'/ccmg <Crypto Symbol> - Returns a 1 month candlestick graph of a cryptocurrency\'s price history.\n'+ \
-		'/ccwg <Crypto Symbol> - Returns a 5 day candlestick graph of a cryptocurrency\'s price history.\n'+ \
-		'/ccdg <Crypto Symbol> - Returns a 1 trading day candlestick graph of a cryptocurrency\'s price history.\n' + \
-		'/cchg <Crypto Symbol> - Returns a 1 hour candlestick graph of a cryptocurrency\'s price history.\n' + \
-		'/dcyg <Crypto Symbol> - Returns a 1 year graph of two cryptocurrencies\' price histories.\n'+ \
-		'/dcmg <Crypto Symbol> - Returns a 1 month graph two cryptocurrencies\' price histories.\n'+ \
-		'/dcwg <Crypto Symbol> - Returns a 5 day graph of two cryptocurrencies\' price histories.\n'+ \
-		'/dcdg <Crypto Symbol> - Returns a 1 trading day graph of two cryptocurrencies\' price histories.\n' + \
-		'/dchg <Crypto Symbol> - Returns a 1 hour graph of two cryptocurrencies\' price histories.\n'
-	)
+	try:
+		await ctx.author.send('Base User Commands:\n'+ \
+			'/help - Get info on bot commands you can access.\n'+ \
+			'/ping - Shows the latency of the bot.\n'+ \
+			'/news <Optional: Company> - Shows the top 3 relevant market articles.\n'+ \
+			'/cryptonews <Optional: Crypto> - Shows the top 3 relevant market articles.\n'+ \
+			'/price <Ticker Symbol> - Returns daily price information about a ticker symbol.\n'+ \
+			'/whois <Ticker Symbol> - Returns general information about a ticker symbol.\n'+ \
+			'/expert <Ticker Symbol> - Returns expert opinions on what a stock is doing.\n'+ \
+			'/maxgraph <Ticker Symbol> - Returns a graph of a stock\'s entire price history.\n'+ \
+			'/yeargraph <Ticker Symbol> - Returns a 1 year graph of a stock\'s price history.\n'+ \
+			'/monthgraph <Ticker Symbol> - Returns a 1 month graph of a stock\'s price history.\n'+ \
+			'/weekgraph <Ticker Symbol> - Returns a 5 day graph of a stock\'s price history.\n'+ \
+			'/daygraph <Ticker Symbol> - Returns a 1 trading day graph of a stock\'s price history.\n'+ \
+			'/twentyfourhourgraph <Ticker Symbol> - Returns a graph showing the past 24 hours of a stock\'s price history.\n' + \
+			'/8ball - Shake the Magic 8 Ball and be told what stock to buy.\n' + \
+			'\n\n' + \
+			'Shorthand Commands:\n' + \
+			'/yg <Ticker Symbol> - Returns a 1 year graph of a stock\'s price history.\n'+ \
+			'/mg <Ticker Symbol> - Returns a 1 month graph of a stock\'s price history.\n'+ \
+			'/wg <Ticker Symbol> - Returns a 5 day graph of a stock\'s price history.\n'+ \
+			'/dg <Ticker Symbol> - Returns a 1 trading day graph of a stock\'s price history.\n'+ \
+			'/hg <Ticker Symbol> - Returns a 1 hour graph of a stock\'s price history.\n'+ \
+			'/tfhg <Ticker Symbol> - Returns a graph showing the past 24 hours of a stock\'s price history.\n' + \
+			'/cyg <Crypto Symbol> - Returns a 1 year graph of a cryptocurrency\'s price history.\n'+ \
+			'/cmg <Crypto Symbol> - Returns a 1 month graph of a cryptocurrency\'s price history.\n'+ \
+			'/cwg <Crypto Symbol> - Returns a 5 day graph of a cryptocurrency\'s price history.\n'+ \
+			'/cdg <Crypto Symbol> - Returns a 1 trading day graph of a cryptocurrency\'s price history.\n' + \
+			'/chg <Crypto Symbol> - Returns a 1 hour graph of a cryptocurrency\'s price history.\n' + \
+			'/ccyg <Crypto Symbol> - Returns a 1 year candlestick graph of a cryptocurrency\'s price history.\n'+ \
+			'/ccmg <Crypto Symbol> - Returns a 1 month candlestick graph of a cryptocurrency\'s price history.\n'+ \
+			'/ccwg <Crypto Symbol> - Returns a 5 day candlestick graph of a cryptocurrency\'s price history.\n'+ \
+			'/ccdg <Crypto Symbol> - Returns a 1 trading day candlestick graph of a cryptocurrency\'s price history.\n' + \
+			'/cchg <Crypto Symbol> - Returns a 1 hour candlestick graph of a cryptocurrency\'s price history.\n' + \
+			'/dcyg <Crypto Symbol> - Returns a 1 year graph of two cryptocurrencies\' price histories.\n'+ \
+			'/dcmg <Crypto Symbol> - Returns a 1 month graph two cryptocurrencies\' price histories.\n'+ \
+			'/dcwg <Crypto Symbol> - Returns a 5 day graph of two cryptocurrencies\' price histories.\n'+ \
+			'/dcdg <Crypto Symbol> - Returns a 1 trading day graph of two cryptocurrencies\' price histories.\n' + \
+			'/dchg <Crypto Symbol> - Returns a 1 hour graph of two cryptocurrencies\' price histories.\n'
+		)
 
-	if ctx.message.author.guild_permissions.administrator:
-		await ctx.author.send('My records show you are an admin!\n'+ \
-		'Here are the admin only commands:\n'+ \
-		'/clear <Number> - Clears 1-10 messages from the chat permanently.\n'+ \
-		'/kick <User> <Optional: Reason> - Kicks a user from the discord.\n'+ \
-		'/ban <User> <Optional: Reason> - Bans a user from the discord.\n'+ \
-		'/unban <User> - Unbans a User. To use this you must use their name and 4 digit code.')
-	# End if
+		if ctx.message.author.guild_permissions.administrator:
+			await ctx.author.send('My records show you are an admin!\n'+ \
+			'Here are the admin only commands:\n'+ \
+			'/clear <Number> - Clears 1-10 messages from the chat permanently.\n'+ \
+			'/kick <User> <Optional: Reason> - Kicks a user from the discord.\n'+ \
+			'/ban <User> <Optional: Reason> - Bans a user from the discord.\n'+ \
+			'/unban <User> - Unbans a User. To use this you must use their name and 4 digit code.')
+		# End if
+	except Exception as e:
+		logging.error('Ran into an error trying to send a help message!')
+		logging.exception(e)
+		await ctx.send(f"Couldn't send help message!")
+	# End try/except block
 # End command
 
 # Test the bot's ping
