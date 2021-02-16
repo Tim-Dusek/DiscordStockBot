@@ -436,8 +436,9 @@ async def help(ctx):
 			'/weekgraph <Ticker Symbol> - Returns a 5 day graph of a stock\'s price history.\n'+ \
 			'/daygraph <Ticker Symbol> - Returns a 1 trading day graph of a stock\'s price history.\n'+ \
 			'/twentyfourhourgraph <Ticker Symbol> - Returns a graph showing the past 24 hours of a stock\'s price history.\n' + \
-			'/8ball - Shake the Magic 8 Ball and be told what stock to buy.\n' + \
-			'\n\n' + \
+			'/8ball - Shake the Magic 8 Ball and be told what stock to buy.\n'
+		)
+		await ctx.author.send(
 			'Shorthand Commands:\n' + \
 			'/yg <Ticker Symbol> - Returns a 1 year graph of a stock\'s price history.\n'+ \
 			'/mg <Ticker Symbol> - Returns a 1 month graph of a stock\'s price history.\n'+ \
