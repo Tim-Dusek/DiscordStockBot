@@ -117,7 +117,7 @@ async def is_holiday() -> str:
 	holiday_array = [ f for f in holidays.UnitedStates(years=arrow.now().year).items()]
 	now = arrow.now()
 	for _date, name in holiday_array:
-		date = arrow.get(date)
+		date = arrow.get(_date)
 		if date.month == now.month and date.day == now.day:
 			return name
 		# End if
