@@ -130,17 +130,17 @@ async def create_crypto_graph(ctx, crypto: str, period: str, units: int) -> None
 	try:
 		# Get data
 		if period == "minute":
-			res = cryptocompare.get_historical_price_minute(crypto.upper(), 'USD', limit=units, toTs=arrow.now().to("US/Eastern").datetime)
+			res = cryptocompare.get_historical_price_minute(crypto.upper(), 'USD', limit=units, toTs=arrow.utcnow().datetime)
 		elif period == "hour":
-			res = cryptocompare.get_historical_price_hour(crypto.upper(), 'USD', limit=units, toTs=arrow.now().to("US/Eastern").datetime)
+			res = cryptocompare.get_historical_price_hour(crypto.upper(), 'USD', limit=units, toTs=arrow.utcnow().datetime)
 		elif period == "day":
-			res = cryptocompare.get_historical_price_day(crypto.upper(), 'USD', limit=units, toTs=arrow.now().to("US/Eastern").datetime)
+			res = cryptocompare.get_historical_price_day(crypto.upper(), 'USD', limit=units, toTs=arrow.utcnow().datetime)
 		else:
 			logging.info(f"\"{period}\" is not a vaild period to get historical crypto prices!")
 		# End if/elif/else block
 
 		# Parse data
-		res_time = [ arrow.get(f['time']).datetime for f in res]
+		res_time = [ arrow.get(f['time']).to('US/Eastern').datetime for f in res]
 		res_close = [ f['close'] for f in res]
 
 		# Plot data
@@ -276,14 +276,14 @@ async def create_dual_crypto_graph(ctx, fcrypto: str, scrypto: str, period: str,
 	try:
 		# Get data
 		if period == "minute":
-			first_res = cryptocompare.get_historical_price_minute(fcrypto.upper(), 'USD', limit=units, toTs=arrow.now().to("US/Eastern").datetime)
-			second_res = cryptocompare.get_historical_price_minute(scrypto.upper(), 'USD', limit=units, toTs=arrow.now().to("US/Eastern").datetime)
+			first_res = cryptocompare.get_historical_price_minute(fcrypto.upper(), 'USD', limit=units, toTs=arrow.utcnow().datetime)
+			second_res = cryptocompare.get_historical_price_minute(scrypto.upper(), 'USD', limit=units, toTs=arrow.utcnow().datetime)
 		elif period == "hour":
-			first_res = cryptocompare.get_historical_price_hour(fcrypto.upper(), 'USD', limit=units, toTs=arrow.now().to("US/Eastern").datetime)
-			second_res = cryptocompare.get_historical_price_hour(scrypto.upper(), 'USD', limit=units, toTs=arrow.now().to("US/Eastern").datetime)
+			first_res = cryptocompare.get_historical_price_hour(fcrypto.upper(), 'USD', limit=units, toTs=arrow.utcnow().datetime)
+			second_res = cryptocompare.get_historical_price_hour(scrypto.upper(), 'USD', limit=units, toTs=arrow.utcnow().datetime)
 		elif period == "day":
-			first_res = cryptocompare.get_historical_price_day(fcrypto.upper(), 'USD', limit=units, toTs=arrow.now().to("US/Eastern").datetime)
-			second_res = cryptocompare.get_historical_price_day(scrypto.upper(), 'USD', limit=units, toTs=arrow.now().to("US/Eastern").datetime)
+			first_res = cryptocompare.get_historical_price_day(fcrypto.upper(), 'USD', limit=units, toTs=arrow.utcnow().datetime)
+			second_res = cryptocompare.get_historical_price_day(scrypto.upper(), 'USD', limit=units, toTs=arrow.utcnow().datetime)
 		else:
 			logging.info(f"\"{period}\" is not a vaild period to get historical crypto prices!")
 		# End if/elif/else block
@@ -624,12 +624,12 @@ async def wg(ctx, company: str) -> None:
 
 @client.command()
 async def twentyfourhourgraph(ctx, company: str) -> None:
-	await create_graph(ctx, company=company, start=arrow.now().shift(days=-1).datetime, end=arrow.now().datetime, interval="5m", prepost=True)
+	await create_graph(ctx, company=company, start=arrow.utcnow().shift(days=-1).datetime, end=arrow.utcnow().datetime, interval="5m", prepost=True)
 # End command
 
 @client.command()
 async def tfhg(ctx, company: str) -> None:
-	await create_graph(ctx, company=company, start=arrow.now().shift(days=-1).datetime, end=arrow.now().datetime, interval="5m", prepost=True)
+	await create_graph(ctx, company=company, start=arrow.utcnow().shift(days=-1).datetime, end=arrow.utcnow().datetime, interval="5m", prepost=True)
 # End command
 
 @client.command()
@@ -644,12 +644,12 @@ async def dg(ctx, company: str) -> None:
 
 @client.command()
 async def hourgraph(ctx, company: str) -> None:
-	await create_graph(ctx, company=company, start=arrow.now().shift(hours=-1).datetime, end=arrow.now().datetime, interval="1m", prepost=True)
+	await create_graph(ctx, company=company, start=arrow.utcnow().shift(hours=-1).datetime, end=arrow.utcnow().datetime, interval="1m", prepost=True)
 # End command
 
 @client.command()
 async def hg(ctx, company: str) -> None:
-	await create_graph(ctx, company=company, start=arrow.now().shift(hours=-1).datetime, end=arrow.now().datetime, interval="1m", prepost=True)
+	await create_graph(ctx, company=company, start=arrow.utcnow().shift(hours=-1).datetime, end=arrow.utcnow().datetime, interval="1m", prepost=True)
 # End command
 
 @client.command()
