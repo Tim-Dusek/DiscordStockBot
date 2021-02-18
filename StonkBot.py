@@ -175,11 +175,11 @@ async def create_crypto_candlestick_graph(ctx, crypto: str, period: str, units: 
 	try:
 		# Get data
 		if period == "minute":
-			res = cryptocompare.get_historical_price_minute(crypto.upper(), 'USD', limit=units, toTs=arrow.now().to("US/Eastern").datetime)
+			res = cryptocompare.get_historical_price_minute(crypto.upper(), 'USD', limit=units, toTs=arrow.utcnow().datetime)
 		elif period == "hour":
-			res = cryptocompare.get_historical_price_hour(crypto.upper(), 'USD', limit=units, toTs=arrow.now().to("US/Eastern").datetime)
+			res = cryptocompare.get_historical_price_hour(crypto.upper(), 'USD', limit=units, toTs=arrow.utcnow().datetime)
 		elif period == "day":
-			res = cryptocompare.get_historical_price_day(crypto.upper(), 'USD', limit=units, toTs=arrow.now().to("US/Eastern").datetime)
+			res = cryptocompare.get_historical_price_day(crypto.upper(), 'USD', limit=units, toTs=arrow.utcnow().datetime)
 		else:
 			logging.info(f"\"{period}\" is not a vaild period to get historical crypto prices!")
 		# End if/elif/else block
