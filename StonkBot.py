@@ -659,7 +659,7 @@ async def chg(ctx, crypto: str) -> None:
 
 @client.command()
 async def cdg(ctx, crypto: str) -> None:
-	await create_crypto_graph(ctx, crypto=crypto, period="minute", units=1440)
+	await create_crypto_graph(ctx, crypto=crypto, period="hour", units=24)
 # End command
 
 @client.command()
@@ -689,7 +689,7 @@ async def cchg(ctx, crypto: str) -> None:
 
 @client.command()
 async def ccdg(ctx, crypto: str) -> None:
-	await create_crypto_candlestick_graph(ctx, crypto=crypto, period="minute", units=1440)
+	await create_crypto_candlestick_graph(ctx, crypto=crypto, period="hour", units=24)
 # End command
 
 @client.command()
@@ -714,7 +714,7 @@ async def dchg(ctx, fcrypto: str, scrypto: str) -> None:
 
 @client.command()
 async def dcdg(ctx, fcrypto: str, scrypto: str) -> None:
-	await create_dual_crypto_graph(ctx, fcrypto=fcrypto, scrypto=scrypto, period="minute", units=1440)
+	await create_dual_crypto_graph(ctx, fcrypto=fcrypto, scrypto=scrypto, period="hour", units=24)
 # End command
 
 @client.command()
