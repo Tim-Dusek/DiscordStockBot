@@ -608,7 +608,17 @@ async def yeargraph(ctx, company: str) -> None:
 # End command
 
 @client.command()
+async def yg(ctx, company: str) -> None:
+	await create_graph(ctx, company=company, period="1y", interval="1d")
+# End command
+
+@client.command()
 async def monthgraph(ctx, company: str) -> None:
+	await create_graph(ctx, company=company, period="1mo", interval="1d")
+# End command
+
+@client.command()
+async def mg(ctx, company: str) -> None:
 	await create_graph(ctx, company=company, period="1mo", interval="1d")
 # End command
 
