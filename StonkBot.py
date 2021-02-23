@@ -521,12 +521,13 @@ async def help(ctx):
 			'/wg <Ticker Symbol> - Returns a 5 day graph of a stock\'s price history.\n'+ \
 			'/dg <Ticker Symbol> - Returns a 1 trading day graph of a stock\'s price history.\n'+ \
 			'/hg <Ticker Symbol> - Returns a 1 hour graph of a stock\'s price history.\n'+ \
+			'/tfhg <Ticker Symbol> - Returns a graph showing the past 24 hours of a stock\'s price history.\n' + \
 			'/syg <Ticker Symbol> - Returns a 1 year candlestick graph of a stock\'s price history.\n'+ \
 			'/smg <Ticker Symbol> - Returns a 1 month candlestick graph of a stock\'s price history.\n'+ \
 			'/swg <Ticker Symbol> - Returns a 5 day candlestick graph of a stock\'s price history.\n'+ \
 			'/sdg <Ticker Symbol> - Returns a 1 trading day candlestick graph of a stock\'s price history.\n'+ \
 			'/shg <Ticker Symbol> - Returns a 1 hour candlestick graph of a stock\'s price history.\n'+ \
-			'/tfhg <Ticker Symbol> - Returns a graph showing the past 24 hours of a stock\'s price history.\n' + \
+			'/stfhg <Ticker Symbol> - Returns a candlestick graph showing the past 24 hours of a stock\'s price history.\n' + \
 			'/cyg <Crypto Symbol> - Returns a 1 year graph of a cryptocurrency\'s price history.\n'+ \
 			'/cmg <Crypto Symbol> - Returns a 1 month graph of a cryptocurrency\'s price history.\n'+ \
 			'/cwg <Crypto Symbol> - Returns a 5 day graph of a cryptocurrency\'s price history.\n'+ \
