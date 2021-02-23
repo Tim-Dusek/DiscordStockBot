@@ -332,15 +332,21 @@ async def create_graph(ctx, company: str, interval: str, start=None, end=None, p
 		ticker = yf.Ticker(company)
 		
 		if period:
-			plotted_graph = ticker.history(period=period, interval=interval, prepost=prepost)
+			res = ticker.history(period=period, interval=interval, prepost=prepost)
 		elif start and end:
-			plotted_graph = ticker.history(start=start, end=end, interval=interval, prepost=prepost)
+			res = ticker.history(start=start, end=end, interval=interval, prepost=prepost)
 		else:
 			return()
 		# End if/elif/else block
 
+		# Check for empty response
+		if not pd.to_datetime(res.index).to_pydatetime().tolist():
+			await ctx.send("No data returned; the market is probably closed right now!")
+			return()
+		# End if
+
 		# Plot graph
-		plotted_graph['Close'].plot(title="Stock Price For " + company.upper())
+		res['Close'].plot(title="Stock Price For " + company.upper())
 		plt.xlabel ('Date & Military Time')
 		plt.ylabel ('Price')
 
@@ -374,8 +380,11 @@ async def create_candlestick_graph(ctx, company: str, interval: str, start=None,
 			return()
 		# End if/elif/else block
 
-		logging.info(res)
-		logging.info(pd.to_datetime(res.index).to_pydatetime().tolist())
+		# Check for empty response
+		if not pd.to_datetime(res.index).to_pydatetime().tolist():
+			await ctx.send("No data returned; the market is probably closed right now!")
+			return()
+		# End if
 
 		# Parse data
 		res_time = [ arrow.get(f).to("US/Eastern").datetime for f in pd.to_datetime(res.index).to_pydatetime().tolist()]
