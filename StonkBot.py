@@ -237,41 +237,6 @@ async def create_crypto_candlestick_graph(ctx, crypto: str, period: str, units: 
 	# End try/except block	
 # End def
 
-async def create_graph(ctx, company: str, interval: str, start=None, end=None, period=None, prepost=False) -> None:
-	try:
-		# Get stock data
-		ticker = yf.Ticker(company)
-		
-		if period:
-			plotted_graph = ticker.history(period=period, interval=interval, prepost=prepost)
-		elif start and end:
-			plotted_graph = ticker.history(start=start, end=end, interval=interval, prepost=prepost)
-		else:
-			return()
-		# End if/elif/else block
-
-		# Plot graph
-		plotted_graph['Close'].plot(title="Stock Price For " + company.upper())
-		plt.xlabel ('Date & Military Time')
-		plt.ylabel ('Price')
-
-		# Save image to buffer
-		image_buffer = io.BytesIO()
-		plt.savefig(image_buffer, format="PNG")
-		image_buffer.seek(0)
-		
-		# Push contents of image buffer to Discord
-		await ctx.send(file=discord.File(image_buffer, 'graph.png'))
-
-		# Close plot and image buffer
-		plt.close()
-		image_buffer.close()
-	except Exception as e:
-		logging.error(f'Ran into an error trying to create a graph!')
-		logging.exception(e)
-	# End try/except block
-# End def
-
 async def create_dual_crypto_graph(ctx, fcrypto: str, scrypto: str, period: str, units: int) -> None:
 	try:
 		# Get data
@@ -361,6 +326,105 @@ async def create_dual_crypto_graph(ctx, fcrypto: str, scrypto: str, period: str,
 	# End try/except block	
 # End def
 
+async def create_graph(ctx, company: str, interval: str, start=None, end=None, period=None, prepost=False) -> None:
+	try:
+		# Get stock data
+		ticker = yf.Ticker(company)
+		
+		if period:
+			plotted_graph = ticker.history(period=period, interval=interval, prepost=prepost)
+		elif start and end:
+			plotted_graph = ticker.history(start=start, end=end, interval=interval, prepost=prepost)
+		else:
+			return()
+		# End if/elif/else block
+
+		# Plot graph
+		plotted_graph['Close'].plot(title="Stock Price For " + company.upper())
+		plt.xlabel ('Date & Military Time')
+		plt.ylabel ('Price')
+
+		# Save image to buffer
+		image_buffer = io.BytesIO()
+		plt.savefig(image_buffer, format="PNG")
+		image_buffer.seek(0)
+		
+		# Push contents of image buffer to Discord
+		await ctx.send(file=discord.File(image_buffer, 'graph.png'))
+
+		# Close plot and image buffer
+		plt.close()
+		image_buffer.close()
+	except Exception as e:
+		logging.error(f'Ran into an error trying to create a graph!')
+		logging.exception(e)
+	# End try/except block
+# End def
+
+async def create_candlestick_graph(ctx, company: str, interval: str, start=None, end=None, period=None, prepost=False) -> None:
+	try:
+		# Get stock data
+		ticker = yf.Ticker(company)
+		
+		if period:
+			res = ticker.history(period=period, interval=interval, prepost=prepost)
+		elif start and end:
+			res = ticker.history(start=start, end=end, interval=interval, prepost=prepost)
+		else:
+			return()
+		# End if/elif/else block
+
+		# Parse data
+		res_time = [ arrow.get(f).to("US/Eastern").datetime for f in pd.to_datetime(res.index).to_pydatetime().tolist()]
+		res_open = res.Open.tolist()
+		res_high = res.High.tolist()
+		res_low = res.Low.tolist()
+		res_close = res.Close.tolist()
+
+		# Draw figure
+		fig = go.Figure(data=[go.Candlestick(x=res_time, open=res_open, high=res_high, low=res_low, close=res_close)])
+		fig.update_xaxes(rangeslider_visible=False)
+		fig.update_layout(
+			title = f'{company.upper()} Price Graph',
+			xaxis_tickformat = '%b %d %H:%M',
+			yaxis_tickprefix = '$', 
+			yaxis_tickformat = ',.'
+		)
+		fig.update_xaxes(
+			tickangle=-45, 
+			tickfont=dict(
+				family='Rockwell', 
+				color='black', 
+				size=14
+			),
+			showline=True,
+			linewidth=2,
+			linecolor='black'
+		)
+		fig.update_yaxes(
+			showline=True,
+			linewidth=2,
+			linecolor='black'
+		)
+
+		# Save image to buffer
+		image_buffer = io.BytesIO()
+		fig.write_image(image_buffer, format="PNG")
+		image_buffer.seek(0)
+		
+		# Push contents of image buffer to Discord
+		await ctx.send(file=discord.File(image_buffer, 'graph.png'))
+
+		# Close figure and image buffer
+		fig.data = []
+		del(fig)
+		image_buffer.close()
+	except Exception as e:
+		logging.error(f'Ran into an error trying to create a stock candlestick graph!')
+		logging.exception(e)
+	# End try/except block	
+# End def
+
 ###
 # Events
 ###
@@ -445,6 +509,11 @@ async def help(ctx):
 			'/wg <Ticker Symbol> - Returns a 5 day graph of a stock\'s price history.\n'+ \
 			'/dg <Ticker Symbol> - Returns a 1 trading day graph of a stock\'s price history.\n'+ \
 			'/hg <Ticker Symbol> - Returns a 1 hour graph of a stock\'s price history.\n'+ \
+			'/syg <Ticker Symbol> - Returns a 1 year candlestick graph of a stock\'s price history.\n'+ \
+			'/smg <Ticker Symbol> - Returns a 1 month candlestick graph of a stock\'s price history.\n'+ \
+			'/swg <Ticker Symbol> - Returns a 5 day candlestick graph of a stock\'s price history.\n'+ \
+			'/sdg <Ticker Symbol> - Returns a 1 trading day candlestick graph of a stock\'s price history.\n'+ \
+			'/shg <Ticker Symbol> - Returns a 1 hour candlestick graph of a stock\'s price history.\n'+ \
 			'/tfhg <Ticker Symbol> - Returns a graph showing the past 24 hours of a stock\'s price history.\n' + \
 			'/cyg <Crypto Symbol> - Returns a 1 year graph of a cryptocurrency\'s price history.\n'+ \
 			'/cmg <Crypto Symbol> - Returns a 1 month graph of a cryptocurrency\'s price history.\n'+ \
@@ -613,6 +682,11 @@ async def yg(ctx, company: str) -> None:
 # End command
 
 @client.command()
+async def syg(ctx, company: str) -> None:
+	await create_candlestick_graph(ctx, company=company, period="1y", interval="1d")
+# End command
+
+@client.command()
 async def monthgraph(ctx, company: str) -> None:
 	await create_graph(ctx, company=company, period="1mo", interval="1d")
 # End command
@@ -623,13 +697,23 @@ async def mg(ctx, company: str) -> None:
 # End command
 
 @client.command()
+async def smg(ctx, company: str) -> None:
+	await create_candlestick_graph(ctx, company=company, period="1mo", interval="1d")
+# End command
+
+@client.command()
 async def weekgraph(ctx, company: str) -> None:
-	await create_graph(ctx, company=company, period="5d", interval="1d")
+	await create_graph(ctx, company=company, period="7d", interval="1d")
 # End command
 
 @client.command()
 async def wg(ctx, company: str) -> None:
-	await create_graph(ctx, company=company, period="5d", interval="1d")
+	await create_graph(ctx, company=company, period="7d", interval="1d")
+# End command
+
+@client.command()
+async def swg(ctx, company: str) -> None:
+	await create_candlestick_graph(ctx, company=company, period="7d", interval="1d")
 # End command
 
 @client.command()
@@ -643,13 +727,23 @@ async def tfhg(ctx, company: str) -> None:
 # End command
 
 @client.command()
+async def stfhg(ctx, company: str) -> None:
+	await create_candlestick_graph(ctx, company=company, start=arrow.utcnow().shift(days=-1).datetime, end=arrow.utcnow().datetime, interval="5m", prepost=True)
+# End command
+
+@client.command()
 async def daygraph(ctx, company: str) -> None:
 	await create_graph(ctx, company=company, period="1d", interval="1m", prepost=True)
 # End command
 
-client.command()
+@client.command()
 async def dg(ctx, company: str) -> None:
 	await create_graph(ctx, company=company, period="1d", interval="1m", prepost=True)
+# End command
+
+@client.command()
+async def sdg(ctx, company: str) -> None:
+	await create_candlestick_graph(ctx, company=company, period="1d", interval="1m", prepost=True)
 # End command
 
 @client.command()
@@ -660,6 +754,11 @@ async def hourgraph(ctx, company: str) -> None:
 @client.command()
 async def hg(ctx, company: str) -> None:
 	await create_graph(ctx, company=company, start=arrow.utcnow().shift(hours=-1).datetime, end=arrow.utcnow().datetime, interval="1m", prepost=True)
+# End command
+
+@client.command()
+async def shg(ctx, company: str) -> None:
+	await create_candlestick_graph(ctx, company=company, start=arrow.utcnow().shift(hours=-1).datetime, end=arrow.utcnow().datetime, interval="1m", prepost=True)
 # End command
 
 @client.command()
