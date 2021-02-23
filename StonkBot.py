@@ -470,12 +470,12 @@ async def create_dual_stock_graph(ctx, fcompany: str, scompany: str, interval: s
 
 		# Add traces
 		fig.add_trace(
-			go.Scatter(x=first_res_time, y=first_res_close, name=f"Price of {fcrypto.upper()}"),
+			go.Scatter(x=first_res_time, y=first_res_close, name=f"Price of {fcompany.upper()}"),
 			secondary_y=False,
 		)
 
 		fig.add_trace(
-			go.Scatter(x=second_res_time, y=second_res_close, name=f"Price of {scrypto.upper()}"),
+			go.Scatter(x=second_res_time, y=second_res_close, name=f"Price of {scompany.upper()}"),
 			secondary_y=True,
 		)
 
