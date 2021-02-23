@@ -803,6 +803,11 @@ async def syg(ctx, company: str) -> None:
 # End command
 
 @client.command()
+async def dsyg(ctx, fcompany: str, scompany: str) -> None:
+	await create_dual_stock_graph(ctx, fcompany=fcompany, scompany=scompany, period="1y", interval="1d")
+# End command
+
+@client.command()
 async def monthgraph(ctx, company: str) -> None:
 	await create_graph(ctx, company=company, period="1mo", interval="1d")
 # End command
@@ -815,6 +820,11 @@ async def mg(ctx, company: str) -> None:
 @client.command()
 async def smg(ctx, company: str) -> None:
 	await create_candlestick_graph(ctx, company=company, period="1mo", interval="1d")
+# End command
+
+@client.command()
+async def dsmg(ctx, fcompany: str, scompany: str) -> None:
+	await create_dual_stock_graph(ctx, fcompany=fcompany, scompany=scompany, period="1mo", interval="1d")
 # End command
 
 @client.command()
@@ -833,6 +843,11 @@ async def swg(ctx, company: str) -> None:
 # End command
 
 @client.command()
+async def dswg(ctx, fcompany: str, scompany: str) -> None:
+	await create_dual_stock_graph(ctx, fcompany=fcompany, scompany=scompany, period="7d", interval="1d")
+# End command
+
+@client.command()
 async def twentyfourhourgraph(ctx, company: str) -> None:
 	await create_graph(ctx, company=company, start=arrow.utcnow().shift(days=-1).datetime, end=arrow.utcnow().datetime, interval="5m", prepost=True)
 # End command
@@ -845,6 +860,11 @@ async def tfhg(ctx, company: str) -> None:
 @client.command()
 async def stfhg(ctx, company: str) -> None:
 	await create_candlestick_graph(ctx, company=company, start=arrow.utcnow().shift(days=-1).datetime, end=arrow.utcnow().datetime, interval="5m", prepost=True)
+# End command
+
+@client.command()
+async def dstfhg(ctx, fcompany: str, scompany: str) -> None:
+	await create_dual_stock_graph(ctx, fcompany=fcompany, scompany=scompany, start=arrow.utcnow().shift(days=-1).datetime, end=arrow.utcnow().datetime, interval="5m", prepost=True)
 # End command
 
 @client.command()
@@ -863,6 +883,11 @@ async def sdg(ctx, company: str) -> None:
 # End command
 
 @client.command()
+async def dsdg(ctx, fcompany: str, scompany: str) -> None:
+	await create_dual_stock_graph(ctx, fcompany=fcompany, scompany=scompany, period="1d", interval="5m")
+# End command
+
+@client.command()
 async def hourgraph(ctx, company: str) -> None:
 	await create_graph(ctx, company=company, start=arrow.utcnow().shift(hours=-1).datetime, end=arrow.utcnow().datetime, interval="1m", prepost=True)
 # End command
@@ -875,6 +900,11 @@ async def hg(ctx, company: str) -> None:
 @client.command()
 async def shg(ctx, company: str) -> None:
 	await create_candlestick_graph(ctx, company=company, start=arrow.utcnow().shift(hours=-1).datetime, end=arrow.utcnow().datetime, interval="1m", prepost=True)
+# End command
+
+@client.command()
+async def dshg(ctx, fcompany: str, scompany: str) -> None:
+	await create_dual_stock_graph(ctx, fcompany=fcompany, scompany=scompany, start=arrow.utcnow().shift(hours=-1).datetime, end=arrow.utcnow().datetime, interval="1m", prepost=True)
 # End command
 
 @client.command()
