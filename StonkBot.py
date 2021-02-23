@@ -745,17 +745,17 @@ async def stfhg(ctx, company: str) -> None:
 
 @client.command()
 async def daygraph(ctx, company: str) -> None:
-	await create_graph(ctx, company=company, period="1d", interval="1m", prepost=True)
+	await create_graph(ctx, company=company, period="1d", interval="5m", prepost=True)
 # End command
 
 @client.command()
 async def dg(ctx, company: str) -> None:
-	await create_graph(ctx, company=company, period="1d", interval="1m", prepost=True)
+	await create_graph(ctx, company=company, period="1d", interval="5m", prepost=True)
 # End command
 
 @client.command()
 async def sdg(ctx, company: str) -> None:
-	await create_candlestick_graph(ctx, company=company, period="1d", interval="1m", prepost=True)
+	await create_candlestick_graph(ctx, company=company, period="1d", interval="5m", prepost=True)
 # End command
 
 @client.command()
