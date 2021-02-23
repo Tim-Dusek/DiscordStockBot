@@ -365,7 +365,6 @@ async def create_candlestick_graph(ctx, company: str, interval: str, start=None,
 	try:
 		# Get stock data
 		ticker = yf.Ticker(company)
-		logging.info(ticker)
 		
 		if period:
 			res = ticker.history(period=period, interval=interval, prepost=prepost)
@@ -374,6 +373,8 @@ async def create_candlestick_graph(ctx, company: str, interval: str, start=None,
 		else:
 			return()
 		# End if/elif/else block
+
+		logging.info(res)
 
 		# Parse data
 		res_time = [ arrow.get(f).to("US/Eastern").datetime for f in pd.to_datetime(res.index).to_pydatetime().tolist()]
