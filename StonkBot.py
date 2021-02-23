@@ -437,6 +437,101 @@ async def create_candlestick_graph(ctx, company: str, interval: str, start=None,
 	# End try/except block	
 # End def
 
+async def create_dual_stock_graph(ctx, fcompany: str, scompany: str, interval: str, start=None, end=None, period=None, prepost=False) -> None:
+	try:
+		# Get stock data
+		first_ticker = yf.Ticker(fcompany)
+		second_ticker = yf.Ticker(scompany)
+		
+		if period:
+			first_res = first_ticker.history(period=period, interval=interval, prepost=prepost)
+			second_res = second_ticker.history(period=period, interval=interval, prepost=prepost)
+		elif start and end:
+			first_res = first_ticker.history(start=start, end=end, interval=interval, prepost=prepost)
+			second_res = second_ticker.history(start=start, end=end, interval=interval, prepost=prepost)
+		else:
+			return()
+		# End if/elif/else block
+
+		# Check for empty response
+		if not pd.to_datetime(first_res.index).to_pydatetime().tolist() or not pd.to_datetime(second_res.index).to_pydatetime().tolist():
+			await ctx.send("No data returned; the market is probably closed right now!")
+			return()
+		# End if
+
+		# Parse data
+		first_res_time = [ arrow.get(f).to("US/Eastern").datetime for f in pd.to_datetime(first_res.index).to_pydatetime().tolist()]
+		first_res_close = first_res.Close.tolist()
+		second_res_time = [ arrow.get(f).to("US/Eastern").datetime for f in pd.to_datetime(second_res.index).to_pydatetime().tolist()]
+		second_res_close = second_res.Close.tolist()
+
+		# Draw figure
+		fig = make_subplots(specs=[[{"secondary_y": True}]])
+
+		# Add traces
+		fig.add_trace(
+			go.Scatter(x=first_res_time, y=first_res_close, name=f"Price of {fcrypto.upper()}"),
+			secondary_y=False,
+		)
+
+		fig.add_trace(
+			go.Scatter(x=second_res_time, y=second_res_close, name=f"Price of {scrypto.upper()}"),
+			secondary_y=True,
+		)
+
+		# Configure Axes
+		fig.update_yaxes(title_text=f"<b>{fcompany.upper()} price</b>", secondary_y=False)
+		fig.update_yaxes(title_text=f"<b>{scompany.upper()} price</b>", secondary_y=True)
+		fig.update_yaxes(tickprefix = '$', tickformat = ',.', secondary_y=False)
+		fig.update_yaxes(tickprefix = '$', tickformat = ',.', secondary_y=True)
+		fig.update_xaxes(rangeslider_visible=False)
+		fig.update_layout(title = f'<b>Price comparison of {fcompany.upper()} and {scompany.upper()}</b>')
+		
+		fig.update_xaxes(
+			tickangle=-45, 
+			tickfont=dict(
+				family='Rockwell', 
+				color='black', 
+				size=14
+			),
+			showline=True,
+			linewidth=2,
+			linecolor='black',
+			tickformat = '%b %d %H:%M'
+		)
+		fig.update_yaxes(
+			showline=True,
+			linewidth=2,
+			linecolor='black'
+		)
+
+		# Move legend to top right of chart
+		fig.update_layout(legend=dict(
+			orientation="h",
+			yanchor="bottom",
+			y=1.02,
+			xanchor="right",
+			x=1
+		))
+
+		# Save image to buffer
+		image_buffer = io.BytesIO()
+		fig.write_image(image_buffer, format="PNG")
+		image_buffer.seek(0)
+		
+		# Push contents of image buffer to Discord
+		await ctx.send(file=discord.File(image_buffer, 'graph.png'))
+
+		# Close figure and image buffer
+		fig.data = []
+		del(fig)
+		image_buffer.close()
+	except Exception as e:
+		logging.error(f'Ran into an error trying to create a dual stock graph!')
+		logging.exception(e)
+	# End try/except block	
+# End def
+
 ###
 # Events
 ###
@@ -501,8 +596,10 @@ async def help(ctx):
 		await ctx.author.send('Base User Commands:\n'+ \
 			'/help - Get info on bot commands you can access.\n'+ \
 			'/ping - Shows the latency of the bot.\n'+ \
-			'/news <Optional: Company> - Shows the top 3 relevant market articles.\n'+ \
-			'/cryptonews <Optional: Crypto> - Shows the top 3 relevant market articles.\n'+ \
+			'/news <Optional: Company> - Shows the top 3 relevant market articles.\n'
+		)
+		
+		await ctx.author.send('Stock specific commands: \n'	+ \
 			'/price <Ticker Symbol> - Returns daily price information about a ticker symbol.\n'+ \
 			'/whois <Ticker Symbol> - Returns general information about a ticker symbol.\n'+ \
 			'/expert <Ticker Symbol> - Returns expert opinions on what a stock is doing.\n'+ \
@@ -512,10 +609,7 @@ async def help(ctx):
 			'/weekgraph <Ticker Symbol> - Returns a 5 day graph of a stock\'s price history.\n'+ \
 			'/daygraph <Ticker Symbol> - Returns a 1 trading day graph of a stock\'s price history.\n'+ \
 			'/twentyfourhourgraph <Ticker Symbol> - Returns a graph showing the past 24 hours of a stock\'s price history.\n' + \
-			'/8ball - Shake the Magic 8 Ball and be told what stock to buy.\n'
-		)
-		await ctx.author.send(
-			'Shorthand Commands:\n' + \
+			'/8ball - Shake the Magic 8 Ball and be told what stock to buy.\n' + \
 			'/yg <Ticker Symbol> - Returns a 1 year graph of a stock\'s price history.\n'+ \
 			'/mg <Ticker Symbol> - Returns a 1 month graph of a stock\'s price history.\n'+ \
 			'/wg <Ticker Symbol> - Returns a 5 day graph of a stock\'s price history.\n'+ \
@@ -528,6 +622,15 @@ async def help(ctx):
 			'/sdg <Ticker Symbol> - Returns a 1 trading day candlestick graph of a stock\'s price history.\n'+ \
 			'/shg <Ticker Symbol> - Returns a 1 hour candlestick graph of a stock\'s price history.\n'+ \
 			'/stfhg <Ticker Symbol> - Returns a candlestick graph showing the past 24 hours of a stock\'s price history.\n' + \
+			'/dsyg <Ticker Symbol> - Returns a 1 year candlestick graph of two stocks\' price history.\n'+ \
+			'/dsmg <Ticker Symbol> - Returns a 1 month candlestick graph of two stocks\' price history.\n'+ \
+			'/dswg <Ticker Symbol> - Returns a 5 day candlestick graph of two stocks\' price history.\n'+ \
+			'/dsdg <Ticker Symbol> - Returns a 1 trading day candlestick graph of two stocks\' price history.\n'+ \
+			'/dshg <Ticker Symbol> - Returns a 1 hour candlestick graph of two stocks\' price history.\n'
+		)
+
+		await ctx.author.send('Crypto specific commands:\n' + \
+			'/cryptonews <Optional: Crypto> - Shows the top 3 relevant market articles.\n'+ \
 			'/cyg <Crypto Symbol> - Returns a 1 year graph of a cryptocurrency\'s price history.\n'+ \
 			'/cmg <Crypto Symbol> - Returns a 1 month graph of a cryptocurrency\'s price history.\n'+ \
 			'/cwg <Crypto Symbol> - Returns a 5 day graph of a cryptocurrency\'s price history.\n'+ \
