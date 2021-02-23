@@ -375,6 +375,7 @@ async def create_candlestick_graph(ctx, company: str, interval: str, start=None,
 		# End if/elif/else block
 
 		logging.info(res)
+		logging.info(pd.to_datetime(res.index).to_pydatetime().tolist())
 
 		# Parse data
 		res_time = [ arrow.get(f).to("US/Eastern").datetime for f in pd.to_datetime(res.index).to_pydatetime().tolist()]
