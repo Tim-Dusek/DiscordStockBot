@@ -6,7 +6,7 @@
 ###
 
 import time, os, sys, argparse, io, re, logging, traceback
-import discord, arrow, cryptocompare, holidays, yfinance as yf, datetime as datetime, matplotlib.pyplot as plt, matplotlib.dates as mdates, numpy as np, plotly.graph_objects as go
+import discord, arrow, cryptocompare, holidays, yfinance as yf, datetime as datetime, matplotlib.pyplot as plt, matplotlib.dates as mdates, numpy as np, plotly.graph_objects as go, pandas as pd
 from datetime import datetime
 from random import randint
 from discord.ext import commands, tasks

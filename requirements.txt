@@ -10,3 +10,4 @@ kaleido
 plotly
 psutil
 holidays
+pandas
