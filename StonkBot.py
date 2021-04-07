@@ -599,7 +599,8 @@ async def help(ctx):
 			'/news <Optional: Company> - Shows the top 3 relevant market articles.\n'
 		)
 		
-		await ctx.author.send('Stock specific commands: \n'	+ \
+		# Stonks
+		await ctx.author.send('Stock regular graph specific commands: \n'+ \
 			'/price <Ticker Symbol> - Returns daily price information about a ticker symbol.\n'+ \
 			'/whois <Ticker Symbol> - Returns general information about a ticker symbol.\n'+ \
 			'/expert <Ticker Symbol> - Returns expert opinions on what a stock is doing.\n'+ \
@@ -608,14 +609,20 @@ async def help(ctx):
 			'/monthgraph <Ticker Symbol> - Returns a 1 month graph of a stock\'s price history.\n'+ \
 			'/weekgraph <Ticker Symbol> - Returns a 5 day graph of a stock\'s price history.\n'+ \
 			'/daygraph <Ticker Symbol> - Returns a 1 trading day graph of a stock\'s price history.\n'+ \
-			'/twentyfourhourgraph <Ticker Symbol> - Returns a graph showing the past 24 hours of a stock\'s price history.\n' + \
-			'/8ball - Shake the Magic 8 Ball and be told what stock to buy.\n' + \
+			'/twentyfourhourgraph <Ticker Symbol> - Returns a graph showing the past 24 hours of a stock\'s price history.\n'+ \
 			'/yg <Ticker Symbol> - Returns a 1 year graph of a stock\'s price history.\n'+ \
 			'/mg <Ticker Symbol> - Returns a 1 month graph of a stock\'s price history.\n'+ \
 			'/wg <Ticker Symbol> - Returns a 5 day graph of a stock\'s price history.\n'+ \
 			'/dg <Ticker Symbol> - Returns a 1 trading day graph of a stock\'s price history.\n'+ \
-			'/hg <Ticker Symbol> - Returns a 1 hour graph of a stock\'s price history.\n'+ \
-			'/tfhg <Ticker Symbol> - Returns a graph showing the past 24 hours of a stock\'s price history.\n' + \
+			'/hg <Ticker Symbol> - Returns a 1 hour graph of a stock\'s price history.\n'
+		)
+
+		await ctx.author.send('Other stock specific commands:\n' + \
+			'/8ball - Shake the Magic 8 Ball and be told what stock to buy.\n' + \
+			'/tfhg <Ticker Symbol> - Returns a graph showing the past 24 hours of a stock\'s price history.\n'
+		)
+
+		await ctx.author.send('Stock candlestick chart specific commands: \n'+ \
 			'/syg <Ticker Symbol> - Returns a 1 year candlestick graph of a stock\'s price history.\n'+ \
 			'/smg <Ticker Symbol> - Returns a 1 month candlestick graph of a stock\'s price history.\n'+ \
 			'/swg <Ticker Symbol> - Returns a 5 day candlestick graph of a stock\'s price history.\n'+ \
@@ -629,18 +636,25 @@ async def help(ctx):
 			'/dshg <Ticker Symbol> - Returns a 1 hour candlestick graph of two stocks\' price history.\n'
 		)
 
-		await ctx.author.send('Crypto specific commands:\n' + \
+		# Crypto
+		await ctx.author.send('Crypto graph specific commands:\n' + \
 			'/cryptonews <Optional: Crypto> - Shows the top 3 relevant market articles.\n'+ \
 			'/cyg <Crypto Symbol> - Returns a 1 year graph of a cryptocurrency\'s price history.\n'+ \
 			'/cmg <Crypto Symbol> - Returns a 1 month graph of a cryptocurrency\'s price history.\n'+ \
 			'/cwg <Crypto Symbol> - Returns a 5 day graph of a cryptocurrency\'s price history.\n'+ \
 			'/cdg <Crypto Symbol> - Returns a 1 trading day graph of a cryptocurrency\'s price history.\n' + \
-			'/chg <Crypto Symbol> - Returns a 1 hour graph of a cryptocurrency\'s price history.\n' + \
+			'/chg <Crypto Symbol> - Returns a 1 hour graph of a cryptocurrency\'s price history.\n'
+		)
+
+		await ctx.author.send('Crypto candlestick chart specific commands:\n' + \
 			'/ccyg <Crypto Symbol> - Returns a 1 year candlestick graph of a cryptocurrency\'s price history.\n'+ \
 			'/ccmg <Crypto Symbol> - Returns a 1 month candlestick graph of a cryptocurrency\'s price history.\n'+ \
 			'/ccwg <Crypto Symbol> - Returns a 5 day candlestick graph of a cryptocurrency\'s price history.\n'+ \
 			'/ccdg <Crypto Symbol> - Returns a 1 trading day candlestick graph of a cryptocurrency\'s price history.\n' + \
-			'/cchg <Crypto Symbol> - Returns a 1 hour candlestick graph of a cryptocurrency\'s price history.\n' + \
+			'/cchg <Crypto Symbol> - Returns a 1 hour candlestick graph of a cryptocurrency\'s price history.\n'
+		)
+
+		await ctx.author.send('Crypto dual chart specific commands:\n' + \
 			'/dcyg <Crypto Symbol> - Returns a 1 year graph of two cryptocurrencies\' price histories.\n'+ \
 			'/dcmg <Crypto Symbol> - Returns a 1 month graph two cryptocurrencies\' price histories.\n'+ \
 			'/dcwg <Crypto Symbol> - Returns a 5 day graph of two cryptocurrencies\' price histories.\n'+ \
@@ -648,6 +662,7 @@ async def help(ctx):
 			'/dchg <Crypto Symbol> - Returns a 1 hour graph of two cryptocurrencies\' price histories.\n'
 		)
 
+		# Admin
 		if ctx.message.author.guild_permissions.administrator:
 			await ctx.author.send('My records show you are an admin!\n'+ \
 			'Here are the admin only commands:\n'+ \
