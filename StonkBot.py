@@ -141,7 +141,7 @@ async def create_crypto_graph(ctx, crypto: str, period: str, units: int) -> None
 
 		# Parse data
 		res_time = [ arrow.get(f['time']).to('US/Eastern').datetime for f in res]
-		res_close = [ f['close'] for f in res]
+		res_close = [ float("{:.2f}".format(f['close'])) for f in res]
 
 		# Plot data
 		fig, ax = plt.subplots()
@@ -188,10 +188,10 @@ async def create_crypto_candlestick_graph(ctx, crypto: str, period: str, units: 
 
 		# Parse data
 		res_time = [ arrow.get(f['time']).to("US/Eastern").datetime for f in res]
-		res_open = [ f['open'] for f in res]
-		res_high = [ f['high'] for f in res]
-		res_low = [ f['low'] for f in res]
-		res_close = [ f['close'] for f in res]
+		res_open = [ float("{:.2f}".format(f['open'])) for f in res]
+		res_high = [ float("{:.2f}".format(f['high'])) for f in res]
+		res_low = [ float("{:.2f}".format(f['low'])) for f in res]
+		res_close = [ float("{:.2f}".format(f['close'])) for f in res]
 
 		# Draw figure
 		fig = go.Figure(data=[go.Candlestick(x=res_time, open=res_open, high=res_high, low=res_low, close=res_close)])
@@ -255,9 +255,9 @@ async def create_dual_crypto_graph(ctx, fcrypto: str, scrypto: str, period: str,
 
 		# Parse data
 		first_res_time = [ arrow.get(f['time']).to("US/Eastern").datetime for f in first_res]
-		first_res_close = [ f['close'] for f in first_res]
+		first_res_close = [ float("{:.2f}".format(f['close'])) for f in first_res]
 		second_res_time = [ arrow.get(f['time']).to("US/Eastern").datetime for f in second_res]
-		second_res_close = [ f['close'] for f in second_res]
+		second_res_close = [ float("{:.2f}".format(f['close'])) for f in second_res]
 
 		# Draw figure
 		fig = make_subplots(specs=[[{"secondary_y": True}]])
@@ -346,6 +346,7 @@ async def create_graph(ctx, company: str, interval: str, start=None, end=None, p
 		# End if
 
 		# Plot graph
+		res['Close'] = [float("{:.2f}".format(f)) for f in res['Close']] 
 		res['Close'].plot(title="Stock Price For " + company.upper())
 		plt.xlabel ('Date & Military Time')
 		plt.ylabel ('Price')
@@ -388,10 +389,10 @@ async def create_candlestick_graph(ctx, company: str, interval: str, start=None,
 
 		# Parse data
 		res_time = [ arrow.get(f).to("US/Eastern").datetime for f in pd.to_datetime(res.index).to_pydatetime().tolist()]
-		res_open = res.Open.tolist()
-		res_high = res.High.tolist()
-		res_low = res.Low.tolist()
-		res_close = res.Close.tolist()
+		res_open = [ float("{:.2f}".format(f)) for f in res.Open.tolist()]
+		res_high = [ float("{:.2f}".format(f)) for f in res.High.tolist()]
+		res_low = [ float("{:.2f}".format(f)) for f in res.Low.tolist()]
+		res_close = [ float("{:.2f}".format(f)) for f in res.Close.tolist()]
 
 		# Draw figure
 		fig = go.Figure(data=[go.Candlestick(x=res_time, open=res_open, high=res_high, low=res_low, close=res_close)])
