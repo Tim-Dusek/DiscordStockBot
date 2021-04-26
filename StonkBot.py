@@ -200,7 +200,7 @@ async def create_crypto_candlestick_graph(ctx, crypto: str, period: str, units: 
 			title = f'{crypto.upper()} Price Graph',
 			xaxis_tickformat = '%b %d %H:%M',
 			yaxis_tickprefix = '$', 
-			yaxis_tickformat = ',.3'
+			yaxis_tickformat = ',.3~f'
 		)
 		fig.update_xaxes(
 			tickangle=-45, 
@@ -276,8 +276,8 @@ async def create_dual_crypto_graph(ctx, fcrypto: str, scrypto: str, period: str,
 		# Configure Axes
 		fig.update_yaxes(title_text=f"<b>{fcrypto.upper()} price</b>", secondary_y=False)
 		fig.update_yaxes(title_text=f"<b>{scrypto.upper()} price</b>", secondary_y=True)
-		fig.update_yaxes(tickprefix = '$', tickformat = ',.3', secondary_y=False)
-		fig.update_yaxes(tickprefix = '$', tickformat = ',.3', secondary_y=True)
+		fig.update_yaxes(tickprefix = '$', tickformat = ',.3~f', secondary_y=False)
+		fig.update_yaxes(tickprefix = '$', tickformat = ',.3~f', secondary_y=True)
 		fig.update_xaxes(rangeslider_visible=False)
 		fig.update_layout(title = f'<b>Price comparison of {fcrypto.upper()} and {scrypto.upper()}</b>')
 		
@@ -401,7 +401,7 @@ async def create_candlestick_graph(ctx, company: str, interval: str, start=None,
 			title = f'{company.upper()} Price Graph',
 			xaxis_tickformat = '%b %d %H:%M',
 			yaxis_tickprefix = '$', 
-			yaxis_tickformat = ',.3'
+			yaxis_tickformat = ',.3~f'
 		)
 		fig.update_xaxes(
 			tickangle=-45, 
@@ -483,8 +483,8 @@ async def create_dual_stock_graph(ctx, fcompany: str, scompany: str, interval: s
 		# Configure Axes
 		fig.update_yaxes(title_text=f"<b>{fcompany.upper()} price</b>", secondary_y=False)
 		fig.update_yaxes(title_text=f"<b>{scompany.upper()} price</b>", secondary_y=True)
-		fig.update_yaxes(tickprefix = '$', tickformat = ',.3', secondary_y=False)
-		fig.update_yaxes(tickprefix = '$', tickformat = ',.3', secondary_y=True)
+		fig.update_yaxes(tickprefix = '$', tickformat = ',.3~f', secondary_y=False)
+		fig.update_yaxes(tickprefix = '$', tickformat = ',.3~f', secondary_y=True)
 		fig.update_xaxes(rangeslider_visible=False)
 		fig.update_layout(title = f'<b>Price comparison of {fcompany.upper()} and {scompany.upper()}</b>')
 		
