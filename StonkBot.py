@@ -198,9 +198,7 @@ async def create_crypto_candlestick_graph(ctx, crypto: str, period: str, units: 
 		fig.update_xaxes(rangeslider_visible=False)
 		fig.update_layout(
 			title = f'{crypto.upper()} Price Graph',
-			xaxis_tickformat = '%b %d %H:%M',
-			yaxis_tickprefix = '$', 
-			yaxis_tickformat = ',.3~f'
+			xaxis_tickformat = '%b %d %H:%M'
 		)
 		fig.update_xaxes(
 			tickangle=-45, 
@@ -216,7 +214,9 @@ async def create_crypto_candlestick_graph(ctx, crypto: str, period: str, units: 
 		fig.update_yaxes(
 			showline=True,
 			linewidth=2,
-			linecolor='black'
+			linecolor='black',
+			tickprefix = '$',
+			tickformat = ',.3~f'
 		)
 
 		# Save image to buffer
@@ -399,9 +399,7 @@ async def create_candlestick_graph(ctx, company: str, interval: str, start=None,
 		fig.update_xaxes(rangeslider_visible=False)
 		fig.update_layout(
 			title = f'{company.upper()} Price Graph',
-			xaxis_tickformat = '%b %d %H:%M',
-			yaxis_tickprefix = '$', 
-			yaxis_tickformat = ',.3~f'
+			xaxis_tickformat = '%b %d %H:%M'
 		)
 		fig.update_xaxes(
 			tickangle=-45, 
@@ -417,7 +415,9 @@ async def create_candlestick_graph(ctx, company: str, interval: str, start=None,
 		fig.update_yaxes(
 			showline=True,
 			linewidth=2,
-			linecolor='black'
+			linecolor='black',
+			tickprefix = '$', 
+			tickformat = ',.3~f'
 		)
 
 		# Save image to buffer
