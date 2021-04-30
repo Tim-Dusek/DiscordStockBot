@@ -274,20 +274,20 @@ async def create_dual_crypto_graph(ctx, fcrypto: str, scrypto: str, period: str,
 		# Add traces
 		fig.add_trace(
 			go.Scatter(x=first_res_time, y=first_res_close, name=f"Price of {fcrypto.upper()}"), row=1, col=1,
-			secondary_y=False,
+			secondary_y=False, line=dict(color='firebrick')
 		)
 
 		fig.add_trace(
 			go.Scatter(x=second_res_time, y=second_res_close, name=f"Price of {scrypto.upper()}"), row=1, col=1,
-			secondary_y=True,
+			secondary_y=True, line=dict(color='royalblue')
 		)
 
 		fig.add_trace(
-			go.Line(x=first_res_time, y=first_res_volume, showlegend=False), row=2, col=1, secondary_y=False
+			go.Line(x=first_res_time, y=first_res_volume, showlegend=False), row=2, col=1, secondary_y=False, line=dict(color='firebrick')
 		)
 
 		fig.add_trace(
-			go.Line(x=second_res_time, y=second_res_volume, showlegend=False), row=2, col=1, secondary_y=True
+			go.Line(x=second_res_time, y=second_res_volume, showlegend=False), row=2, col=1, secondary_y=True, line=dict(color='royalblue')
 		)
 
 		# Configure Axes
@@ -317,13 +317,11 @@ async def create_dual_crypto_graph(ctx, fcrypto: str, scrypto: str, period: str,
 			col=1
 		)
 
-		fig.update_yaxes(visible=False, fixedrange=True, row=2, col=1)
-
 		# Move legend to top right of chart
 		fig.update_layout(legend=dict(
 			orientation="h",
 			yanchor="bottom",
-			y=1.02,
+			y=1.04,
 			xanchor="right",
 			x=1
 		))
