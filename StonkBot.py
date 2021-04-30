@@ -271,28 +271,28 @@ async def create_dual_crypto_graph(ctx, fcrypto: str, scrypto: str, period: str,
 
 		# Add traces
 		fig.add_trace(
-			go.Scatter(x=first_res_time, y=first_res_close, name=f"Price of {fcrypto.upper()}"),
+			go.Scatter(x=first_res_time, y=first_res_close, name=f"Price of {fcrypto.upper()}"), row=1, col=1,
 			secondary_y=False,
 		)
 
 		fig.add_trace(
-			go.Scatter(x=second_res_time, y=second_res_close, name=f"Price of {scrypto.upper()}"),
+			go.Scatter(x=second_res_time, y=second_res_close, name=f"Price of {scrypto.upper()}"), row=1, col=1,
 			secondary_y=True,
 		)
 
 		fig.add_trace(
-			go.Bar(x=first_res_time, y=first_res_volume, showlegend=False), row=2, secondary_y=False
+			go.Bar(x=first_res_time, y=first_res_volume, showlegend=False), row=2, col=1, secondary_y=False
 		)
 
 		fig.add_trace(
-			go.Bar(x=second_res_time, y=second_res_volume, showlegend=False), row=2, secondary_y=True
+			go.Bar(x=second_res_time, y=second_res_volume, showlegend=False), row=2, col=1, secondary_y=True
 		)
 
 		# Configure Axes
-		fig.update_yaxes(title_text=f"<b>{fcrypto.upper()} price</b>", secondary_y=False, row=1)
-		fig.update_yaxes(title_text=f"<b>{scrypto.upper()} price</b>", secondary_y=True, row=1)
-		fig.update_yaxes(tickprefix = '$', tickformat = ',.3r', secondary_y=False, row=1)
-		fig.update_yaxes(tickprefix = '$', tickformat = ',.3r', secondary_y=True, row=1)
+		fig.update_yaxes(title_text=f"<b>{fcrypto.upper()} price</b>", secondary_y=False, row=1, col=1)
+		fig.update_yaxes(title_text=f"<b>{scrypto.upper()} price</b>", secondary_y=True, row=1, col=1)
+		fig.update_yaxes(tickprefix = '$', tickformat = ',.3r', secondary_y=False, row=1, col=1)
+		fig.update_yaxes(tickprefix = '$', tickformat = ',.3r', secondary_y=True, row=1, col=1)
 		fig.update_xaxes(rangeslider_visible=False)
 		
 		fig.update_xaxes(
@@ -306,13 +306,15 @@ async def create_dual_crypto_graph(ctx, fcrypto: str, scrypto: str, period: str,
 			linewidth=2,
 			linecolor='black',
 			tickformat = '%b %d %H:%M',
-			row=1
+			row=1,
+			col=1
 		)
 		fig.update_yaxes(
 			showline=True,
 			linewidth=2,
 			linecolor='black',
-			row=1
+			row=1,
+			col=1
 		)
 
 		# Move legend to top right of chart
