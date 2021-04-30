@@ -316,7 +316,6 @@ async def create_dual_crypto_graph(ctx, fcrypto: str, scrypto: str, period: str,
 			row=1,
 			col=1
 		)
-		fig.update_annotations(yshift=-20, row=2, col=1)
 
 		# Move legend to top right of chart
 		fig.update_layout(legend=dict(
