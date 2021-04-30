@@ -265,6 +265,7 @@ async def create_dual_crypto_graph(ctx, fcrypto: str, scrypto: str, period: str,
 		fig = make_subplots(
 			rows = 2,
 			shared_xaxes = True,
+			vertical_spacing=0.03,
 			subplot_titles=(f'<b>Price comparison of {fcrypto.upper()} and {scrypto.upper()}</b>', 'Volume'),
 			specs=[[{"secondary_y": True}], [{"secondary_y": True}]]
 		)
@@ -281,11 +282,11 @@ async def create_dual_crypto_graph(ctx, fcrypto: str, scrypto: str, period: str,
 		)
 
 		fig.add_trace(
-			go.Bar(x=first_res_time, y=first_res_volume, showlegend=False), row=2, col=1, secondary_y=False
+			go.Line(x=first_res_time, y=first_res_volume, showlegend=False), row=2, col=1, secondary_y=False
 		)
 
 		fig.add_trace(
-			go.Bar(x=second_res_time, y=second_res_volume, showlegend=False), row=2, col=1, secondary_y=True
+			go.Line(x=second_res_time, y=second_res_volume, showlegend=False), row=2, col=1, secondary_y=True
 		)
 
 		# Configure Axes
@@ -306,8 +307,6 @@ async def create_dual_crypto_graph(ctx, fcrypto: str, scrypto: str, period: str,
 			linewidth=2,
 			linecolor='black',
 			tickformat = '%b %d %H:%M',
-			row=1,
-			col=1
 		)
 		fig.update_yaxes(
 			showline=True,
@@ -316,6 +315,10 @@ async def create_dual_crypto_graph(ctx, fcrypto: str, scrypto: str, period: str,
 			row=1,
 			col=1
 		)
+
+		fig.update_xaxes(visible=False, fixedrange=True, row=2, col=1)
+		fig.update_yaxes(visible=False, fixedrange=True, row=2, col=1)
+		fig.update_layout(annotations=[], overwrite=True, row=2, col=1)
 
 		# Move legend to top right of chart
 		fig.update_layout(legend=dict(
