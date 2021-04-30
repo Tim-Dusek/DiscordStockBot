@@ -283,11 +283,11 @@ async def create_dual_crypto_graph(ctx, fcrypto: str, scrypto: str, period: str,
 		)
 
 		fig.add_trace(
-			go.Line(x=first_res_time, y=first_res_volume, showlegend=False, color='firebrick'), row=2, col=1, secondary_y=False
+			go.Scatter(x=first_res_time, y=first_res_volume, showlegend=False, line=dict(color='firebrick')), row=2, col=1, secondary_y=False
 		)
 
 		fig.add_trace(
-			go.Line(x=second_res_time, y=second_res_volume, showlegend=False, color='royalblue'), row=2, col=1, secondary_y=True
+			go.Scatter(x=second_res_time, y=second_res_volume, showlegend=False, line=dict(color='royalblue')), row=2, col=1, secondary_y=True
 		)
 
 		# Configure Axes
