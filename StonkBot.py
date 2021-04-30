@@ -267,6 +267,7 @@ async def create_dual_crypto_graph(ctx, fcrypto: str, scrypto: str, period: str,
 			shared_xaxes = True,
 			vertical_spacing=0.03,
 			subplot_titles=(f'<b>Price comparison of {fcrypto.upper()} and {scrypto.upper()}</b>', 'Volume'),
+			row_width=[0.2, 0.7],
 			specs=[[{"secondary_y": True}], [{"secondary_y": True}]]
 		)
 
@@ -316,7 +317,6 @@ async def create_dual_crypto_graph(ctx, fcrypto: str, scrypto: str, period: str,
 			col=1
 		)
 
-		fig.update_xaxes(visible=False, fixedrange=True, row=2, col=1)
 		fig.update_yaxes(visible=False, fixedrange=True, row=2, col=1)
 
 		# Move legend to top right of chart
