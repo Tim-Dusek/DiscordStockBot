@@ -266,7 +266,7 @@ async def create_dual_crypto_graph(ctx, fcrypto: str, scrypto: str, period: str,
 			rows = 2,
 			shared_xaxes = True,
 			subplot_titles=(f'<b>Price comparison of {fcrypto.upper()} and {scrypto.upper()}</b>', 'Volume'),
-			specs=[[{"secondary_y": True}, {"secondary_y": True}]]
+			specs=[[{"secondary_y": True}], [{"secondary_y": True}]]
 		)
 
 		# Add traces
