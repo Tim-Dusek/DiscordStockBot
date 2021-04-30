@@ -845,22 +845,22 @@ async def dsmg(ctx, fcompany: str, scompany: str) -> None:
 
 @client.command()
 async def weekgraph(ctx, company: str) -> None:
-	await create_graph(ctx, company=company, period="7d", interval="1d")
+	await create_graph(ctx, company=company, period="7d", interval="1h")
 # End command
 
 @client.command()
 async def wg(ctx, company: str) -> None:
-	await create_graph(ctx, company=company, period="7d", interval="1d")
+	await create_graph(ctx, company=company, period="7d", interval="1h")
 # End command
 
 @client.command()
 async def swg(ctx, company: str) -> None:
-	await create_candlestick_graph(ctx, company=company, period="7d", interval="1d")
+	await create_candlestick_graph(ctx, company=company, period="7d", interval="1h")
 # End command
 
 @client.command()
 async def dswg(ctx, fcompany: str, scompany: str) -> None:
-	await create_dual_stock_graph(ctx, fcompany=fcompany, scompany=scompany, period="7d", interval="1d")
+	await create_dual_stock_graph(ctx, fcompany=fcompany, scompany=scompany, period="7d", interval="1h")
 # End command
 
 @client.command()
