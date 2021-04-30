@@ -273,21 +273,21 @@ async def create_dual_crypto_graph(ctx, fcrypto: str, scrypto: str, period: str,
 
 		# Add traces
 		fig.add_trace(
-			go.Scatter(x=first_res_time, y=first_res_close, name=f"Price of {fcrypto.upper()}"), row=1, col=1,
-			secondary_y=False, line=dict(color='firebrick')
+			go.Scatter(x=first_res_time, y=first_res_close, name=f"Price of {fcrypto.upper()}", line=dict(color='firebrick')), row=1, col=1,
+			secondary_y=False
 		)
 
 		fig.add_trace(
-			go.Scatter(x=second_res_time, y=second_res_close, name=f"Price of {scrypto.upper()}"), row=1, col=1,
-			secondary_y=True, line=dict(color='royalblue')
+			go.Scatter(x=second_res_time, y=second_res_close, name=f"Price of {scrypto.upper()}", line=dict(color='royalblue')), row=1, col=1,
+			secondary_y=True
 		)
 
 		fig.add_trace(
-			go.Line(x=first_res_time, y=first_res_volume, showlegend=False), row=2, col=1, secondary_y=False, line=dict(color='firebrick')
+			go.Line(x=first_res_time, y=first_res_volume, showlegend=False), row=2, col=1, secondary_y=False, color='firebrick'
 		)
 
 		fig.add_trace(
-			go.Line(x=second_res_time, y=second_res_volume, showlegend=False), row=2, col=1, secondary_y=True, line=dict(color='royalblue')
+			go.Line(x=second_res_time, y=second_res_volume, showlegend=False), row=2, col=1, secondary_y=True, color='royalblue'
 		)
 
 		# Configure Axes
