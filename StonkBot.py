@@ -192,9 +192,22 @@ async def create_crypto_candlestick_graph(ctx, crypto: str, period: str, units: 
 		res_high = [ float("{:.2f}".format(float(f['high']))) for f in res]
 		res_low = [ float("{:.2f}".format(float(f['low']))) for f in res]
 		res_close = [ float("{:.2f}".format(float(f['close']))) for f in res]
+		res_volume = [ float(f['volumefrom']) + float(f['volumeto']) for f in res]
 
 		# Draw figure
-		fig = go.Figure(data=[go.Candlestick(x=res_time, open=res_open, high=res_high, low=res_low, close=res_close)])
+		fig = make_subplots(
+			rows = 2,
+			shared_xaxes = True,
+			vertical_spacing=0.03,
+			subplot_titles=(f'{crypto.upper()} Price Graph', 'Volume'),
+			row_width=[0.2, 0.7]
+		)
+		fig.add_trace(
+			go.Figure(data=[go.Candlestick(x=res_time, open=res_open, high=res_high, low=res_low, close=res_close)], row=1, col=1)
+		)
+
+		fig.add_trace(
+			go.Scatter(x=res_time, y=res_volume, showlegend=False, name=f"{crypto.upper()} volume", line=dict(color='firebrick')), row=2, col=1)
 		fig.update_xaxes(rangeslider_visible=False)
 		fig.update_layout(
 			title = f'{crypto.upper()} Price Graph',
@@ -216,7 +229,9 @@ async def create_crypto_candlestick_graph(ctx, crypto: str, period: str, units: 
 			linewidth=2,
 			linecolor='black',
 			tickprefix = '$',
-			tickformat = ',.3r'
+			tickformat = ',.3r',
+			row = 1,
+			col = 1
 		)
 
 		# Save image to buffer
