@@ -1083,6 +1083,11 @@ async def dcyg(ctx, fcrypto: str, scrypto: str) -> None:
 	await create_dual_crypto_graph(ctx, fcrypto=fcrypto, scrypto=scrypto, period="day", units=365)
 # End command
 
+@client.command()
+async def kimchi(ctx) -> None:
+	await kimchi(ctx)
+# End command
+
 # Magic 8 ball to tell you what to buy
 @client.command(aliases=['8ball','magic8ball'])
 async def _8ball(ctx, *, message = ''):
