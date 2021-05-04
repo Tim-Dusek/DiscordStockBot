@@ -182,32 +182,23 @@ async def create_crypto_graph(ctx, crypto: str, period: str, units: int) -> None
 			col = 1
 		)
 		
-		# Plot data
-		fig, ax = plt.subplots()
-		ax.plot(res_time, res_close)
-		plt.title(f'{crypto.upper()} Price Graph')
-		plt.xlabel('Date and Time')
-		plt.ylabel('Price')
-		ax.grid(True)
-		#ax.xaxis_date()
-		ax.format_xdata = mdates.DateFormatter('%b %d %H:%M')
-		fig.autofmt_xdate()
-
 		# Save image to buffer
 		image_buffer = io.BytesIO()
-		plt.savefig(image_buffer, format="PNG")
+		fig.write_image(image_buffer, format="PNG")
 		image_buffer.seek(0)
 		
 		# Push contents of image buffer to Discord
 		await ctx.send(file=discord.File(image_buffer, 'graph.png'))
 
-		# Close plot and image buffer
-		plt.close()
+		# Close figure and image buffer
+		fig.data = []
+		del(fig)
 		image_buffer.close()
 	except Exception as e:
-		logging.error(f'Ran into an error trying to create a crypto graph!')
+		logging.error(f'Ran into an error trying to create a crypto candlestick graph!')
 		logging.exception(e)
 	# End try/except block	
+		
 # End def
 
 async def create_crypto_candlestick_graph(ctx, crypto: str, period: str, units: int) -> None:
