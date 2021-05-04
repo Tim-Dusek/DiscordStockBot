@@ -596,7 +596,7 @@ async def create_dual_stock_graph(ctx, fcompany: str, scompany: str, interval: s
 	# End try/except block	
 # End def
 
-async def kimchi(ctx) -> None:
+async def get_kimchi(ctx) -> None:
 	korean_price_kow = cryptocompare.get_price('ETH', currency='KOW')
 	american_price = cryptocompare.get_price('ETH', currency='USD')
 
@@ -1085,7 +1085,7 @@ async def dcyg(ctx, fcrypto: str, scrypto: str) -> None:
 
 @client.command()
 async def kimchi(ctx) -> None:
-	await kimchi(ctx)
+	await get_kimchi(ctx)
 # End command
 
 # Magic 8 ball to tell you what to buy
