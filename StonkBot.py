@@ -605,8 +605,7 @@ async def get_kimchi(ctx) -> None:
 	kimchi_price = korean_price_usd - american_price
 
 	try:
-		channel = client.get_channel(main_channel_id)
-		await channel.send(f'The current kimchi price difference is f{kimchi_price}\n\tThe current USD price is $f{american_price}\n\tThe current KOW price (converted into USD) is f{korean_price_usd}')
+		await ctx.send(f'The current kimchi price difference is f{kimchi_price}\n\tThe current USD price is $f{american_price}\n\tThe current KOW price (converted into USD) is f{korean_price_usd}')
 	except Exception as e:
 		logging.error('Ran into an error trying to send a message!')
 		logging.exception(e)
