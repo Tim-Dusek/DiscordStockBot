@@ -154,9 +154,9 @@ async def create_crypto_graph(ctx, crypto: str, period: str, units: int) -> None
 		)
 
 		# Add traces
-		fig.add_trace(go.Scatter(x=res_time, y=res_close), row=1, col=1)
+		fig.add_trace(go.Scatter(x=res_time, y=res_close, showlegend=False), row=1, col=1)
 
-		fig.add_trace(go.Scatter(x=res_time, y=res_volume), row=2, col=1)
+		fig.add_trace(go.Scatter(x=res_time, y=res_volume, showlegend=False), row=2, col=1)
 
 		# Configure Axes
 		fig.update_xaxes(rangeslider_visible=False)
