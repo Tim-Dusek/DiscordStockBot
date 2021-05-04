@@ -605,7 +605,7 @@ async def get_kimchi(ctx) -> None:
 	kimchi_price = korean_price_usd - american_price
 
 	try:
-		await ctx.send(f'The current kimchi price difference is ${kimchi_price:.2f}\n\tThe current USD price is ${american_price:.2f}\n\tThe current KOW price (converted into USD) is ${korean_price_usd:.2f}')
+		await ctx.send(f'The current kimchi price difference is ${kimchi_price:.2f}\n\tThe current USD price is ${american_price:.2f}\n\tThe current KRW price (converted into USD) is ${korean_price_usd:.2f}')
 	except Exception as e:
 		logging.error('Ran into an error trying to send a message!')
 		logging.exception(e)
