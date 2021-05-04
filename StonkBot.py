@@ -597,7 +597,7 @@ async def create_dual_stock_graph(ctx, fcompany: str, scompany: str, interval: s
 # End def
 
 async def get_kimchi(ctx) -> None:
-	korean_price_kow = cryptocompare.get_price('ETH', currency='KOW')
+	korean_price_kow = cryptocompare.get_price('ETH', currency='KRW')
 	american_price = cryptocompare.get_price('ETH', currency='USD')
 
 	c = CurrencyConverter()
