@@ -170,7 +170,7 @@ async def create_crypto_graph(ctx, crypto: str, period: str, units: int) -> None
 			showline=True,
 			linewidth=2,
 			linecolor='black',
-			xaxis_tickformat = '%b %d %H:%M'
+			tickformat = '%b %d %H:%M'
 		)
 		fig.update_yaxes(
 			showline=True,
