@@ -11,3 +11,4 @@ plotly
 psutil
 holidays
 pandas
+currencyconverter

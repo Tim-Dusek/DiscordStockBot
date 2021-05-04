@@ -13,6 +13,7 @@ from discord.ext import commands, tasks
 from itertools import cycle
 from googlesearch import search
 from plotly.subplots import make_subplots
+from currency_converter import CurrencyConverter
 
 # Parse args
 parser = argparse.ArgumentParser()
@@ -593,6 +594,23 @@ async def create_dual_stock_graph(ctx, fcompany: str, scompany: str, interval: s
 		logging.error(f'Ran into an error trying to create a dual stock graph!')
 		logging.exception(e)
 	# End try/except block	
+# End def
+
+async def kimchi(ctx) -> None:
+	korean_price_kow = cryptocompare.get_price('ETH', currency='KOW')
+	american_price = cryptocompare.get_price('ETH', currency='USD')
+
+	c = CurrencyConverter()
+	korean_price_usd = c.convert(korean_price_kow, 'KOW', 'USD')
+	kimchi_price = korean_price_usd - american_price
+
+	try:
+		channel = client.get_channel(main_channel_id)
+		await channel.send(f'The current kimchi price difference is f{kimchi_price}\n\tThe current USD price is $f{american_price}\n\tThe current KOW price (converted into USD) is f{korean_price_usd}')
+	except Exception as e:
+		logging.error('Ran into an error trying to send a message!')
+		logging.exception(e)
+	# End try/except block
 # End def
 
 ###
