@@ -142,7 +142,46 @@ async def create_crypto_graph(ctx, crypto: str, period: str, units: int) -> None
 		# Parse data
 		res_time = [ arrow.get(f['time']).to('US/Eastern').datetime for f in res]
 		res_close = [ float("{:.2f}".format(float(f['close']))) for f in res]
+		res_volume = [ float(f['volumefrom']) + float(f['volumeto']) for f in res]
 
+		# Draw figure
+		fig = make_subplots(
+			rows = 2,
+			shared_xaxes = True,
+			vertical_spacing=0.03,
+			subplot_titles=(f'{crypto.upper()} Price Graph', 'Volume'),
+			row_width=[0.2, 0.7]
+		)
+
+		# Add traces
+		fig.add_trace(go.Scatter(x=res_time, y=res_close, row=1, col=1))
+
+		fig.add_trace(go.Scatter(x=res_time, y=res_volume, row=2, col=1))
+
+		# Configure Axes
+		fig.update_xaxes(rangeslider_visible=False)
+		fig.update_xaxes(
+			tickangle=-45, 
+			tickfont=dict(
+				family='Rockwell', 
+				color='black', 
+				size=14
+			),
+			showline=True,
+			linewidth=2,
+			linecolor='black',
+			xaxis_tickformat = '%b %d %H:%M'
+		)
+		fig.update_yaxes(
+			showline=True,
+			linewidth=2,
+			linecolor='black',
+			tickprefix = '$',
+			tickformat = ',.3r',
+			row = 1,
+			col = 1
+		)
+		
 		# Plot data
 		fig, ax = plt.subplots()
 		ax.plot(res_time, res_close)
@@ -183,8 +222,6 @@ async def create_crypto_candlestick_graph(ctx, crypto: str, period: str, units: 
 		else:
 			logging.info(f"\"{period}\" is not a vaild period to get historical crypto prices!")
 		# End if/elif/else block
-
-		#a = cryptocompare.get_historical_price_minute('ETH', 'USD', limit=60) # for testing only
 
 		# Parse data
 		res_time = [ arrow.get(f['time']).to("US/Eastern").datetime for f in res]
