@@ -979,7 +979,7 @@ async def sdg(ctx, company: str) -> None:
 
 @client.command()
 async def dsdg(ctx, fcompany: str, scompany: str) -> None:
-	await create_dual_stock_graph(ctx, fcompany=fcompany, scompany=scompany, period="1d", interval="5m")
+	await create_dual_stock_graph(ctx, fcompany=fcompany, scompany=scompany, period="1d", interval="5m", prepost=True)
 # End command
 
 @client.command()
