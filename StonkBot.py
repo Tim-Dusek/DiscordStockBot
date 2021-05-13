@@ -709,7 +709,8 @@ async def help(ctx):
 			'\t/price <Ticker Symbol> - Returns daily price information about a ticker symbol.\n'+ \
 			'\t/whois <Ticker Symbol> - Returns general information about a ticker symbol.\n'+ \
 			'\t/expert <Ticker Symbol> - Returns expert opinions on what a stock is doing.\n'+ \
-			'\t/8ball - Shake the Magic 8 Ball and be told what stock to buy.\n'
+			'\t/8ball - Shake the Magic 8 Ball and be told what stock to buy.\n' + \
+			'\t/sp - Get current stock price for any stock.\n'
 		)
 
 		await ctx.author.send('Stock regular graph specific commands: \n'+ \
@@ -742,6 +743,10 @@ async def help(ctx):
 		)
 
 		# Crypto
+		await ctx.author.send('Other crypto specific commands:\n' + \
+			'\t/sp - Get current stock price for any stock.\n'
+		)
+		
 		await ctx.author.send('Crypto graph specific commands:\n' + \
 			'\t/cryptonews <Optional: Crypto> - Shows the top 3 relevant market articles.\n'+ \
 			'\t/cyg <Crypto Symbol> - Returns a 1 year graph of a cryptocurrency\'s price history.\n'+ \
