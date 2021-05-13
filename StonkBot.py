@@ -612,6 +612,31 @@ async def get_kimchi(ctx) -> None:
 	# End try/except block
 # End def
 
+async def stock_current_price(ctx, company: str) -> None:
+	try:
+		# Get stock data
+		ticker = yf.Ticker(company)
+		
+		await ctx.send(f'Current Price Info for $${company.upper()}:\n\tAsk: ${ticker.info["ask"]}\n\tBid: ${ticker.info["bid"]}\n\tVolume: ${ticker.info["volume"]}')
+
+	except Exception as e:
+		logging.error(f'Ran into an error trying to display current stock price info!')
+		logging.exception(e)
+	# End try/except block
+# End def
+
+async def crypto_current_price(ctx, crypto: str) -> None:
+	try:
+		price = cryptocompare.get_price(crypto.upper(), currency='USD')[crypto.upper()]['USD']
+		
+		await ctx.send(f'Current Price for ${crypto.upper()} is: ${price}')
+
+	except Exception as e:
+		logging.error(f'Ran into an error trying to display current stock price info!')
+		logging.exception(e)
+	# End try/except block
+# End def
+
 ###
 # Events
 ###
@@ -1085,6 +1110,16 @@ async def dcyg(ctx, fcrypto: str, scrypto: str) -> None:
 @client.command()
 async def kimchi(ctx) -> None:
 	await get_kimchi(ctx)
+# End command
+
+@client.command()
+async def cp(ctx, crypto: str) -> None:
+	await crypto_current_price(ctx, crypto=crypto)
+# End command
+
+@client.command()
+async def sp(ctx, company: str) -> None:
+	await stock_current_price(ctx, company=company)
 # End command
 
 # Magic 8 ball to tell you what to buy
