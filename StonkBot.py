@@ -617,7 +617,7 @@ async def stock_current_price(ctx, company: str) -> None:
 		# Get stock data
 		ticker = yf.Ticker(company)
 		
-		await ctx.send(f'Current Price Info for $${company.upper()}:\n\tAsk: ${ticker.info["ask"]}\n\tBid: ${ticker.info["bid"]}\n\tVolume: ${ticker.info["volume"]}')
+		await ctx.send(f'Current Price Info for ${company.upper()}:\n\tAsk: ${ticker.info["ask"]}\n\tBid: ${ticker.info["bid"]}\n\tVolume: ${ticker.info["volume"]}')
 
 	except Exception as e:
 		logging.error(f'Ran into an error trying to display current stock price info!')
@@ -627,12 +627,13 @@ async def stock_current_price(ctx, company: str) -> None:
 
 async def crypto_current_price(ctx, crypto: str) -> None:
 	try:
-		price = cryptocompare.get_price(crypto.upper(), currency='USD')[crypto.upper()]['USD']
+		base = cryptocompare.get_price(crypto.upper(), currency='USD')
+		price = base[crypto.upper()]['USD']
 		
-		await ctx.send(f'Current Price for ${crypto.upper()} is: ${price}')
+		await ctx.send(f'Current Price for {crypto.upper()} is: ${price}')
 
 	except Exception as e:
-		logging.error(f'Ran into an error trying to display current stock price info!')
+		logging.error(f'Ran into an error trying to display current stock price info!\nGot this for `base`: {base}')
 		logging.exception(e)
 	# End try/except block
 # End def
@@ -746,7 +747,7 @@ async def help(ctx):
 		await ctx.author.send('Other crypto specific commands:\n' + \
 			'\t/sp - Get current stock price for any stock.\n'
 		)
-		
+
 		await ctx.author.send('Crypto graph specific commands:\n' + \
 			'\t/cryptonews <Optional: Crypto> - Shows the top 3 relevant market articles.\n'+ \
 			'\t/cyg <Crypto Symbol> - Returns a 1 year graph of a cryptocurrency\'s price history.\n'+ \
