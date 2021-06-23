@@ -232,7 +232,7 @@ async def create_crypto_candlestick_graph(ctx, crypto: str, period: str, units: 
 			row_width=[0.2, 0.7]
 		)
 		fig.add_trace(
-			go.Candlestick(x=res_time, open=res_open, high=res_high, low=res_low, close=res_close, showlegend=False), row=1, col=1
+			go.Candlestick(x=res_time, open=res_open, high=res_high, low=res_low, close=res_close, line={'width': 2}, showlegend=False), row=1, col=1
 		)
 
 		fig.add_trace(
