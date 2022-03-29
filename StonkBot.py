@@ -470,15 +470,15 @@ async def create_candlestick_graph(ctx, company: str, interval: str, start=None,
 
 		# Add traces
 		# Background line
-		fig.add_trace(go.Scattergl(x=res_time, y=res_close, mode="lines", line_color="black", showlegend=False))
+		fig.append_trace(go.Scattergl(x=res_time, y=res_close, mode="lines", line_color="black", line = { "width":1}, showlegend=False), row=1, col=1)
 
 		# Candlestick
-		fig.add_candlestick(x=res_time, open=res_open, high=res_high, low=res_low, close=res_close, showlegend=False)
-
-		fig.data = (fig.data[1],fig.data[0])
+		fig.append_trace(go.Candlestick(x=res_time, open=res_open, high=res_high, low=res_low, close=res_close, showlegend=False), row=1, col=1)
 
 		# Volume
-		fig.add_trace(go.Scattergl(x=res_time, y=res_volume, showlegend=False), row=2, col=1)
+		fig.append_trace(go.Scattergl(x=res_time, y=res_volume, showlegend=False), row=2, col=1)
+
+		fig.data = (fig.data[1],fig.data[0], fig.data[2])
 
 		# Configure Axes
 		fig.update_xaxes(rangeslider_visible=False)
@@ -503,34 +503,6 @@ async def create_candlestick_graph(ctx, company: str, interval: str, start=None,
 			row = 1,
 			col = 1
 		)
-
-		"""
-		fig = go.Figure(data=[go.Candlestick(x=res_time, open=res_open, high=res_high, low=res_low, close=res_close, showlegend=False)])
-		fig.add_scatter(x=res_time, y=res_close, mode="lines", line_color="black", showlegend=False)
-		fig.update_xaxes(rangeslider_visible=False)
-		fig.update_layout(
-			title = f'{company.upper()} Price Graph',
-			xaxis_tickformat = '%b %d %H:%M'
-		)
-		fig.update_xaxes(
-			tickangle=-45, 
-			tickfont=dict(
-				family='Rockwell', 
-				color='black', 
-				size=14
-			),
-			showline=True,
-			linewidth=2,
-			linecolor='black'
-		)
-		fig.update_yaxes(
-			showline=True,
-			linewidth=2,
-			linecolor='black',
-			tickprefix = '$', 
-			tickformat = ',.3r'
-		)
-		"""
 
 		# Save image to buffer
 		image_buffer = io.BytesIO()
