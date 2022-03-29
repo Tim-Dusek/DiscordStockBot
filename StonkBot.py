@@ -231,6 +231,7 @@ async def create_crypto_candlestick_graph(ctx, crypto: str, period: str, units: 
 			subplot_titles=(f'{crypto.upper()} Price Graph', 'Volume'),
 			row_width=[0.2, 0.7]
 		)
+		fig.add_scatter(x=res_time, y=res_close, mode="lines", line_color="black", showlegend=False, row=1, col=1)
 		fig.add_trace(
 			go.Candlestick(x=res_time, open=res_open, high=res_high, low=res_low, close=res_close, line={'width': 2}, showlegend=False), row=1, col=1
 		)
@@ -456,8 +457,52 @@ async def create_candlestick_graph(ctx, company: str, interval: str, start=None,
 		res_high = [ float("{:.2f}".format(float(f))) for f in res.High.tolist()]
 		res_low = [ float("{:.2f}".format(float(f))) for f in res.Low.tolist()]
 		res_close = [ float("{:.2f}".format(float(f))) for f in res.Close.tolist()]
+		res_volume = [ float("{:.2f}".format(float(f))) for f in res.Volume.tolist()]
 
 		# Draw figure
+		fig = make_subplots(
+			rows = 2,
+			shared_xaxes = True,
+			vertical_spacing=0.03,
+			subplot_titles=(f'{company.upper()} Price Graph', 'Volume'),
+			row_width=[0.2, 0.7]
+		)
+
+		# Add traces
+		# Background line
+		fig.add_scatter(x=res_time, y=res_close, mode="lines", line_color="black", showlegend=False)
+
+		# Candlestick
+		fig.add_candlestick(x=res_time, open=res_open, high=res_high, low=res_low, close=res_close, showlegend=False)
+
+		# Volume
+		fig.add_trace(go.Scatter(x=res_time, y=res_volume, showlegend=False), row=2, col=1)
+
+		# Configure Axes
+		fig.update_xaxes(rangeslider_visible=False)
+		fig.update_xaxes(
+			tickangle=-45, 
+			tickfont=dict(
+				family='Rockwell', 
+				color='black', 
+				size=14
+			),
+			showline=True,
+			linewidth=2,
+			linecolor='black',
+			tickformat = '%b %d %H:%M'
+		)
+		fig.update_yaxes(
+			showline=True,
+			linewidth=2,
+			linecolor='black',
+			tickprefix = '$',
+			tickformat = ',.3r',
+			row = 1,
+			col = 1
+		)
+
+		"""
 		fig = go.Figure(data=[go.Candlestick(x=res_time, open=res_open, high=res_high, low=res_low, close=res_close, showlegend=False)])
 		fig.add_scatter(x=res_time, y=res_close, mode="lines", line_color="black", showlegend=False)
 		fig.update_xaxes(rangeslider_visible=False)
@@ -483,6 +528,7 @@ async def create_candlestick_graph(ctx, company: str, interval: str, start=None,
 			tickprefix = '$', 
 			tickformat = ',.3r'
 		)
+		"""
 
 		# Save image to buffer
 		image_buffer = io.BytesIO()
