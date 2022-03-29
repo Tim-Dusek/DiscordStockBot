@@ -459,6 +459,7 @@ async def create_candlestick_graph(ctx, company: str, interval: str, start=None,
 
 		# Draw figure
 		fig = go.Figure(data=[go.Candlestick(x=res_time, open=res_open, high=res_high, low=res_low, close=res_close)])
+		fig.add_line(x=res_time, y=res_close)
 		fig.update_xaxes(rangeslider_visible=False)
 		fig.update_layout(
 			title = f'{company.upper()} Price Graph',
