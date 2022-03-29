@@ -155,9 +155,9 @@ async def create_crypto_graph(ctx, crypto: str, period: str, units: int) -> None
 		)
 
 		# Add traces
-		fig.add_trace(go.Scatter(x=res_time, y=res_close, showlegend=False), row=1, col=1)
+		fig.append_trace(go.Scatter(x=res_time, y=res_close, showlegend=False), row=1, col=1)
 
-		fig.add_trace(go.Scatter(x=res_time, y=res_volume, showlegend=False), row=2, col=1)
+		fig.append_trace(go.Scatter(x=res_time, y=res_volume, showlegend=False), row=2, col=1)
 
 		# Configure Axes
 		fig.update_xaxes(rangeslider_visible=False)
@@ -231,14 +231,18 @@ async def create_crypto_candlestick_graph(ctx, crypto: str, period: str, units: 
 			subplot_titles=(f'{crypto.upper()} Price Graph', 'Volume'),
 			row_width=[0.2, 0.7]
 		)
-		fig.add_scatter(x=res_time, y=res_close, mode="lines", line_color="black", showlegend=False, row=1, col=1)
-		fig.add_trace(
-			go.Candlestick(x=res_time, open=res_open, high=res_high, low=res_low, close=res_close, line={'width': 2}, showlegend=False), row=1, col=1
-		)
 
-		fig.add_trace(
-			go.Scatter(x=res_time, y=res_volume, showlegend=False, name=f"{crypto.upper()} volume", line=dict(color='firebrick')), row=2, col=1
-		)
+		# Add traces
+		# Background line
+		fig.append_trace(go.Scattergl(x=res_time, y=res_close, mode="lines", line_color="black", line = { "width":1}, showlegend=False), row=1, col=1)
+
+		# Candlestick
+		fig.append_trace(go.Candlestick(x=res_time, open=res_open, high=res_high, low=res_low, close=res_close, showlegend=False), row=1, col=1)
+
+		# Volume
+		fig.append_trace(go.Scattergl(x=res_time, y=res_volume, showlegend=False), row=2, col=1)
+
+		# Update Axes
 		fig.update_xaxes(rangeslider_visible=False)
 		fig.update_layout(
 			title = f'{crypto.upper()} Price Graph',
@@ -477,8 +481,6 @@ async def create_candlestick_graph(ctx, company: str, interval: str, start=None,
 
 		# Volume
 		fig.append_trace(go.Scattergl(x=res_time, y=res_volume, showlegend=False), row=2, col=1)
-
-		fig.data = (fig.data[1],fig.data[0], fig.data[2])
 
 		# Configure Axes
 		fig.update_xaxes(rangeslider_visible=False)
