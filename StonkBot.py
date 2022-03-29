@@ -470,13 +470,15 @@ async def create_candlestick_graph(ctx, company: str, interval: str, start=None,
 
 		# Add traces
 		# Background line
-		fig.add_scatter(x=res_time, y=res_close, mode="lines", line_color="black", showlegend=False)
+		fig.add_trace(go.Scattergl(x=res_time, y=res_close, mode="lines", line_color="black", showlegend=False))
 
 		# Candlestick
 		fig.add_candlestick(x=res_time, open=res_open, high=res_high, low=res_low, close=res_close, showlegend=False)
 
+		fig.data = (fig.data[1],fig.data[0])
+
 		# Volume
-		fig.add_trace(go.Scatter(x=res_time, y=res_volume, showlegend=False), row=2, col=1)
+		fig.add_trace(go.Scattergl(x=res_time, y=res_volume, showlegend=False), row=2, col=1)
 
 		# Configure Axes
 		fig.update_xaxes(rangeslider_visible=False)
