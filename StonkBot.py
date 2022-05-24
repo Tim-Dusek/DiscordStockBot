@@ -903,7 +903,7 @@ async def whois(ctx, company: str) -> None:
 		# End try/except block
 
 		try:
-			sector = ticker_info.get('phone', "")
+			phone = ticker_info.get('phone', "")
 		except Exception as e:
 			logging.error(f'Ran into an error trying to get the business phone number!')
 			logging.exception(e)
@@ -911,7 +911,7 @@ async def whois(ctx, company: str) -> None:
 		# End try/except block
 		
 		try:
-			full_time_employees= "{:,}".format(ticker_info['fullTimeEmployees'])
+			full_time_employees= "{:,}".format(ticker_info.get('fullTimeEmployees'))
 		except Exception as e:
 			logging.error(f'Ran into an error trying to get the number of employees!')
 			logging.exception(e)
@@ -919,7 +919,7 @@ async def whois(ctx, company: str) -> None:
 		# End try/except block
 
 		try: 
-			market_cap_dollars= "${:,}".format(ticker_info['marketCap'])
+			market_cap_dollars= "${:,}".format(ticker_info.get('marketCap'))
 		except Exception as e:
 			logging.error(f'Ran into an error trying to get a market cap!')
 			logging.exception(e)
