@@ -797,8 +797,9 @@ async def help(ctx):
 		)
 
 		# Admin
-		if ctx.message.author.guild_permissions.administrator:
-			await ctx.author.send('My records show you are an admin!\n'+'Here are the admin only commands:\n'+ \
+		if ctx.guild.get_member(ctx.message.author.id).guild_permissions.administrator:
+			await ctx.author.send(
+				'My records show you are an admin!\n'+'Here are the admin only commands:\n'+ \
 				'\t/clear <Number> - Clears 1-10 messages from the chat permanently.\n'+ \
 				'\t/kick <User> <Optional: Reason> - Kicks a user from the discord.\n'+ \
 				'\t/ban <User> <Optional: Reason> - Bans a user from the discord.\n'+ \
@@ -885,26 +886,62 @@ async def whois(ctx, company: str) -> None:
 		ticker = yf.Ticker(company)
 		ticker_info = ticker.info
 
+		try:
+			longName = ticker_info.get('longName', "")
+		except Exception as e:
+			logging.error(f'Ran into an error trying to get the business name!')
+			logging.exception(e)
+			longName = ""
+		# End try/except block
+		
+		try:
+			sector = ticker_info.get('sector', "")
+		except Exception as e:
+			logging.error(f'Ran into an error trying to get the business sector!')
+			logging.exception(e)
+			sector = ""
+		# End try/except block
+
+		try:
+			sector = ticker_info.get('phone', "")
+		except Exception as e:
+			logging.error(f'Ran into an error trying to get the business phone number!')
+			logging.exception(e)
+			phone = ""
+		# End try/except block
+		
+		try:
+			full_time_employees= "{:,}".format(ticker_info['fullTimeEmployees'])
+		except Exception as e:
+			logging.error(f'Ran into an error trying to get the number of employees!')
+			logging.exception(e)
+			full_time_employees = ""
+		# End try/except block
+
 		try: 
 			market_cap_dollars= "${:,}".format(ticker_info['marketCap'])
 		except Exception as e:
+			logging.error(f'Ran into an error trying to get a market cap!')
+			logging.exception(e)
 			market_cap_dollars = ""
 		# End try/except block
 
 		try:
-			full_time_employees= "{:,}".format(ticker_info['fullTimeEmployees'])
+			longBusinessSummary = ticker_info.get('longBusinessSummary', "")
 		except Exception as e:
-			full_time_employees = ""
+			logging.error(f'Ran into an error trying to get the business summary!')
+			logging.exception(e)
+			longBusinessSummary = ""
 		# End try/except block
 		
-		data = 'Name: ' + ticker_info['longName'] if 'longName' in ticker_info else "" + \
-			'\nSector: ' + ticker_info['sector'] if 'sector' in ticker_info else "" + \
-			'\nPhone Number: ' + ticker_info['phone'] if 'phone' in ticker_info else "" + \
-			'\nFull Time Employees: ' + full_time_employees + \
-			'\nMarket Cap: ' + market_cap_dollars + \
-			'\nSummary: ' + ticker_info['longBusinessSummary'] if 'longBusinessSummary' in ticker_info else ""
-		
-		await ctx.send(data)
+		await ctx.send(
+			f'Name: {longName}\n'
+			f'Sector: {sector}\n'
+			f'Phone Number: {phone}\n'
+			f'Full Time Employees: {full_time_employees}\n'
+			f'Market Cap: {market_cap_dollars}\n'
+			f'Summary: {longBusinessSummary}'
+		)
 	except Exception as e:
 		logging.error(f'Ran into an error trying to get whois information!')
 		logging.exception(e)
