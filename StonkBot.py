@@ -797,6 +797,8 @@ async def help(ctx):
 		)
 
 		# Admin
+		logging.info(f'{ctx.message.author.id}')
+		logging.info(f'{ctx.guild.get_member(ctx.message.author.id)}')
 		if ctx.guild.get_member(ctx.message.author.id).guild_permissions.administrator:
 			await ctx.author.send(
 				'My records show you are an admin!\n'+'Here are the admin only commands:\n'+ \
