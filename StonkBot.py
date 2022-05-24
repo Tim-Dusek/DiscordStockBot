@@ -799,7 +799,7 @@ async def help(ctx):
 		# Admin
 		# Our guild ID is "731225595668856864"
 		logging.info(f'{ctx.author.id}')
-		logging.info(f'{ctx.channel.guild.members}')
+		logging.info(f'{ctx.channel.guild.get_member_named("cdchris12")}')
 		logging.info(f'{ctx.channel.guild.get_member(ctx.author.id)}')
 		logging.info(f'{ctx.channel.guild.get_member(ctx.author.id).guild_permissions.administrator}')
 		if ctx.channel.guild.get_member(ctx.message.author.id).guild_permissions.administrator:
