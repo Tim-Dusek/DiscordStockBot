@@ -799,6 +799,7 @@ async def help(ctx):
 		# Admin
 		logging.info(f'{ctx.message.author.id}')
 		logging.info(f'{ctx.guild.get_member(ctx.message.author.id)}')
+		logging.info(f'{ctx.guild.members}')
 		if ctx.guild.get_member(ctx.message.author.id).guild_permissions.administrator:
 			await ctx.author.send(
 				'My records show you are an admin!\n'+'Here are the admin only commands:\n'+ \
@@ -913,7 +914,7 @@ async def whois(ctx, company: str) -> None:
 		# End try/except block
 		
 		try:
-			full_time_employees= "{:,}".format(ticker_info.get('fullTimeEmployees'))
+			full_time_employees= "{:,}".format(ticker_info.get('fullTimeEmployees')) if ticker_info.get('fullTimeEmployees') else ""
 		except Exception as e:
 			logging.error(f'Ran into an error trying to get the number of employees!')
 			logging.exception(e)
@@ -921,7 +922,7 @@ async def whois(ctx, company: str) -> None:
 		# End try/except block
 
 		try: 
-			market_cap_dollars= "${:,}".format(ticker_info.get('marketCap'))
+			market_cap_dollars= "${:,}".format(ticker_info.get('marketCap')) if ticker_info.get('marketCap') else ""
 		except Exception as e:
 			logging.error(f'Ran into an error trying to get a market cap!')
 			logging.exception(e)
