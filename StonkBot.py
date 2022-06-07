@@ -89,7 +89,9 @@ else:
 # End if/else block
 
 # Set the prefix for all commands
-client = commands.Bot(command_prefix='/', case_insensitive=True)
+intents = discord.Intents.default()
+intents.members = True
+client = commands.Bot(command_prefix='/', case_insensitive=True, intents=intents)
 client.remove_command('help')
 
 # Set a list of activities for the bot to 'be playing' on discord
