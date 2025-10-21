@@ -89,8 +89,11 @@ else:
 # End if/else block
 
 # Set the prefix for all commands
-intents = discord.Intents.default()
+intents = discord.Intents.all()
 intents.members = True
+intents.typing = True
+intents.presences = True
+intents.message_content = True
 client = commands.Bot(command_prefix='/', case_insensitive=True, intents=intents)
 client.remove_command('help')
 
