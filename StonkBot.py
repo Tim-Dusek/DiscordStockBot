@@ -89,7 +89,7 @@ else:
 # End if/else block
 
 # Set the prefix for all commands
-intents = discord.Intents.all()
+intents = discord.Intents.default()
 intents.members = True
 intents.typing = True
 intents.presences = True
