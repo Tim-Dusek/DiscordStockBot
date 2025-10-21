@@ -1,8 +1,8 @@
-FROM python:3.8
+FROM python:3.11
 
-COPY --from=uselagoon/python-3.8 /lagoon /lagoon
-COPY --from=uselagoon/python-3.8 /bin/fix-permissions /bin/ep /bin/docker-sleep /bin/
-COPY --from=uselagoon/python-3.8 /home /home
+COPY --from=uselagoon/python-3.11 /lagoon /lagoon
+COPY --from=uselagoon/python-3.11 /bin/fix-permissions /bin/ep /bin/docker-sleep /bin/
+COPY --from=uselagoon/python-3.11 /home /home
 
 ENV TMPDIR=/tmp \
     TMP=/tmp \
