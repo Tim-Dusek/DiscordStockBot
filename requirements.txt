@@ -6,7 +6,7 @@ lxml
 matplotlib
 arrow
 cryptocompare
-kaleido==0.1.*
+kaleido
 plotly
 psutil
 holidays

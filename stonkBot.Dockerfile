@@ -17,6 +17,8 @@ RUN apt-get install libxml2-dev libxslt-dev make automake gcc g++ libjpeg-dev zl
 
 COPY . /
 
-RUN pip install -r requirements.txt
+RUN pip install --upgrade -r requirements.txt
+
+RUN python setup.py
 
 CMD ["python", "StonkBot.py"]
