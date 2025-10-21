@@ -412,6 +412,8 @@ async def create_graph(ctx, company: str, interval: str, start=None, end=None, p
 		# Check for empty response
 		if not pd.to_datetime(res.index).to_pydatetime().tolist():
 			await ctx.send("No data returned; the market is probably closed right now!")
+			try: logging.error(f"No data returned? Call result was: {res}")
+			except Exception as e: pass
 			return()
 		# End if
 
@@ -454,6 +456,8 @@ async def create_candlestick_graph(ctx, company: str, interval: str, start=None,
 		# Check for empty response
 		if not pd.to_datetime(res.index).to_pydatetime().tolist():
 			await ctx.send("No data returned; the market is probably closed right now!")
+			try: logging.error(f"No data returned? Call result was: {res}")
+			except Exception as e: pass
 			return()
 		# End if
 
@@ -545,6 +549,8 @@ async def create_dual_stock_graph(ctx, fcompany: str, scompany: str, interval: s
 		# Check for empty response
 		if not pd.to_datetime(first_res.index).to_pydatetime().tolist() or not pd.to_datetime(second_res.index).to_pydatetime().tolist():
 			await ctx.send("No data returned; the market is probably closed right now!")
+			try: logging.error(f"No data returned? Call result was: {first_res} \n\n\n and {second_res}")
+			except Exception as e: pass
 			return()
 		# End if
 
