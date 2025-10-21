@@ -15,8 +15,8 @@ ENV TMPDIR=/tmp \
 
 RUN apt-get install libxml2-dev libxslt-dev make automake gcc g++ libjpeg-dev zlib1g-dev libfreetype6-dev liblcms2-dev libjpeg-dev libtiff-dev tk-dev tcl-dev
 
-RUN pip install -r requirements.txt
-
 COPY . /
+
+RUN pip install -r requirements.txt
 
 CMD ["python", "StonkBot.py"]
